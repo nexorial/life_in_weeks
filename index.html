@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Turn your birthday into a 100-year, 52-week life grid and export a shareable image."
+    />
+    <base href="/life/" />
+    <meta property="og:title" content="Life in Weeks" />
+    <meta property="og:description" content="See every week of a 100-year life in one quiet grid." />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="/life/life.css" />
+    <title>Life in Weeks</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="life-panel" aria-labelledby="page-title">
+        <header class="hero">
+          <p class="eyebrow">KISKIR / life in weeks</p>
+          <h1 id="page-title">Your life, one week at a time.</h1>
+          <p class="subtitle">
+            A 5,200-square map of a 100-year life. Enter your birthday and watch your lived weeks light up from the bottom.
+          </p>
+        </header>
+
+        <form class="controls" data-life-form>
+          <label class="date-field">
+            <span>Birthday</span>
+            <input data-birthday type="date" required />
+          </label>
+          <button class="primary-action" type="submit">Display Life in Weeks</button>
+          <button class="secondary-action" data-export type="button">Export Image</button>
+        </form>
+
+        <div class="insight-strip" aria-live="polite">
+          <span data-life-stats>Pick a birthday to reveal the weeks already lived.</span>
+          <span data-share-line>Send it to someone whose time you do not want to waste.</span>
+        </div>
+
+        <section class="share-wedge" aria-labelledby="share-title">
+          <div>
+            <p class="chart-kicker">Share prompt</p>
+            <h2 id="share-title">Who do you want more weeks with?</h2>
+          </div>
+          <div class="share-options" role="group" aria-label="Choose a share prompt">
+            <button type="button" data-share-prompt="parents">Parents</button>
+            <button type="button" data-share-prompt="partner">Partner</button>
+            <button type="button" data-share-prompt="friend">Old Friend</button>
+          </div>
+        </section>
+
+        <section class="chart-card" data-export-card aria-label="Life in weeks grid">
+          <div class="chart-heading">
+            <div>
+              <p class="chart-kicker">Each square is one week</p>
+              <h2 data-export-title>Life in Weeks</h2>
+            </div>
+            <p data-export-summary>5,200 weeks = 100 years. Color = age season.</p>
+          </div>
+
+          <div class="grid-wrap">
+            <div class="age-axis" aria-hidden="true" data-age-axis></div>
+            <div class="life-grid" data-life-grid aria-label="100 rows by 52 columns life calendar"></div>
+          </div>
+
+          <div class="legend" data-legend></div>
+        </section>
+
+        <p class="viral-note">
+          <span data-viral-note>The best share prompt is not “look how old I am.” It is “which square are you spending this week on?”</span>
+        </p>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
