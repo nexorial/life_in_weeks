@@ -18,6 +18,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background: #f6f4ec;
+  overflow-x: hidden;
 }
 
 button,
@@ -594,7 +595,9 @@ h1 {
 
 @media (max-width: 760px) {
   .page-shell {
-    padding: 22px 10px 40px;
+    width: 100%;
+    padding: 22px 15px 40px;
+    overflow-x: hidden;
   }
 
   .life-panel {
@@ -607,12 +610,15 @@ h1 {
   }
 
   h1 {
-    font-size: 40px;
+    font-size: 38px;
+    line-height: 1.02;
+    overflow-wrap: break-word;
   }
 
   .subtitle {
     max-width: none;
     font-size: 16px;
+    overflow-wrap: anywhere;
   }
 
   .controls,
@@ -627,6 +633,16 @@ h1 {
     justify-content: start;
   }
 
+  .insight-strip span,
+  .profile-summary span,
+  .profile-summary strong,
+  .event-composer__intro h2,
+  .chart-heading h2,
+  .chart-heading p,
+  .viral-note {
+    overflow-wrap: anywhere;
+  }
+
   .profile-summary article {
     min-height: 92px;
   }
@@ -639,11 +655,14 @@ h1 {
   }
 
   .share-options {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    flex-wrap: initial;
   }
 
   .share-options button {
-    flex: 1 1 30%;
+    min-width: 0;
+    padding: 0 8px;
   }
 
   .event-composer {
@@ -684,7 +703,7 @@ h1 {
 
   .date-field input,
   .select-field select {
-    width: auto;
+    width: 100%;
   }
 
   .event-composer .date-field span,
@@ -693,6 +712,7 @@ h1 {
   }
 
   .chart-card {
+    width: 100%;
     padding-inline: 0;
   }
 
