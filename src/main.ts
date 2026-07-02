@@ -1,28 +1,32 @@
-type LifeStage = {
+type DevelopmentStage = {
+  id: string;
   label: string;
-  range: string;
-  min: number;
-  max: number;
+  startDate: string;
+  endDate?: string;
   color: string;
   filled: string;
+  location: string;
+  behavior: string;
 };
 
-const stages: LifeStage[] = [
-  { label: "Baby & Toddler", range: "0-2", min: 0, max: 2, color: "#F6C9D7", filled: "#E95488" },
-  { label: "Preschool", range: "3-5", min: 3, max: 5, color: "#FFD89E", filled: "#F59E0B" },
-  { label: "Child", range: "6-12", min: 6, max: 12, color: "#F7EFA6", filled: "#D6B50D" },
-  { label: "Teen", range: "13-17", min: 13, max: 17, color: "#BDECC8", filled: "#22A05A" },
-  { label: "Young Adult", range: "18-24", min: 18, max: 24, color: "#A8E6E0", filled: "#0891B2" },
-  { label: "Adult", range: "25-39", min: 25, max: 39, color: "#BFD7FF", filled: "#2563EB" },
-  { label: "Middle-aged", range: "40-64", min: 40, max: 64, color: "#D4C7F9", filled: "#7C3AED" },
-  { label: "Senior", range: "65+", min: 65, max: 99, color: "#D8D4CC", filled: "#6B7280" }
-];
+type LifeEvent = {
+  id: string;
+  date: string;
+  dateLabel?: string;
+  stageId: string;
+  message: string;
+};
 
-const weeksPerYear = 52;
-const years = 100;
-const totalWeeks = weeksPerYear * years;
-const animationChunkSize = 44;
-const msPerDay = 24 * 60 * 60 * 1000;
+type PersonProfile = {
+  id: string;
+  name: string;
+  birthDate: string;
+  headline: string;
+  subtitle: string;
+  sourceNote: string;
+  stages: DevelopmentStage[];
+  events: LifeEvent[];
+};
 
 type LifeAge = {
   fullYears: number;
@@ -32,10 +36,195 @@ type LifeAge = {
   filledCells: number;
   elapsedWeeks: number;
 };
-const sharePrompts = {
-  parents: "I just saw my life in weeks. It made me want to call you.",
-  partner: "This is my life in weeks. I want more of these with you.",
-  friend: "This made me think of the weeks we already spent together, and the ones we should still make happen."
+
+type EventPosition = {
+  index: number;
+  age: number;
+  weekInYear: number;
+  date: Date;
+};
+
+type PositionedEvent = {
+  lifeEvent: LifeEvent;
+  position: EventPosition;
+};
+
+const weeksPerYear = 52;
+const years = 100;
+const totalWeeks = weeksPerYear * years;
+const msPerDay = 24 * 60 * 60 * 1000;
+const maxEventCharacters = 120;
+const eventNoteHeight = 94;
+const eventNoteGap = 8;
+const compactEventBreakpoint = 760;
+
+const profiles: PersonProfile[] = [
+  {
+    id: "sam-altman",
+    name: "Sam Altman",
+    birthDate: "1985-04-22",
+    headline: "Sam Altman, one week at a time.",
+    subtitle:
+      "A 5,200-square biography container: stages are colored from public date ranges, overlapping work is split inside each week, and major events are pinned onto the grid.",
+    sourceNote:
+      "Sample data is assembled from public biography references plus YC, OpenAI, and Green Dot primary announcements. Year-only childhood events are placed near the middle of the known year.",
+    stages: [
+      {
+        id: "childhood",
+        label: "Childhood / St. Louis",
+        startDate: "1985-04-22",
+        endDate: "2003-09-01",
+        color: "#ead1cc",
+        filled: "#bd6658",
+        location: "Chicago -> Clayton, Missouri",
+        behavior: "Early computing, school, identity formation"
+      },
+      {
+        id: "stanford",
+        label: "Stanford / AI Lab",
+        startDate: "2003-09-01",
+        endDate: "2005-05-01",
+        color: "#b8ddd9",
+        filled: "#247f85",
+        location: "Stanford, California",
+        behavior: "Computer science, AI lab, founder network"
+      },
+      {
+        id: "loopt",
+        label: "Loopt founder",
+        startDate: "2005-01-01",
+        endDate: "2012-03-21",
+        color: "#edce8c",
+        filled: "#b7791f",
+        location: "Mountain View / Silicon Valley",
+        behavior: "Mobile location product, fundraising, team building"
+      },
+      {
+        id: "investor",
+        label: "Investor / hard-tech bets",
+        startDate: "2012-03-21",
+        color: "#c9c0df",
+        filled: "#725ca0",
+        location: "San Francisco",
+        behavior: "Capital allocation, networks, long-horizon bets"
+      },
+      {
+        id: "yc",
+        label: "Y Combinator",
+        startDate: "2011-01-01",
+        endDate: "2019-03-11",
+        color: "#c4d8ad",
+        filled: "#5f8b3d",
+        location: "Mountain View / San Francisco",
+        behavior: "Startup selection, advising, institution building"
+      },
+      {
+        id: "openai",
+        label: "OpenAI",
+        startDate: "2015-12-11",
+        color: "#b7cbe8",
+        filled: "#3f6fa9",
+        location: "San Francisco",
+        behavior: "AI lab creation, product deployment, governance"
+      },
+      {
+        id: "public-ai",
+        label: "AI policy / public figure",
+        startDate: "2022-11-30",
+        color: "#e5bbb2",
+        filled: "#a44f43",
+        location: "Global",
+        behavior: "Public communication, regulation, geopolitical AI debate"
+      }
+    ],
+    events: [
+      { id: "born", date: "1985-04-22", stageId: "childhood", message: "Born in Chicago." },
+      {
+        id: "st-louis",
+        date: "1989-07-01",
+        dateLabel: "1989",
+        stageId: "childhood",
+        message: "Family moves to the St. Louis area."
+      },
+      {
+        id: "first-mac",
+        date: "1993-04-22",
+        dateLabel: "Age 8",
+        stageId: "childhood",
+        message: "Gets an Apple Macintosh and starts learning to code."
+      },
+      {
+        id: "stanford-start",
+        date: "2003-09-01",
+        dateLabel: "2003",
+        stageId: "stanford",
+        message: "Studies computer science at Stanford and works around the AI lab."
+      },
+      {
+        id: "loopt-start",
+        date: "2005-01-01",
+        dateLabel: "2005",
+        stageId: "loopt",
+        message: "Leaves Stanford and co-founds Loopt."
+      },
+      {
+        id: "yc-join",
+        date: "2011-01-01",
+        dateLabel: "2011",
+        stageId: "yc",
+        message: "Joins Y Combinator as a partner."
+      },
+      {
+        id: "loopt-sale",
+        date: "2012-03-21",
+        stageId: "loopt",
+        message: "Green Dot announces it will acquire Loopt for $43.4M."
+      },
+      {
+        id: "yc-president",
+        date: "2014-02-21",
+        stageId: "yc",
+        message: "Paul Graham announces Altman will become YC president."
+      },
+      {
+        id: "openai-start",
+        date: "2015-12-11",
+        stageId: "openai",
+        message: "OpenAI is announced with Altman and Elon Musk as co-chairs."
+      },
+      {
+        id: "openai-ceo",
+        date: "2019-03-11",
+        dateLabel: "2019",
+        stageId: "openai",
+        message: "Leaves YC leadership to focus full-time on OpenAI as CEO."
+      },
+      {
+        id: "chatgpt",
+        date: "2022-11-30",
+        stageId: "public-ai",
+        message: "OpenAI releases ChatGPT as a public research preview."
+      },
+      {
+        id: "senate",
+        date: "2023-05-16",
+        stageId: "public-ai",
+        message: "Testifies before the U.S. Senate on AI oversight."
+      },
+      {
+        id: "return-ceo",
+        date: "2023-11-29",
+        stageId: "public-ai",
+        message: "Returns as OpenAI CEO after a board crisis and new initial board."
+      }
+    ]
+  }
+];
+
+const readingPrompts = {
+  stages: "Stage recognition: color shows the dominant context; striped cells mean overlapping identities.",
+  behavior: "Behavior analysis: read each colored band as the work pattern that dominated that period.",
+  events: "Event tracking: pinned notes show the weeks where public events changed the trajectory."
 } as const;
 
 function requireElement<T extends Element>(selector: string) {
@@ -46,8 +235,8 @@ function requireElement<T extends Element>(selector: string) {
   return element;
 }
 
-const form = requireElement<HTMLFormElement>("[data-life-form]");
-const birthdayInput = requireElement<HTMLInputElement>("[data-birthday]");
+const form = requireElement<HTMLFormElement>("[data-profile-form]");
+const profileSelect = requireElement<HTMLSelectElement>("[data-profile-select]");
 const grid = requireElement<HTMLElement>("[data-life-grid]");
 const axis = requireElement<HTMLElement>("[data-age-axis]");
 const legend = requireElement<HTMLElement>("[data-legend]");
@@ -57,21 +246,128 @@ const exportButton = requireElement<HTMLButtonElement>("[data-export]");
 const exportTitle = requireElement<HTMLElement>("[data-export-title]");
 const exportSummary = requireElement<HTMLElement>("[data-export-summary]");
 const viralNote = requireElement<HTMLElement>("[data-viral-note]");
-const shareButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-share-prompt]"));
+const profileTitle = requireElement<HTMLElement>("[data-profile-title]");
+const profileSubtitle = requireElement<HTMLElement>("[data-profile-subtitle]");
+const stageMetric = requireElement<HTMLElement>("[data-stage-metric]");
+const behaviorMetric = requireElement<HTMLElement>("[data-behavior-metric]");
+const eventMetric = requireElement<HTMLElement>("[data-event-metric]");
+const sourceNote = requireElement<HTMLElement>("[data-source-note]");
+const readingButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-reading-prompt]"));
+const eventForm = requireElement<HTMLFormElement>("[data-event-form]");
+const eventDateInput = requireElement<HTMLInputElement>("[data-event-date]");
+const eventCopyInput = requireElement<HTMLTextAreaElement>("[data-event-copy]");
+const eventCount = requireElement<HTMLElement>("[data-event-count]");
+const eventError = requireElement<HTMLElement>("[data-event-error]");
+const annotationStage = requireElement<HTMLElement>("[data-annotation-stage]");
+const eventLines = requireElement<SVGSVGElement>("[data-event-lines]");
+const eventNotes = requireElement<HTMLElement>("[data-event-notes]");
 
+let selectedProfile = profiles[0];
 let selectedWeeks = 0;
-let selectedBirthday = "";
 let selectedLifeAge: LifeAge | null = null;
-let animationFrame = 0;
-let selectedSharePrompt: keyof typeof sharePrompts | null = null;
+let selectedReadingPrompt: keyof typeof readingPrompts = "stages";
+let lifeEvents: LifeEvent[] = [...selectedProfile.events];
+let nextEventId = lifeEvents.length + 1;
 
-function stageForAge(age: number) {
-  return stages.find((stage) => age >= stage.min && age <= stage.max) ?? stages[stages.length - 1];
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function startOfLocalDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function parseLocalDate(value: string) {
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function addDays(date: Date, days: number) {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+function addYears(date: Date, yearCount: number) {
+  return new Date(date.getFullYear() + yearCount, date.getMonth(), date.getDate());
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getReferenceDate() {
+  return startOfLocalDay(new Date());
+}
+
+function stageById(stageId: string) {
+  return selectedProfile.stages.find((stage) => stage.id === stageId);
+}
+
+function stageEndDate(stage: DevelopmentStage, referenceDate = getReferenceDate()) {
+  const parsed = stage.endDate ? parseLocalDate(stage.endDate) : referenceDate;
+  return parsed ? addDays(startOfLocalDay(parsed), 1) : addDays(referenceDate, 1);
+}
+
+function stageOverlapsRange(stage: DevelopmentStage, rangeStart: Date, rangeEnd: Date, referenceDate = getReferenceDate()) {
+  const stageStart = parseLocalDate(stage.startDate);
+  if (!stageStart) return false;
+  const cappedRangeStart = rangeStart.getTime() > referenceDate.getTime() ? referenceDate : rangeStart;
+  return startOfLocalDay(stageStart).getTime() < rangeEnd.getTime() && stageEndDate(stage, referenceDate).getTime() > cappedRangeStart.getTime();
+}
+
+function stagesForWeek(profile: PersonProfile, age: number, week: number, referenceDate = getReferenceDate()) {
+  const birthDate = parseLocalDate(profile.birthDate);
+  if (!birthDate) return [];
+  const birthdayYearStart = addYears(startOfLocalDay(birthDate), age);
+  const weekStart = addDays(birthdayYearStart, week * 7);
+  const weekEnd = addDays(weekStart, 7);
+  if (weekStart.getTime() > referenceDate.getTime()) return [];
+  return profile.stages.filter((stage) => stageOverlapsRange(stage, weekStart, weekEnd, referenceDate));
+}
+
+function stagesForDate(profile: PersonProfile, date: Date, referenceDate = getReferenceDate()) {
+  const day = startOfLocalDay(date);
+  return profile.stages.filter((stage) => stageOverlapsRange(stage, day, addDays(day, 1), referenceDate));
+}
+
+function activeStageColors(stages: DevelopmentStage[]) {
+  return stages.length ? stages.map((stage) => stage.filled) : ["#9b958c"];
+}
+
+function cellGradient(stages: DevelopmentStage[]) {
+  const colors = activeStageColors(stages);
+  if (colors.length === 1) return colors[0];
+
+  const segment = 100 / colors.length;
+  const stops = colors.map((color, index) => {
+    const start = (index * segment).toFixed(2);
+    const end = ((index + 1) * segment).toFixed(2);
+    return `${color} ${start}% ${end}%`;
+  });
+  return `linear-gradient(90deg, ${stops.join(", ")})`;
+}
+
+function stageRangeLabel(stage: DevelopmentStage) {
+  const start = parseLocalDate(stage.startDate);
+  const end = stage.endDate ? parseLocalDate(stage.endDate) : null;
+  const birth = parseLocalDate(selectedProfile.birthDate);
+  if (!start || !birth) return stage.endDate ? `${stage.startDate} - ${stage.endDate}` : `${stage.startDate} - now`;
+
+  const startAge = calculateLifeAge(selectedProfile.birthDate, start).fullYears;
+  const endAge = end ? calculateLifeAge(selectedProfile.birthDate, end).fullYears : selectedLifeAge?.fullYears;
+  const endLabel = end ? String(end.getFullYear()) : "now";
+  return `${start.getFullYear()} - ${endLabel} / age ${startAge}${endAge === undefined ? "+" : `-${endAge}`}`;
 }
 
 function createGrid() {
   const cells: string[] = [];
   const labels: string[] = [];
+  const referenceDate = getReferenceDate();
 
   for (let displayRow = 0; displayRow < years; displayRow += 1) {
     const age = displayRow;
@@ -79,9 +375,11 @@ function createGrid() {
 
     for (let week = 0; week < weeksPerYear; week += 1) {
       const index = age * weeksPerYear + week;
-      const stage = stageForAge(age);
+      const stages = stagesForWeek(selectedProfile, age, week, referenceDate);
+      const stageNames = stages.map((stage) => stage.label).join(" + ") || "Unmapped";
+      const label = `Age ${age}, week ${week + 1}. Stage: ${stageNames}`;
       cells.push(
-        `<button class="week-cell" type="button" aria-label="Age ${age}, week ${week + 1}" data-week-index="${index}" data-age="${age}" style="--stage:${stage.color};--stage-filled:${stage.filled}"></button>`
+        `<button class="week-cell" type="button" aria-label="${escapeHtml(label)}" data-base-label="${escapeHtml(label)}" data-week-index="${index}" data-age="${age}" data-week="${week}" style="--stage-filled:${cellGradient(stages)}"></button>`
       );
     }
   }
@@ -91,26 +389,20 @@ function createGrid() {
 }
 
 function createLegend() {
-  legend.innerHTML = stages
+  legend.innerHTML = selectedProfile.stages
     .map(
       (stage) => `
         <span class="legend-item">
-          <i style="--stage:${stage.color};--stage-filled:${stage.filled}"></i>
-          <span>${stage.range}</span>
-          <strong>${stage.label}</strong>
+          <i style="--stage-filled:${stage.filled}"></i>
+          <span>
+            <strong>${escapeHtml(stage.label)}</strong>
+            <small>${escapeHtml(stageRangeLabel(stage))} / ${escapeHtml(stage.location)}</small>
+            <em>${escapeHtml(stage.behavior)}</em>
+          </span>
         </span>
       `
     )
     .join("");
-}
-
-function startOfLocalDay(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
-function parseLocalDate(value: string) {
-  const birthday = new Date(`${value}T00:00:00`);
-  return Number.isNaN(birthday.getTime()) ? null : birthday;
 }
 
 function calculateLifeAge(value: string, referenceDate = new Date()): LifeAge {
@@ -165,6 +457,63 @@ function calculateLifeAge(value: string, referenceDate = new Date()): LifeAge {
   };
 }
 
+function calculateEventPosition(profile: PersonProfile, eventValue: string): EventPosition | null {
+  const birthday = parseLocalDate(profile.birthDate);
+  const eventDate = parseLocalDate(eventValue);
+  if (!birthday || !eventDate) return null;
+
+  const birthDate = startOfLocalDay(birthday);
+  const lifeEventDate = startOfLocalDay(eventDate);
+  const hundredthBirthday = addYears(birthDate, years);
+  if (lifeEventDate.getTime() < birthDate.getTime() || lifeEventDate.getTime() >= hundredthBirthday.getTime()) {
+    return null;
+  }
+
+  let age = lifeEventDate.getFullYear() - birthDate.getFullYear();
+  const birthdayThisYear = new Date(lifeEventDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+  if (birthdayThisYear.getTime() > lifeEventDate.getTime()) {
+    age -= 1;
+  }
+
+  const lastBirthday = addYears(birthDate, age);
+  const daysThisYear = Math.floor((lifeEventDate.getTime() - lastBirthday.getTime()) / msPerDay);
+  const weekInYear = clamp(Math.floor(daysThisYear / 7), 0, weeksPerYear - 1);
+
+  return {
+    index: age * weeksPerYear + weekInYear,
+    age,
+    weekInYear,
+    date: lifeEventDate
+  };
+}
+
+function formatProfileDate(value: string) {
+  const date = parseLocalDate(value);
+  if (!date) return value;
+  return new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(date);
+}
+
+function formatEventDate(lifeEvent: LifeEvent) {
+  return lifeEvent.dateLabel ?? formatProfileDate(lifeEvent.date);
+}
+
+function formatAgeDetail(age: LifeAge) {
+  return `${age.fullYears} years, ${age.fullWeeksThisYear} weeks, ${age.remainingDaysThisYear} days`;
+}
+
+function countCharacters(value: string) {
+  return Array.from(value.trim()).length;
+}
+
+function updateEventCount() {
+  eventCount.textContent = `${countCharacters(eventCopyInput.value)} / ${maxEventCharacters}`;
+}
+
+function setEventError(message: string, tone: "error" | "success" = "error") {
+  eventError.textContent = message;
+  eventError.classList.toggle("is-success", tone === "success");
+}
+
 function updateCellState(filledWeeks: number) {
   grid.querySelectorAll<HTMLElement>(".week-cell").forEach((cell) => {
     const index = Number(cell.dataset.weekIndex);
@@ -172,58 +521,268 @@ function updateCellState(filledWeeks: number) {
   });
 }
 
-function animateTo(targetWeeks: number) {
-  cancelAnimationFrame(animationFrame);
-  updateCellState(0);
-
-  let current = 0;
-  const step = () => {
-    current = Math.min(targetWeeks, current + animationChunkSize);
-    updateCellState(current);
-    if (current < targetWeeks) {
-      animationFrame = requestAnimationFrame(step);
+function resetEventCells() {
+  grid.querySelectorAll<HTMLElement>(".week-cell").forEach((cell) => {
+    cell.classList.remove("has-event");
+    cell.style.removeProperty("--event-color");
+    if (cell.dataset.baseLabel) {
+      cell.setAttribute("aria-label", cell.dataset.baseLabel);
     }
-  };
-
-  animationFrame = requestAnimationFrame(step);
-}
-
-function formatBirthday(value: string) {
-  const date = new Date(`${value}T00:00:00`);
-  return new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(date);
-}
-
-function formatAgeDetail(age: LifeAge) {
-  return `${age.fullYears} years, ${age.fullWeeksThisYear} weeks, ${age.remainingDaysThisYear} days`;
-}
-
-function updateCopy(age: LifeAge, birthday: string) {
-  const remaining = Math.max(0, totalWeeks - age.filledCells);
-  const percent = Math.min(100, (age.filledCells / totalWeeks) * 100);
-
-  stats.textContent = `${formatBirthday(birthday)} · ${age.elapsedWeeks.toLocaleString()} elapsed weeks · age ${formatAgeDetail(age)} · current square week ${age.currentWeekCell} · ${remaining.toLocaleString()} squares before 100.`;
-  shareLine.textContent = selectedSharePrompt ? sharePrompts[selectedSharePrompt] : `This week is one square. Choose it like it matters.`;
-  exportTitle.textContent = `Life in Weeks: ${age.fullYears} years, week ${age.currentWeekCell}`;
-  exportSummary.textContent = `${age.filledCells.toLocaleString()} of 5,200 squares filled (${percent.toFixed(1)}%). Actual age: ${formatAgeDetail(age)}.`;
-}
-
-function setSharePrompt(prompt: keyof typeof sharePrompts) {
-  selectedSharePrompt = prompt;
-  const copy = sharePrompts[prompt];
-  shareLine.textContent = copy;
-  viralNote.textContent = copy;
-  shareButtons.forEach((button) => {
-    button.classList.toggle("is-selected", button.dataset.sharePrompt === prompt);
   });
 }
 
-function displayLife(value: string) {
-  const lifeAge = calculateLifeAge(value);
-  selectedBirthday = value;
+function getPositionedEvents() {
+  return lifeEvents
+    .map((lifeEvent) => {
+      const position = calculateEventPosition(selectedProfile, lifeEvent.date);
+      return position ? { lifeEvent, position } : null;
+    })
+    .filter((lifeEvent): lifeEvent is PositionedEvent => lifeEvent !== null)
+    .sort((a, b) => a.position.index - b.position.index || a.lifeEvent.date.localeCompare(b.lifeEvent.date));
+}
+
+function placeVariableEventNotes(anchorYs: number[], noteHeights: number[], stageHeight: number, noteGap = eventNoteGap) {
+  if (!anchorYs.length) return [];
+
+  const noteTops = anchorYs.map((anchorY, index) => {
+    const maxTop = Math.max(0, stageHeight - noteHeights[index]);
+    return clamp(anchorY - noteHeights[index] / 2, 0, maxTop);
+  });
+
+  for (let index = 1; index < noteTops.length; index += 1) {
+    noteTops[index] = Math.max(noteTops[index], noteTops[index - 1] + noteHeights[index - 1] + noteGap);
+  }
+
+  for (let index = noteTops.length - 1; index >= 0; index -= 1) {
+    const maxTop = Math.max(0, stageHeight - noteHeights[index]);
+    if (index === noteTops.length - 1) {
+      noteTops[index] = Math.min(noteTops[index], maxTop);
+    } else {
+      noteTops[index] = Math.min(noteTops[index], noteTops[index + 1] - noteHeights[index] - noteGap);
+    }
+  }
+
+  return noteTops.map((top, index) => clamp(top, 0, Math.max(0, stageHeight - noteHeights[index])));
+}
+
+function stackVariableEventNotes(noteHeights: number[], noteGap = eventNoteGap) {
+  let top = 0;
+  return noteHeights.map((height) => {
+    const noteTop = top;
+    top += height + noteGap;
+    return noteTop;
+  });
+}
+
+function useCompactEventLayout() {
+  return window.innerWidth <= compactEventBreakpoint;
+}
+
+function prepareAnnotationStage(eventCount: number, compact: boolean, stackHeight?: number) {
+  annotationStage.style.paddingTop = "";
+  annotationStage.style.minHeight = "";
+
+  if (compact && eventCount > 0) {
+    const estimate = eventCount * (eventNoteHeight + eventNoteGap) + 18;
+    annotationStage.style.minHeight = `${grid.offsetHeight + (stackHeight ?? estimate) + 22}px`;
+  }
+}
+
+function eventColor(lifeEvent: LifeEvent) {
+  return stageById(lifeEvent.stageId)?.filled ?? "#161512";
+}
+
+function eventStageLabel(lifeEvent: LifeEvent) {
+  return stageById(lifeEvent.stageId)?.label ?? "Unmapped stage";
+}
+
+function renderLifeEvents() {
+  resetEventCells();
+  eventLines.replaceChildren();
+  eventNotes.replaceChildren();
+
+  const positionedEvents = getPositionedEvents();
+  prepareAnnotationStage(positionedEvents.length, useCompactEventLayout());
+  if (!positionedEvents.length) return;
+
+  const compact = useCompactEventLayout();
+  let stageRect = annotationStage.getBoundingClientRect();
+  let gridRect = grid.getBoundingClientRect();
+  if (stageRect.width === 0 || stageRect.height === 0) return;
+
+  eventLines.setAttribute("width", String(stageRect.width));
+  eventLines.setAttribute("height", String(stageRect.height));
+  eventLines.setAttribute("viewBox", `0 0 ${stageRect.width} ${stageRect.height}`);
+
+  type MeasuredEvent = PositionedEvent & {
+    cell: HTMLElement;
+    anchorX: number;
+    anchorY: number;
+  };
+
+  const measureEvents = (): MeasuredEvent[] =>
+    positionedEvents
+      .map(({ lifeEvent, position }) => {
+        const cell = grid.querySelector<HTMLElement>(`[data-week-index="${position.index}"]`);
+        if (!cell) return null;
+
+        const cellRect = cell.getBoundingClientRect();
+        return {
+          lifeEvent,
+          position,
+          cell,
+          anchorX: cellRect.left - stageRect.left + cellRect.width / 2,
+          anchorY: cellRect.top - stageRect.top + cellRect.height / 2
+        };
+      })
+      .filter((event): event is MeasuredEvent => event !== null);
+
+  let measuredEvents = measureEvents();
+  let noteLeft = compact ? gridRect.left - stageRect.left : gridRect.right - stageRect.left + 54;
+  const notes = measuredEvents.map((event) => {
+    const color = eventColor(event.lifeEvent);
+    const note = document.createElement("article");
+    note.className = "event-note";
+    note.style.left = `${noteLeft}px`;
+    note.style.top = "0";
+    note.style.visibility = "hidden";
+    note.style.setProperty("--event-color", color);
+    note.dataset.eventId = event.lifeEvent.id;
+
+    const date = document.createElement("time");
+    date.dateTime = event.lifeEvent.date;
+    date.textContent = `${formatEventDate(event.lifeEvent)} / age ${event.position.age}, week ${event.position.weekInYear + 1} / ${eventStageLabel(event.lifeEvent)}`;
+
+    const message = document.createElement("div");
+    message.textContent = event.lifeEvent.message;
+
+    note.append(date, message);
+    eventNotes.append(note);
+    return note;
+  });
+
+  const noteHeights = notes.map((note) => note.getBoundingClientRect().height);
+  if (compact) {
+    const stackHeight = noteHeights.reduce((total, height) => total + height + eventNoteGap, 0) + 18;
+    prepareAnnotationStage(positionedEvents.length, true, stackHeight);
+    stageRect = annotationStage.getBoundingClientRect();
+    gridRect = grid.getBoundingClientRect();
+    eventLines.setAttribute("width", String(stageRect.width));
+    eventLines.setAttribute("height", String(stageRect.height));
+    eventLines.setAttribute("viewBox", `0 0 ${stageRect.width} ${stageRect.height}`);
+    measuredEvents = measureEvents();
+    noteLeft = gridRect.left - stageRect.left;
+    notes.forEach((note) => {
+      note.style.left = `${noteLeft}px`;
+    });
+  }
+
+  const noteTops = compact
+    ? stackVariableEventNotes(noteHeights).map((top) => top + (gridRect.bottom - stageRect.top) + 18)
+    : placeVariableEventNotes(
+        measuredEvents.map((event) => event.anchorY),
+        noteHeights,
+        stageRect.height
+      );
+
+  measuredEvents.forEach((event, index) => {
+    const color = eventColor(event.lifeEvent);
+    const baseLabel = event.cell.getAttribute("aria-label") ?? "";
+    event.cell.classList.add("has-event");
+    event.cell.style.setProperty("--event-color", color);
+    event.cell.setAttribute(
+      "aria-label",
+      `${baseLabel}. Event on ${formatEventDate(event.lifeEvent)}: ${event.lifeEvent.message}`
+    );
+
+    const noteTop = noteTops[index];
+    const noteAnchorX = compact ? noteLeft + 8 : noteLeft;
+    const noteAnchorY = compact ? noteTop : noteTop + 22;
+    const compactRailY = gridRect.bottom - stageRect.top + 10;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("class", "event-line");
+    path.style.setProperty("--event-color", color);
+    const pathDefinition = compact
+      ? [
+          `M ${event.anchorX.toFixed(1)} ${event.anchorY.toFixed(1)}`,
+          `L ${event.anchorX.toFixed(1)} ${compactRailY.toFixed(1)}`,
+          `L ${noteAnchorX.toFixed(1)} ${compactRailY.toFixed(1)}`,
+          `L ${noteAnchorX.toFixed(1)} ${noteAnchorY.toFixed(1)}`
+        ].join(" ")
+      : [
+          `M ${event.anchorX.toFixed(1)} ${event.anchorY.toFixed(1)}`,
+          `C ${(event.anchorX + 42).toFixed(1)} ${event.anchorY.toFixed(1)},`,
+          `${(noteLeft - 34).toFixed(1)} ${noteAnchorY.toFixed(1)},`,
+          `${noteLeft.toFixed(1)} ${noteAnchorY.toFixed(1)}`
+        ].join(" ");
+    path.setAttribute("d", pathDefinition);
+
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("class", "event-line-dot");
+    dot.style.setProperty("--event-color", color);
+    dot.setAttribute("cx", event.anchorX.toFixed(1));
+    dot.setAttribute("cy", event.anchorY.toFixed(1));
+    dot.setAttribute("r", "3");
+
+    const note = notes[index];
+    note.style.left = `${noteLeft}px`;
+    note.style.top = `${noteTop}px`;
+    note.style.visibility = "";
+
+    eventLines.append(path, dot);
+  });
+}
+
+function countOverlappedWeeks(filledWeeks: number) {
+  let overlapCount = 0;
+  for (let index = 0; index < filledWeeks; index += 1) {
+    const age = Math.floor(index / weeksPerYear);
+    const week = index % weeksPerYear;
+    if (stagesForWeek(selectedProfile, age, week).length > 1) {
+      overlapCount += 1;
+    }
+  }
+  return overlapCount;
+}
+
+function updateCopy(age: LifeAge) {
+  const remaining = Math.max(0, totalWeeks - age.filledCells);
+  const percent = Math.min(100, (age.filledCells / totalWeeks) * 100);
+  const activeNow = stagesForDate(selectedProfile, getReferenceDate()).map((stage) => stage.label);
+  const overlapCount = countOverlappedWeeks(age.filledCells);
+
+  profileTitle.textContent = selectedProfile.headline;
+  profileSubtitle.textContent = selectedProfile.subtitle;
+  stats.textContent = `${selectedProfile.name} / born ${formatProfileDate(selectedProfile.birthDate)} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / age ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
+  shareLine.textContent = readingPrompts[selectedReadingPrompt];
+  exportTitle.textContent = `${selectedProfile.name} in Weeks`;
+  exportSummary.textContent = `${selectedProfile.stages.length} stages / ${lifeEvents.length} pinned events / ${overlapCount.toLocaleString()} lived weeks contain overlapping stages / ${percent.toFixed(1)}% of the 100-year grid filled.`;
+  stageMetric.textContent = `${selectedProfile.stages.length} stages`;
+  behaviorMetric.textContent = activeNow.length ? `Now: ${activeNow.join(" + ")}` : "No active public stage";
+  eventMetric.textContent = `${lifeEvents.length} events pinned`;
+  viralNote.textContent = readingPrompts[selectedReadingPrompt];
+  sourceNote.textContent = selectedProfile.sourceNote;
+}
+
+function setReadingPrompt(prompt: keyof typeof readingPrompts) {
+  selectedReadingPrompt = prompt;
+  const copy = readingPrompts[prompt];
+  shareLine.textContent = copy;
+  viralNote.textContent = copy;
+  readingButtons.forEach((button) => {
+    button.classList.toggle("is-selected", button.dataset.readingPrompt === prompt);
+  });
+}
+
+function displayProfile() {
+  const lifeAge = calculateLifeAge(selectedProfile.birthDate);
   selectedLifeAge = lifeAge;
   selectedWeeks = lifeAge.filledCells;
-  updateCopy(lifeAge, value);
-  animateTo(selectedWeeks);
+  createGrid();
+  createLegend();
+  updateCopy(lifeAge);
+  updateCellState(selectedWeeks);
+  renderLifeEvents();
 }
 
 function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
@@ -236,11 +795,67 @@ function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width:
   ctx.closePath();
 }
 
+function drawSplitCell(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, colors: string[]) {
+  ctx.save();
+  roundedRect(ctx, x, y, size, size, 2);
+  ctx.clip();
+  const segment = size / colors.length;
+  colors.forEach((color, index) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x + index * segment, y, segment + 0.5, size);
+  });
+  ctx.restore();
+}
+
+function wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number) {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let currentLine = "";
+
+  const pushWrappedWord = (word: string) => {
+    let fragment = "";
+    Array.from(word).forEach((character) => {
+      const nextFragment = `${fragment}${character}`;
+      if (ctx.measureText(nextFragment).width <= maxWidth || !fragment) {
+        fragment = nextFragment;
+      } else {
+        lines.push(fragment);
+        fragment = character;
+      }
+    });
+    currentLine = fragment;
+  };
+
+  words.forEach((word) => {
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+    if (ctx.measureText(nextLine).width <= maxWidth || !currentLine) {
+      if (ctx.measureText(word).width > maxWidth && !currentLine) {
+        pushWrappedWord(word);
+      } else {
+        currentLine = nextLine;
+      }
+    } else {
+      lines.push(currentLine);
+      if (ctx.measureText(word).width > maxWidth) {
+        pushWrappedWord(word);
+      } else {
+        currentLine = word;
+      }
+    }
+  });
+
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return lines.length ? lines : [text];
+}
+
 function drawExportImage() {
   const canvas = document.createElement("canvas");
   const scale = 2;
-  const width = 1400;
-  const height = 1880;
+  const width = 1700;
+  const height = 2220;
   canvas.width = width * scale;
   canvas.height = height * scale;
 
@@ -248,65 +863,134 @@ function drawExportImage() {
   if (!ctx) throw new Error("Canvas is not available.");
 
   ctx.scale(scale, scale);
-  ctx.fillStyle = "#F8F7F2";
+  ctx.fillStyle = "#F6F4EC";
   ctx.fillRect(0, 0, width, height);
 
   ctx.fillStyle = "#141414";
   ctx.textAlign = "center";
   ctx.font = "76px Georgia, serif";
-  ctx.fillText("Life in Weeks", width / 2, 112);
+  ctx.fillText(`${selectedProfile.name} in Weeks`, width / 2, 112);
 
   ctx.fillStyle = "#73706A";
-  ctx.font = "28px ui-monospace, SFMono-Regular, Menlo, monospace";
-  const summary = selectedBirthday
-    ? `${formatBirthday(selectedBirthday)} · age ${selectedLifeAge ? formatAgeDetail(selectedLifeAge) : ""} · ${Math.max(0, totalWeeks - selectedWeeks).toLocaleString()} squares before 100`
-    : "5,200 squares = 100 birthday years. Filled squares use age-season color.";
+  ctx.font = "26px Avenir Next, Avenir, Gill Sans, sans-serif";
+  const summary = selectedLifeAge
+    ? `${formatProfileDate(selectedProfile.birthDate)} / age ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} events`
+    : "5,200 squares = 100 birthday years.";
   ctx.fillText(summary, width / 2, 164);
 
-  const left = 116;
+  const left = 96;
   const top = 236;
-  const cell = 18;
-  const gap = 4;
+  const cell = 12;
+  const gap = 3;
   const axisGap = 42;
+  const gridWidth = weeksPerYear * cell + (weeksPerYear - 1) * gap;
+  const gridHeight = years * cell + (years - 1) * gap;
+  const gridLeft = left + axisGap;
+  const referenceDate = getReferenceDate();
 
   ctx.textAlign = "right";
-  ctx.font = "18px ui-monospace, SFMono-Regular, Menlo, monospace";
+  ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
 
   for (let displayRow = 0; displayRow < years; displayRow += 1) {
     const age = displayRow;
     const y = top + displayRow * (cell + gap);
-    const stage = stageForAge(age);
     ctx.fillStyle = "#8D8981";
     if (age % 5 === 0 || age < 10) ctx.fillText(String(age), left - 18, y + 15);
 
     for (let week = 0; week < weeksPerYear; week += 1) {
       const index = age * weeksPerYear + week;
-      const x = left + axisGap + week * (cell + gap);
-      ctx.fillStyle = index < selectedWeeks ? stage.filled : "#D8D4CC";
-      roundedRect(ctx, x, y, cell, cell, 2);
-      ctx.fill();
+      const x = gridLeft + week * (cell + gap);
+      const stages = index < selectedWeeks ? stagesForWeek(selectedProfile, age, week, referenceDate) : [];
+      drawSplitCell(ctx, x, y, cell, index < selectedWeeks ? activeStageColors(stages) : ["#D8D4CC"]);
     }
   }
 
-  const legendTop = top + years * (cell + gap) + 42;
+  const positionedEvents = getPositionedEvents();
+  const noteLeft = gridLeft + gridWidth + 70;
+  ctx.font = "23px Georgia, serif";
+  const exportNotes = positionedEvents.map(({ lifeEvent }) => {
+    const lines = wrapCanvasText(ctx, lifeEvent.message, 430).slice(0, 3);
+    return {
+      lines,
+      height: 78 + (lines.length - 1) * 27
+    };
+  });
+  const noteTops = placeVariableEventNotes(
+    positionedEvents.map(({ position }) => position.age * (cell + gap) + cell / 2),
+    exportNotes.map((note) => note.height),
+    gridHeight,
+    12
+  );
+
+  positionedEvents.forEach(({ lifeEvent, position }, index) => {
+    const exportNote = exportNotes[index];
+    const color = eventColor(lifeEvent);
+    const anchorX = gridLeft + position.weekInYear * (cell + gap) + cell / 2;
+    const anchorY = top + position.age * (cell + gap) + cell / 2;
+    const noteTop = top + noteTops[index];
+    const noteAnchorY = noteTop + 31;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(anchorX, anchorY);
+    ctx.bezierCurveTo(anchorX + 42, anchorY, noteLeft - 38, noteAnchorY, noteLeft, noteAnchorY);
+    ctx.stroke();
+
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(anchorX, anchorY, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#FFFDF8";
+    ctx.lineWidth = 3;
+    roundedRect(ctx, anchorX - 6, anchorY - 6, 12, 12, 2);
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(255, 253, 248, 0.92)";
+    roundedRect(ctx, noteLeft, noteTop, 470, exportNote.height, 4);
+    ctx.fill();
+    ctx.fillStyle = color;
+    ctx.fillRect(noteLeft, noteTop, 4, exportNote.height);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#777269";
+    ctx.font = "15px Avenir Next, Avenir, Gill Sans, sans-serif";
+    ctx.fillText(
+      `${formatEventDate(lifeEvent)} / age ${position.age}, week ${position.weekInYear + 1} / ${eventStageLabel(lifeEvent)}`,
+      noteLeft + 18,
+      noteTop + 21
+    );
+
+    ctx.fillStyle = "#272520";
+    ctx.font = "23px Georgia, serif";
+    exportNote.lines.forEach((line, lineIndex) => {
+      ctx.fillText(line, noteLeft + 18, noteTop + 54 + lineIndex * 27);
+    });
+  });
+
+  const legendTop = top + gridHeight + 58;
   ctx.textAlign = "left";
-  ctx.font = "23px ui-monospace, SFMono-Regular, Menlo, monospace";
-  stages.forEach((stage, index) => {
-    const col = index % 4;
-    const row = Math.floor(index / 4);
-    const x = 176 + col * 286;
-    const y = legendTop + row * 56;
+  ctx.font = "21px Avenir Next, Avenir, Gill Sans, sans-serif";
+  selectedProfile.stages.forEach((stage, index) => {
+    const col = index % 2;
+    const row = Math.floor(index / 2);
+    const x = 176 + col * 630;
+    const y = legendTop + row * 64;
     ctx.fillStyle = stage.filled;
     roundedRect(ctx, x, y - 22, 26, 26, 3);
     ctx.fill();
-    ctx.fillStyle = "#4B4843";
-    ctx.fillText(`${stage.range} ${stage.label}`, x + 40, y);
+    ctx.fillStyle = "#292723";
+    ctx.fillText(`${stage.label} / ${stageRangeLabel(stage)}`, x + 40, y);
+    ctx.fillStyle = "#716c63";
+    ctx.font = "17px Avenir Next, Avenir, Gill Sans, sans-serif";
+    ctx.fillText(stage.behavior, x + 40, y + 24);
+    ctx.font = "21px Avenir Next, Avenir, Gill Sans, sans-serif";
   });
 
   ctx.textAlign = "center";
   ctx.fillStyle = "#141414";
-  ctx.font = "30px Georgia, serif";
-  ctx.fillText(selectedSharePrompt ? sharePrompts[selectedSharePrompt] : "Which square are you spending this week on?", width / 2, height - 62);
+  ctx.font = "29px Georgia, serif";
+  ctx.fillText(readingPrompts[selectedReadingPrompt], width / 2, height - 62);
 
   return canvas;
 }
@@ -314,26 +998,109 @@ function drawExportImage() {
 function exportImage() {
   const canvas = drawExportImage();
   const link = document.createElement("a");
-  const suffix = selectedBirthday ? selectedBirthday : "blank";
-  link.download = `life-in-weeks-${suffix}.png`;
+  link.download = `${selectedProfile.id}-in-weeks.png`;
   link.href = canvas.toDataURL("image/png");
   link.click();
 }
 
+function populateProfiles() {
+  profileSelect.innerHTML = profiles
+    .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.name)}</option>`)
+    .join("");
+}
+
+function selectProfile(profileId: string) {
+  selectedProfile = profiles.find((profile) => profile.id === profileId) ?? profiles[0];
+  lifeEvents = [...selectedProfile.events];
+  nextEventId = lifeEvents.length + 1;
+  eventDateInput.value = "";
+  eventCopyInput.value = "";
+  setEventError("");
+  updateEventCount();
+  displayProfile();
+}
+
+function inferStageForEvent(dateValue: string) {
+  const date = parseLocalDate(dateValue);
+  if (!date) return selectedProfile.stages[0]?.id ?? "custom";
+  const stages = stagesForDate(selectedProfile, date);
+  return stages[stages.length - 1]?.id ?? selectedProfile.stages[0]?.id ?? "custom";
+}
+
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  if (!birthdayInput.value) return;
-  displayLife(birthdayInput.value);
+  selectProfile(profileSelect.value);
+});
+
+profileSelect.addEventListener("change", () => {
+  selectProfile(profileSelect.value);
 });
 
 exportButton.addEventListener("click", exportImage);
 
-shareButtons.forEach((button) => {
+readingButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const prompt = button.dataset.sharePrompt as keyof typeof sharePrompts;
-    setSharePrompt(prompt);
+    const prompt = button.dataset.readingPrompt as keyof typeof readingPrompts;
+    setReadingPrompt(prompt);
+    updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate));
   });
 });
 
-createGrid();
-createLegend();
+eventCopyInput.addEventListener("input", () => {
+  updateEventCount();
+  if (countCharacters(eventCopyInput.value) <= maxEventCharacters) {
+    setEventError("");
+  }
+});
+
+eventForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const message = eventCopyInput.value.trim();
+  const characterCount = countCharacters(message);
+  if (!eventDateInput.value) {
+    setEventError("Choose an event date.");
+    return;
+  }
+
+  if (!message) {
+    setEventError("Write the annotation text.");
+    return;
+  }
+
+  if (characterCount > maxEventCharacters) {
+    setEventError("Keep the annotation within 120 characters.");
+    return;
+  }
+
+  const position = calculateEventPosition(selectedProfile, eventDateInput.value);
+  if (!position) {
+    setEventError("Event date must fit between the profile birthday and 100th birthday.");
+    return;
+  }
+
+  lifeEvents = [
+    ...lifeEvents,
+    {
+      id: `event-${nextEventId}`,
+      date: eventDateInput.value,
+      stageId: inferStageForEvent(eventDateInput.value),
+      message
+    }
+  ];
+  nextEventId += 1;
+
+  eventDateInput.value = "";
+  eventCopyInput.value = "";
+  updateEventCount();
+  setEventError("Event pinned to the grid.", "success");
+  updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate));
+  renderLifeEvents();
+});
+
+window.addEventListener("resize", renderLifeEvents);
+
+populateProfiles();
+profileSelect.value = selectedProfile.id;
+setReadingPrompt("stages");
+selectProfile(selectedProfile.id);

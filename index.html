@@ -5,71 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Turn your birthday into a 100-year, 52-square life grid and export a shareable image."
+      content="Map a public life into weekly development stages, overlapping color bands, and pinned life events."
     />
     <base href="/life/" />
-    <meta property="og:title" content="Life in Weeks" />
-    <meta property="og:description" content="See a 100-year life in one quiet birthday-year grid." />
+    <meta property="og:title" content="Profile in Weeks" />
+    <meta property="og:description" content="See a person's public life as stages, overlaps, and events on a 100-year week grid." />
     <meta property="og:type" content="website" />
     <link rel="stylesheet" href="/life/life.css" />
-    <title>Life in Weeks</title>
+    <title>Profile in Weeks</title>
   </head>
   <body>
     <main class="page-shell">
       <section class="life-panel" aria-labelledby="page-title">
         <header class="hero">
-          <p class="eyebrow">KISKIR / life in weeks</p>
-          <h1 id="page-title">Your life, one week at a time.</h1>
-          <p class="subtitle">
-            A 5,200-square map of a 100-year life. Enter your birthday and watch your lived years light up from the top.
+          <p class="eyebrow">KISKIR / profile in weeks</p>
+          <h1 id="page-title" data-profile-title>Sam Altman, one week at a time.</h1>
+          <p class="subtitle" data-profile-subtitle>
+            A 5,200-square biography container: stages are colored from public date ranges, overlapping work is split
+            inside each week, and major events are pinned onto the grid.
           </p>
         </header>
 
-        <form class="controls" data-life-form>
-          <label class="date-field">
-            <span>Birthday</span>
-            <input data-birthday type="date" required />
+        <form class="controls" data-profile-form>
+          <label class="select-field">
+            <span>Profile</span>
+            <select data-profile-select aria-label="Choose a profile"></select>
           </label>
-          <button class="primary-action" type="submit">Display Life in Weeks</button>
+          <button class="primary-action" type="submit">Render Profile</button>
           <button class="secondary-action" data-export type="button">Export Image</button>
         </form>
 
         <div class="insight-strip" aria-live="polite">
-          <span data-life-stats>Pick a birthday to reveal the weeks already lived.</span>
-          <span data-share-line>Send it to someone whose time you do not want to waste.</span>
+          <span data-life-stats>Loading profile.</span>
+          <span data-share-line>Stage recognition, behavior analysis, and event tracking share one grid.</span>
         </div>
 
-        <section class="share-wedge" aria-labelledby="share-title">
+        <section class="profile-summary" aria-label="Profile reading summary">
+          <article>
+            <p>Stage recognition</p>
+            <strong data-stage-metric>0 stages</strong>
+            <span>Each color maps to a named development stage.</span>
+          </article>
+          <article>
+            <p>Behavior analysis</p>
+            <strong data-behavior-metric>No active public stage</strong>
+            <span>Stage notes describe the dominant work pattern.</span>
+          </article>
+          <article>
+            <p>Event tracking</p>
+            <strong data-event-metric>0 events pinned</strong>
+            <span>Life events sit directly on their week squares.</span>
+          </article>
+        </section>
+
+        <section class="share-wedge" aria-labelledby="reading-title">
           <div>
-            <p class="chart-kicker">Share prompt</p>
-            <h2 id="share-title">Who do you want more weeks with?</h2>
+            <p class="chart-kicker">Reading lens</p>
+            <h2 id="reading-title">What should the grid explain?</h2>
           </div>
-          <div class="share-options" role="group" aria-label="Choose a share prompt">
-            <button type="button" data-share-prompt="parents">Parents</button>
-            <button type="button" data-share-prompt="partner">Partner</button>
-            <button type="button" data-share-prompt="friend">Old Friend</button>
+          <div class="share-options" role="group" aria-label="Choose a reading lens">
+            <button type="button" data-reading-prompt="stages">Stages</button>
+            <button type="button" data-reading-prompt="behavior">Behavior</button>
+            <button type="button" data-reading-prompt="events">Events</button>
           </div>
         </section>
 
-        <section class="chart-card" data-export-card aria-label="Life in weeks grid">
+        <form class="event-composer" data-event-form aria-labelledby="event-title">
+          <div class="event-composer__intro">
+            <p class="chart-kicker">Life events</p>
+            <h2 id="event-title">Pin another event to the profile.</h2>
+          </div>
+          <div class="event-controls">
+            <label class="date-field event-date-field">
+              <span>Event date</span>
+              <input data-event-date type="date" required />
+            </label>
+            <label class="event-copy-field">
+              <span>Annotation</span>
+              <textarea data-event-copy maxlength="120" rows="2" placeholder="Brief note (120 chars max)" required></textarea>
+            </label>
+            <button class="secondary-action" type="submit">Add Event</button>
+          </div>
+          <div class="event-feedback">
+            <span data-event-count>0 / 120</span>
+            <span data-event-error role="status" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <section class="chart-card" data-export-card aria-label="Profile in weeks grid">
           <div class="chart-heading">
             <div>
               <p class="chart-kicker">Each row is one birthday year</p>
-              <h2 data-export-title>Life in Weeks</h2>
+              <h2 data-export-title>Profile in Weeks</h2>
             </div>
-            <p data-export-summary>5,200 squares = 100 birthday years. Filled squares use age-season color.</p>
+            <p data-export-summary>5,200 squares = 100 birthday years. Overlapping stages split the square.</p>
           </div>
 
-          <div class="grid-wrap">
-            <div class="age-axis" aria-hidden="true" data-age-axis></div>
-            <div class="life-grid" data-life-grid aria-label="100 rows by 52 columns life calendar"></div>
+          <div class="annotation-stage" data-annotation-stage>
+            <div class="grid-wrap" data-grid-wrap>
+              <div class="age-axis" aria-hidden="true" data-age-axis></div>
+              <div class="life-grid" data-life-grid aria-label="100 rows by 52 columns profile calendar"></div>
+            </div>
+            <svg class="event-lines" data-event-lines aria-hidden="true"></svg>
+            <div class="event-notes" data-event-notes aria-live="polite"></div>
           </div>
 
           <div class="legend" data-legend></div>
+          <p class="source-note" data-source-note></p>
         </section>
 
         <p class="viral-note">
-          <span data-viral-note>The best share prompt is not “look how old I am.” It is “which square are you spending this week on?”</span>
+          <span data-viral-note>Stage recognition, behavior analysis, and event tracking share one grid.</span>
         </p>
       </section>
     </main>
