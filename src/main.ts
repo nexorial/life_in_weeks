@@ -21,6 +21,7 @@ type PersonProfile = {
   id: string;
   name: string;
   birthDate: string;
+  deathDate?: string;
   headline: string;
   subtitle: string;
   sourceNote: string;
@@ -227,6 +228,17 @@ const readingPrompts = {
   events: "Event tracking: pinned notes show the weeks where public events changed the trajectory."
 } as const;
 
+const generatedStagePalette = [
+  { color: "#ead1cc", filled: "#bd6658" },
+  { color: "#b8ddd9", filled: "#247f85" },
+  { color: "#edce8c", filled: "#b7791f" },
+  { color: "#c9c0df", filled: "#725ca0" },
+  { color: "#c4d8ad", filled: "#5f8b3d" },
+  { color: "#b7cbe8", filled: "#3f6fa9" },
+  { color: "#e5bbb2", filled: "#a44f43" },
+  { color: "#d9c7a7", filled: "#8e6b35" }
+];
+
 function requireElement<T extends Element>(selector: string) {
   const element = document.querySelector<T>(selector);
   if (!element) {
@@ -252,6 +264,12 @@ const stageMetric = requireElement<HTMLElement>("[data-stage-metric]");
 const behaviorMetric = requireElement<HTMLElement>("[data-behavior-metric]");
 const eventMetric = requireElement<HTMLElement>("[data-event-metric]");
 const sourceNote = requireElement<HTMLElement>("[data-source-note]");
+const aiNameInput = requireElement<HTMLInputElement>("[data-ai-name]");
+const aiPromptOutput = requireElement<HTMLTextAreaElement>("[data-ai-prompt]");
+const copyProfilePromptButton = requireElement<HTMLButtonElement>("[data-copy-profile-prompt]");
+const aiProfileJsonInput = requireElement<HTMLTextAreaElement>("[data-ai-profile-json]");
+const importProfileButton = requireElement<HTMLButtonElement>("[data-import-profile]");
+const aiProfileStatus = requireElement<HTMLElement>("[data-ai-profile-status]");
 const readingButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-reading-prompt]"));
 const eventForm = requireElement<HTMLFormElement>("[data-event-form]");
 const eventDateInput = requireElement<HTMLInputElement>("[data-event-date]");
@@ -300,8 +318,9 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-function getReferenceDate() {
-  return startOfLocalDay(new Date());
+function getReferenceDate(profile = selectedProfile) {
+  const deathDate = profile.deathDate ? parseLocalDate(profile.deathDate) : null;
+  return deathDate ? startOfLocalDay(deathDate) : startOfLocalDay(new Date());
 }
 
 function stageById(stageId: string) {
@@ -320,7 +339,7 @@ function stageOverlapsRange(stage: DevelopmentStage, rangeStart: Date, rangeEnd:
   return startOfLocalDay(stageStart).getTime() < rangeEnd.getTime() && stageEndDate(stage, referenceDate).getTime() > cappedRangeStart.getTime();
 }
 
-function stagesForWeek(profile: PersonProfile, age: number, week: number, referenceDate = getReferenceDate()) {
+function stagesForWeek(profile: PersonProfile, age: number, week: number, referenceDate = getReferenceDate(profile)) {
   const birthDate = parseLocalDate(profile.birthDate);
   if (!birthDate) return [];
   const birthdayYearStart = addYears(startOfLocalDay(birthDate), age);
@@ -330,7 +349,7 @@ function stagesForWeek(profile: PersonProfile, age: number, week: number, refere
   return profile.stages.filter((stage) => stageOverlapsRange(stage, weekStart, weekEnd, referenceDate));
 }
 
-function stagesForDate(profile: PersonProfile, date: Date, referenceDate = getReferenceDate()) {
+function stagesForDate(profile: PersonProfile, date: Date, referenceDate = getReferenceDate(profile)) {
   const day = startOfLocalDay(date);
   return profile.stages.filter((stage) => stageOverlapsRange(stage, day, addDays(day, 1), referenceDate));
 }
@@ -367,7 +386,7 @@ function stageRangeLabel(stage: DevelopmentStage) {
 function createGrid() {
   const cells: string[] = [];
   const labels: string[] = [];
-  const referenceDate = getReferenceDate();
+  const referenceDate = getReferenceDate(selectedProfile);
 
   for (let displayRow = 0; displayRow < years; displayRow += 1) {
     const age = displayRow;
@@ -512,6 +531,374 @@ function updateEventCount() {
 function setEventError(message: string, tone: "error" | "success" = "error") {
   eventError.textContent = message;
   eventError.classList.toggle("is-success", tone === "success");
+}
+
+function setProfileImportStatus(message: string, tone: "error" | "success" = "error") {
+  aiProfileStatus.textContent = message;
+  aiProfileStatus.classList.toggle("is-success", tone === "success");
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function textField(record: Record<string, unknown>, key: string, fallback = "") {
+  const value = record[key];
+  return typeof value === "string" ? value.trim() || fallback : fallback;
+}
+
+function firstTextField(record: Record<string, unknown>, keys: string[], fallback = "") {
+  for (const key of keys) {
+    const value = textField(record, key);
+    if (value) return value;
+  }
+  return fallback;
+}
+
+function clampText(value: string, maxCharacters: number) {
+  const characters = Array.from(value.trim());
+  if (characters.length <= maxCharacters) return value.trim();
+  return `${characters.slice(0, Math.max(0, maxCharacters - 3)).join("").trimEnd()}...`;
+}
+
+function isValidDateValue(value: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+
+  const date = parseLocalDate(value);
+  return (
+    date !== null &&
+    date.getFullYear() === Number(match[1]) &&
+    date.getMonth() === Number(match[2]) - 1 &&
+    date.getDate() === Number(match[3])
+  );
+}
+
+function requireDateValue(value: string, fieldName: string) {
+  if (!isValidDateValue(value)) {
+    throw new Error(`${fieldName} must be a valid YYYY-MM-DD date.`);
+  }
+  return value;
+}
+
+function normalizeHexColor(value: string, fallback: string) {
+  return /^#[0-9a-f]{6}$/i.test(value) ? value : fallback;
+}
+
+function slugFromText(value: string, fallback: string) {
+  const slug = value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+
+  return slug || fallback;
+}
+
+function uniqueId(baseId: string, existingIds: Set<string>) {
+  let candidate = baseId;
+  let suffix = 2;
+  while (existingIds.has(candidate)) {
+    candidate = `${baseId}-${suffix}`;
+    suffix += 1;
+  }
+  existingIds.add(candidate);
+  return candidate;
+}
+
+function profilePromptTarget() {
+  return aiNameInput.value.trim() || "[PERSON_NAME]";
+}
+
+function buildAiProfilePrompt(personName: string) {
+  const target = personName.trim() || "[PERSON_NAME]";
+
+  return [
+    `Research ${target} and return data for a local Life in Weeks profile.`,
+    "",
+    "Return only one JSON object. Do not wrap it in Markdown. Use public, high-confidence facts. Use YYYY-MM-DD for every machine date. If an exact day is unknown, use the best known midpoint date such as YYYY-07-01 and add dateLabel with the visible year or age. Omit deathDate if the person is living.",
+    "",
+    "Schema:",
+    "{",
+    `  "name": "${target}",`,
+    '  "birthDate": "YYYY-MM-DD",',
+    '  "deathDate": "YYYY-MM-DD",',
+    `  "headline": "${target}, one week at a time.",`,
+    '  "subtitle": "One sentence explaining the biography arc shown by stages, overlaps, and pinned events.",',
+    '  "sourceNote": "One short sentence naming the source families used, such as official biographies, institution pages, interviews, and reliable references.",',
+    '  "stages": [',
+    '    {',
+    '      "id": "early-life",',
+    '      "label": "Early life",',
+    '      "startDate": "YYYY-MM-DD",',
+    '      "endDate": "YYYY-MM-DD",',
+    '      "location": "Primary place or region",',
+    '      "behavior": "Dominant work pattern or identity in this period",',
+    '      "color": "#ead1cc",',
+    '      "filled": "#bd6658"',
+    '    }',
+    '  ],',
+    '  "events": [',
+    '    {',
+    '      "id": "born",',
+    '      "date": "YYYY-MM-DD",',
+    '      "dateLabel": "optional visible label",',
+    '      "stageId": "early-life",',
+    '      "message": "Short event note, 120 characters max"',
+    '    }',
+    '  ]',
+    "}",
+    "",
+    "Rules:",
+    "- Omit deathDate entirely for living people.",
+    "- Omit stage.endDate for the current stage of a living person or the final stage of a deceased person.",
+    "- Use 4 to 9 stages that cover the public life from birth to deathDate or today.",
+    "- Each event.stageId must match one stage id.",
+    "- Use 8 to 16 events, ordered chronologically, including birth and the most trajectory-changing moments.",
+    "- Keep event messages factual, concrete, and no longer than 120 characters.",
+    "- Colors may be omitted; if included, use 6-digit hex values."
+  ].join("\n");
+}
+
+function updateAiProfilePrompt() {
+  aiPromptOutput.value = buildAiProfilePrompt(profilePromptTarget());
+}
+
+function extractJsonPayload(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error("Paste the AI JSON response first.");
+  }
+
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = (fenced?.[1] ?? trimmed).trim();
+  try {
+    return JSON.parse(candidate);
+  } catch {
+    const start = candidate.indexOf("{");
+    const end = candidate.lastIndexOf("}");
+    if (start >= 0 && end > start) {
+      return JSON.parse(candidate.slice(start, end + 1));
+    }
+    throw new Error("The pasted response is not valid JSON.");
+  }
+}
+
+function normalizeImportedStages(value: unknown) {
+  if (!Array.isArray(value)) {
+    throw new Error("The profile needs a stages array.");
+  }
+
+  const usedIds = new Set<string>();
+  const stages = value.map((item, index) => {
+    if (!isRecord(item)) {
+      throw new Error(`stages[${index}] must be an object.`);
+    }
+
+    const palette = generatedStagePalette[index % generatedStagePalette.length];
+    const label = firstTextField(item, ["label", "name"], `Stage ${index + 1}`);
+    const id = uniqueId(slugFromText(firstTextField(item, ["id", "label", "name"], label), `stage-${index + 1}`), usedIds);
+    const startDate = requireDateValue(textField(item, "startDate"), `stages[${index}].startDate`);
+    const endDateText = textField(item, "endDate");
+    const endDate = endDateText ? requireDateValue(endDateText, `stages[${index}].endDate`) : undefined;
+
+    if (endDate) {
+      const start = parseLocalDate(startDate);
+      const end = parseLocalDate(endDate);
+      if (start && end && end.getTime() < start.getTime()) {
+        throw new Error(`stages[${index}].endDate must be after startDate.`);
+      }
+    }
+
+    return {
+      id,
+      label: clampText(label, 42),
+      startDate,
+      endDate,
+      color: normalizeHexColor(textField(item, "color"), palette.color),
+      filled: normalizeHexColor(textField(item, "filled"), palette.filled),
+      location: clampText(firstTextField(item, ["location", "place"], "Location unknown"), 72),
+      behavior: clampText(firstTextField(item, ["behavior", "pattern", "description"], "Public life stage"), 96)
+    };
+  });
+
+  if (!stages.length) {
+    throw new Error("Add at least one stage.");
+  }
+
+  return stages;
+}
+
+function stageIdForImportedEvent(stages: DevelopmentStage[], eventDateValue: string) {
+  const eventDate = parseLocalDate(eventDateValue);
+  if (!eventDate) return stages[0]?.id ?? "stage-1";
+
+  const eventTime = startOfLocalDay(eventDate).getTime();
+  let matchedStage: DevelopmentStage | undefined;
+  stages.forEach((stage) => {
+    const start = parseLocalDate(stage.startDate);
+    const end = stage.endDate ? parseLocalDate(stage.endDate) : null;
+    if (!start) return;
+    const startTime = startOfLocalDay(start).getTime();
+    const endTime = end ? addDays(startOfLocalDay(end), 1).getTime() : Number.POSITIVE_INFINITY;
+    if (startTime <= eventTime && eventTime < endTime) {
+      matchedStage = stage;
+    }
+  });
+
+  return matchedStage?.id ?? stages[0]?.id ?? "stage-1";
+}
+
+function normalizeImportedEvents(value: unknown, stages: DevelopmentStage[], birthDate: string, deathDate?: string) {
+  if (!Array.isArray(value)) {
+    throw new Error("The profile needs an events array.");
+  }
+
+  const birth = parseLocalDate(birthDate);
+  const death = deathDate ? parseLocalDate(deathDate) : null;
+  if (!birth) throw new Error("birthDate is invalid.");
+
+  const hundredthBirthday = addYears(startOfLocalDay(birth), years);
+  const stageIds = new Set(stages.map((stage) => stage.id));
+  const usedIds = new Set<string>();
+
+  const events = value.map((item, index) => {
+    if (!isRecord(item)) {
+      throw new Error(`events[${index}] must be an object.`);
+    }
+
+    const date = requireDateValue(textField(item, "date"), `events[${index}].date`);
+    const parsedDate = parseLocalDate(date);
+    if (!parsedDate) {
+      throw new Error(`events[${index}].date is invalid.`);
+    }
+
+    const eventTime = startOfLocalDay(parsedDate).getTime();
+    if (eventTime < startOfLocalDay(birth).getTime() || eventTime >= hundredthBirthday.getTime()) {
+      throw new Error(`events[${index}].date must fit between birth and the 100th birthday.`);
+    }
+
+    if (death && eventTime > startOfLocalDay(death).getTime()) {
+      throw new Error(`events[${index}].date is after deathDate.`);
+    }
+
+    const message = firstTextField(item, ["message", "description", "summary", "label"]);
+    if (!message) {
+      throw new Error(`events[${index}].message is required.`);
+    }
+
+    const requestedStageId = slugFromText(textField(item, "stageId"), "");
+    const stageId = requestedStageId && stageIds.has(requestedStageId) ? requestedStageId : stageIdForImportedEvent(stages, date);
+    const id = uniqueId(slugFromText(firstTextField(item, ["id", "message"], message), `event-${index + 1}`), usedIds);
+    const dateLabel = textField(item, "dateLabel");
+
+    return {
+      id,
+      date,
+      ...(dateLabel ? { dateLabel: clampText(dateLabel, 24) } : {}),
+      stageId,
+      message: clampText(message, maxEventCharacters)
+    };
+  });
+
+  if (!events.length) {
+    throw new Error("Add at least one event.");
+  }
+
+  return events.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function normalizeImportedProfile(value: unknown): PersonProfile {
+  if (!isRecord(value)) {
+    throw new Error("The pasted data must be one JSON object.");
+  }
+
+  const name = firstTextField(value, ["name", "personName"]);
+  if (!name) {
+    throw new Error("The profile name is required.");
+  }
+
+  const birthDate = requireDateValue(textField(value, "birthDate"), "birthDate");
+  const deathDateText = textField(value, "deathDate");
+  const deathDate = deathDateText ? requireDateValue(deathDateText, "deathDate") : undefined;
+  if (deathDate) {
+    const birth = parseLocalDate(birthDate);
+    const death = parseLocalDate(deathDate);
+    if (birth && death && death.getTime() < birth.getTime()) {
+      throw new Error("deathDate must be after birthDate.");
+    }
+  }
+
+  const stages = normalizeImportedStages(value.stages);
+  const events = normalizeImportedEvents(value.events, stages, birthDate, deathDate);
+  const safeName = clampText(name, 64);
+
+  return {
+    id: slugFromText(firstTextField(value, ["id", "name"], safeName), "imported-profile"),
+    name: safeName,
+    birthDate,
+    deathDate,
+    headline: clampText(textField(value, "headline", `${safeName}, one week at a time.`), 96),
+    subtitle: clampText(
+      textField(
+        value,
+        "subtitle",
+        "A 5,200-square biography container built from pasted stages, events, and public date ranges."
+      ),
+      220
+    ),
+    sourceNote: clampText(
+      textField(value, "sourceNote", "Generated from pasted JSON. Verify dates before sharing."),
+      220
+    ),
+    stages,
+    events
+  };
+}
+
+function addImportedProfile(profile: PersonProfile) {
+  const existingIds = new Set(profiles.map((item) => item.id));
+  const importedProfile = {
+    ...profile,
+    id: uniqueId(profile.id, existingIds)
+  };
+
+  profiles.push(importedProfile);
+  populateProfiles();
+  profileSelect.value = importedProfile.id;
+  selectProfile(importedProfile.id);
+  setProfileImportStatus(`${importedProfile.name} rendered from pasted JSON.`, "success");
+}
+
+function fallbackCopyAiPrompt() {
+  aiPromptOutput.focus();
+  aiPromptOutput.select();
+  const copied = document.execCommand("copy");
+  setProfileImportStatus(copied ? "Prompt copied." : "Prompt selected for copying.", "success");
+}
+
+function copyAiPrompt() {
+  updateAiProfilePrompt();
+  if (!navigator.clipboard) {
+    fallbackCopyAiPrompt();
+    return;
+  }
+
+  navigator.clipboard
+    .writeText(aiPromptOutput.value)
+    .then(() => setProfileImportStatus("Prompt copied.", "success"))
+    .catch(fallbackCopyAiPrompt);
+}
+
+function importProfileFromAiResponse() {
+  try {
+    const payload = extractJsonPayload(aiProfileJsonInput.value);
+    addImportedProfile(normalizeImportedProfile(payload));
+  } catch (error) {
+    setProfileImportStatus(error instanceof Error ? error.message : "Could not import this profile.");
+  }
 }
 
 function updateCellState(filledWeeks: number) {
@@ -748,17 +1135,25 @@ function countOverlappedWeeks(filledWeeks: number) {
 function updateCopy(age: LifeAge) {
   const remaining = Math.max(0, totalWeeks - age.filledCells);
   const percent = Math.min(100, (age.filledCells / totalWeeks) * 100);
-  const activeNow = stagesForDate(selectedProfile, getReferenceDate()).map((stage) => stage.label);
+  const referenceDate = getReferenceDate(selectedProfile);
+  const activeNow = stagesForDate(selectedProfile, referenceDate).map((stage) => stage.label);
   const overlapCount = countOverlappedWeeks(age.filledCells);
+  const dateRange = selectedProfile.deathDate
+    ? `${formatProfileDate(selectedProfile.birthDate)} - ${formatProfileDate(selectedProfile.deathDate)}`
+    : `born ${formatProfileDate(selectedProfile.birthDate)}`;
+  const ageLabel = selectedProfile.deathDate ? "lifespan" : "age";
+  const activeStageLabel = selectedProfile.deathDate ? "Final" : "Now";
 
   profileTitle.textContent = selectedProfile.headline;
   profileSubtitle.textContent = selectedProfile.subtitle;
-  stats.textContent = `${selectedProfile.name} / born ${formatProfileDate(selectedProfile.birthDate)} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / age ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
+  stats.textContent = `${selectedProfile.name} / ${dateRange} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / ${ageLabel} ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
   shareLine.textContent = readingPrompts[selectedReadingPrompt];
   exportTitle.textContent = `${selectedProfile.name} in Weeks`;
   exportSummary.textContent = `${selectedProfile.stages.length} stages / ${lifeEvents.length} pinned events / ${overlapCount.toLocaleString()} lived weeks contain overlapping stages / ${percent.toFixed(1)}% of the 100-year grid filled.`;
   stageMetric.textContent = `${selectedProfile.stages.length} stages`;
-  behaviorMetric.textContent = activeNow.length ? `Now: ${activeNow.join(" + ")}` : "No active public stage";
+  behaviorMetric.textContent = activeNow.length
+    ? `${activeStageLabel}: ${activeNow.join(" + ")}`
+    : "No active public stage";
   eventMetric.textContent = `${lifeEvents.length} events pinned`;
   viralNote.textContent = readingPrompts[selectedReadingPrompt];
   sourceNote.textContent = selectedProfile.sourceNote;
@@ -775,7 +1170,7 @@ function setReadingPrompt(prompt: keyof typeof readingPrompts) {
 }
 
 function displayProfile() {
-  const lifeAge = calculateLifeAge(selectedProfile.birthDate);
+  const lifeAge = calculateLifeAge(selectedProfile.birthDate, getReferenceDate(selectedProfile));
   selectedLifeAge = lifeAge;
   selectedWeeks = lifeAge.filledCells;
   createGrid();
@@ -874,7 +1269,7 @@ function drawExportImage() {
   ctx.fillStyle = "#73706A";
   ctx.font = "26px Avenir Next, Avenir, Gill Sans, sans-serif";
   const summary = selectedLifeAge
-    ? `${formatProfileDate(selectedProfile.birthDate)} / age ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} events`
+    ? `${formatProfileDate(selectedProfile.birthDate)}${selectedProfile.deathDate ? ` - ${formatProfileDate(selectedProfile.deathDate)}` : ""} / ${selectedProfile.deathDate ? "lifespan" : "age"} ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} events`
     : "5,200 squares = 100 birthday years.";
   ctx.fillText(summary, width / 2, 164);
 
@@ -886,7 +1281,7 @@ function drawExportImage() {
   const gridWidth = weeksPerYear * cell + (weeksPerYear - 1) * gap;
   const gridHeight = years * cell + (years - 1) * gap;
   const gridLeft = left + axisGap;
-  const referenceDate = getReferenceDate();
+  const referenceDate = getReferenceDate(selectedProfile);
 
   ctx.textAlign = "right";
   ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
@@ -1038,11 +1433,19 @@ profileSelect.addEventListener("change", () => {
 
 exportButton.addEventListener("click", exportImage);
 
+aiNameInput.addEventListener("input", () => {
+  updateAiProfilePrompt();
+  setProfileImportStatus("");
+});
+
+copyProfilePromptButton.addEventListener("click", copyAiPrompt);
+importProfileButton.addEventListener("click", importProfileFromAiResponse);
+
 readingButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const prompt = button.dataset.readingPrompt as keyof typeof readingPrompts;
     setReadingPrompt(prompt);
-    updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate));
+    updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate, getReferenceDate(selectedProfile)));
   });
 });
 
@@ -1094,13 +1497,14 @@ eventForm.addEventListener("submit", (event) => {
   eventCopyInput.value = "";
   updateEventCount();
   setEventError("Event pinned to the grid.", "success");
-  updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate));
+  updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate, getReferenceDate(selectedProfile)));
   renderLifeEvents();
 });
 
 window.addEventListener("resize", renderLifeEvents);
 
 populateProfiles();
+updateAiProfilePrompt();
 profileSelect.value = selectedProfile.id;
 setReadingPrompt("stages");
 selectProfile(selectedProfile.id);

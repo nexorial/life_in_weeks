@@ -58,6 +58,37 @@
           </article>
         </section>
 
+        <section class="ai-builder" aria-labelledby="ai-builder-title">
+          <div class="ai-builder__intro">
+            <p class="chart-kicker">AI profile builder</p>
+            <h2 id="ai-builder-title">Convert any public life into profile data.</h2>
+          </div>
+
+          <div class="ai-builder__controls">
+            <label class="ai-name-field">
+              <span>Person name</span>
+              <input data-ai-name type="text" placeholder="Ada Lovelace" autocomplete="off" />
+            </label>
+            <button class="secondary-action" data-copy-profile-prompt type="button">Copy Prompt</button>
+          </div>
+
+          <div class="ai-builder__textareas">
+            <label class="ai-textarea-field">
+              <span>Prompt to give your AI</span>
+              <textarea data-ai-prompt rows="8" readonly></textarea>
+            </label>
+            <label class="ai-textarea-field ai-textarea-field--large">
+              <span>Paste AI JSON response</span>
+              <textarea data-ai-profile-json rows="10" placeholder="Paste one JSON object here"></textarea>
+            </label>
+          </div>
+
+          <div class="ai-builder__footer">
+            <span data-ai-profile-status role="status" aria-live="polite"></span>
+            <button class="primary-action" data-import-profile type="button">Render Pasted Profile</button>
+          </div>
+        </section>
+
         <section class="share-wedge" aria-labelledby="reading-title">
           <div>
             <p class="chart-kicker">Reading lens</p>
