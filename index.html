@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Map a public life into weekly development stages, overlapping color bands, and pinned life events."
+      content="Map a personal birthday or a public figure profile into weekly life stages and pinned life events."
     />
     <base href="/life/" />
-    <meta property="og:title" content="Profile in Weeks" />
-    <meta property="og:description" content="See a person's public life as stages, overlaps, and events on a 100-year week grid." />
+    <meta property="og:title" content="Life in Weeks" />
+    <meta property="og:description" content="See a personal timeline or public profile as stages, overlaps, and events on a 100-year week grid." />
     <meta property="og:type" content="website" />
     <link rel="stylesheet" href="/life/life.css" />
-    <title>Profile in Weeks</title>
+    <title>Life in Weeks</title>
   </head>
   <body>
     <main class="page-shell">
-      <section class="life-panel" aria-labelledby="page-title">
+      <section class="life-panel" aria-labelledby="page-title" data-app-shell>
         <header class="hero">
-          <p class="eyebrow">KISKIR / profile in weeks</p>
+          <p class="eyebrow" data-page-eyebrow>KISKIR / life in weeks</p>
           <h1 id="page-title" data-profile-title>Sam Altman, one week at a time.</h1>
           <p class="subtitle" data-profile-subtitle>
             A 5,200-square biography container: stages are colored from public date ranges, overlapping work is split
@@ -26,14 +26,91 @@
           </p>
         </header>
 
-        <form class="controls" data-profile-form>
-          <label class="select-field">
-            <span>Profile</span>
-            <select data-profile-select aria-label="Choose a profile"></select>
-          </label>
-          <button class="primary-action" type="submit">Render Profile</button>
-          <button class="secondary-action" data-export type="button">Export Image</button>
-        </form>
+        <nav class="mode-selector" aria-label="Choose Life in Weeks mode">
+          <button class="mode-choice" type="button" data-mode-option="personal" aria-pressed="true">
+            <span>Personal Timeline</span>
+            <small>Birthday + private events</small>
+          </button>
+          <button class="mode-choice" type="button" data-mode-option="profile" aria-pressed="false">
+            <span>Public Figure Profile</span>
+            <small>Public stages + sourced events</small>
+          </button>
+        </nav>
+
+        <section class="mode-panel personal-panel" data-mode-panel="personal" aria-labelledby="personal-mode-title">
+          <div class="mode-panel__intro">
+            <p class="chart-kicker">Personal Timeline</p>
+            <h2 id="personal-mode-title">Start with one date.</h2>
+          </div>
+          <form class="personal-controls" data-personal-form>
+            <label class="date-field">
+              <span>Birthday</span>
+              <input data-personal-birthdate type="date" required />
+            </label>
+            <button class="primary-action" type="submit">Render Timeline</button>
+            <button class="secondary-action" data-export type="button">Export Image</button>
+          </form>
+          <span class="mode-status" data-personal-status role="status" aria-live="polite"></span>
+        </section>
+
+        <section class="mode-panel profile-panel" data-mode-panel="profile" aria-labelledby="profile-mode-title" hidden>
+          <div class="mode-panel__intro">
+            <p class="chart-kicker">Public Figure Profile</p>
+            <h2 id="profile-mode-title">Build from public stages and events.</h2>
+          </div>
+
+          <form class="controls" data-profile-form>
+            <label class="select-field">
+              <span>Profile</span>
+              <select data-profile-select aria-label="Choose a profile"></select>
+            </label>
+            <button class="primary-action" type="submit">Render Profile</button>
+            <button class="secondary-action" data-export type="button">Export Image</button>
+          </form>
+
+          <section class="ai-builder" aria-labelledby="ai-builder-title">
+            <div class="ai-builder__intro">
+              <p class="chart-kicker">AI profile builder</p>
+              <h2 id="ai-builder-title">Convert any public life into profile data.</h2>
+            </div>
+
+            <div class="ai-builder__controls">
+              <label class="ai-name-field">
+                <span>Person name</span>
+                <input data-ai-name type="text" placeholder="Ada Lovelace" autocomplete="off" />
+              </label>
+              <button class="secondary-action" data-copy-profile-prompt type="button">Copy Prompt</button>
+            </div>
+
+            <div class="ai-builder__textareas">
+              <label class="ai-textarea-field">
+                <span>Prompt to give your AI</span>
+                <textarea data-ai-prompt rows="8" readonly></textarea>
+              </label>
+              <label class="ai-textarea-field ai-textarea-field--large">
+                <span>Paste AI JSON response</span>
+                <textarea data-ai-profile-json rows="10" placeholder="Paste one JSON object here"></textarea>
+              </label>
+            </div>
+
+            <div class="ai-builder__footer">
+              <span data-ai-profile-status role="status" aria-live="polite"></span>
+              <button class="primary-action" data-import-profile type="button">Render Pasted Profile</button>
+            </div>
+          </section>
+
+          <section class="share-wedge" aria-labelledby="reading-title">
+            <div>
+              <p class="chart-kicker">Reading lens</p>
+              <h2 id="reading-title">What should the public grid explain?</h2>
+            </div>
+            <div class="share-options" role="group" aria-label="Choose a reading lens">
+              <button type="button" data-reading-prompt="stages">Stages</button>
+              <button type="button" data-reading-prompt="behavior">Behavior</button>
+              <button type="button" data-reading-prompt="events">Events</button>
+            </div>
+          </section>
+        </section>
 
         <div class="insight-strip" aria-live="polite">
           <span data-life-stats>Loading profile.</span>
@@ -42,80 +119,37 @@
 
         <section class="profile-summary" aria-label="Profile reading summary">
           <article>
-            <p>Stage recognition</p>
+            <p data-stage-card-label>Stage recognition</p>
             <strong data-stage-metric>0 stages</strong>
-            <span>Each color maps to a named development stage.</span>
+            <span data-stage-card-copy>Each color maps to a named development stage.</span>
           </article>
           <article>
-            <p>Behavior analysis</p>
+            <p data-behavior-card-label>Behavior analysis</p>
             <strong data-behavior-metric>No active public stage</strong>
-            <span>Stage notes describe the dominant work pattern.</span>
+            <span data-behavior-card-copy>Stage notes describe the dominant work pattern.</span>
           </article>
           <article>
-            <p>Event tracking</p>
+            <p data-event-card-label>Event tracking</p>
             <strong data-event-metric>0 events pinned</strong>
-            <span>Life events sit directly on their week squares.</span>
+            <span data-event-card-copy>Life events sit directly on their week squares.</span>
           </article>
-        </section>
-
-        <section class="ai-builder" aria-labelledby="ai-builder-title">
-          <div class="ai-builder__intro">
-            <p class="chart-kicker">AI profile builder</p>
-            <h2 id="ai-builder-title">Convert any public life into profile data.</h2>
-          </div>
-
-          <div class="ai-builder__controls">
-            <label class="ai-name-field">
-              <span>Person name</span>
-              <input data-ai-name type="text" placeholder="Ada Lovelace" autocomplete="off" />
-            </label>
-            <button class="secondary-action" data-copy-profile-prompt type="button">Copy Prompt</button>
-          </div>
-
-          <div class="ai-builder__textareas">
-            <label class="ai-textarea-field">
-              <span>Prompt to give your AI</span>
-              <textarea data-ai-prompt rows="8" readonly></textarea>
-            </label>
-            <label class="ai-textarea-field ai-textarea-field--large">
-              <span>Paste AI JSON response</span>
-              <textarea data-ai-profile-json rows="10" placeholder="Paste one JSON object here"></textarea>
-            </label>
-          </div>
-
-          <div class="ai-builder__footer">
-            <span data-ai-profile-status role="status" aria-live="polite"></span>
-            <button class="primary-action" data-import-profile type="button">Render Pasted Profile</button>
-          </div>
-        </section>
-
-        <section class="share-wedge" aria-labelledby="reading-title">
-          <div>
-            <p class="chart-kicker">Reading lens</p>
-            <h2 id="reading-title">What should the grid explain?</h2>
-          </div>
-          <div class="share-options" role="group" aria-label="Choose a reading lens">
-            <button type="button" data-reading-prompt="stages">Stages</button>
-            <button type="button" data-reading-prompt="behavior">Behavior</button>
-            <button type="button" data-reading-prompt="events">Events</button>
-          </div>
         </section>
 
         <form class="event-composer" data-event-form aria-labelledby="event-title">
           <div class="event-composer__intro">
-            <p class="chart-kicker">Life events</p>
-            <h2 id="event-title">Pin another event to the profile.</h2>
+            <p class="chart-kicker" data-event-kicker>Life events</p>
+            <h2 id="event-title" data-event-title>Pin another event to the profile.</h2>
           </div>
           <div class="event-controls">
             <label class="date-field event-date-field">
-              <span>Event date</span>
+              <span data-event-date-label>Event date</span>
               <input data-event-date type="date" required />
             </label>
             <label class="event-copy-field">
-              <span>Annotation</span>
+              <span data-event-copy-label>Annotation</span>
               <textarea data-event-copy maxlength="120" rows="2" placeholder="Brief note (120 chars max)" required></textarea>
             </label>
-            <button class="secondary-action" type="submit">Add Event</button>
+            <button class="secondary-action" data-event-submit type="submit">Add Event</button>
           </div>
           <div class="event-feedback">
             <span data-event-count>0 / 120</span>
@@ -126,7 +160,7 @@
         <section class="chart-card" data-export-card aria-label="Profile in weeks grid">
           <div class="chart-heading">
             <div>
-              <p class="chart-kicker">Each row is one birthday year</p>
+              <p class="chart-kicker">Each row is one birthday year / each cell is one week</p>
               <h2 data-export-title>Profile in Weeks</h2>
             </div>
             <p data-export-summary>5,200 squares = 100 birthday years. Overlapping stages split the square.</p>
