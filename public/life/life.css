@@ -148,12 +148,14 @@ h1 {
 
 .share-wedge {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px 24px;
+  gap: 8px;
   width: min(100%, 820px);
   margin: 0 auto;
   padding: 14px 0 2px;
+  text-align: center;
 }
 
 .share-wedge h2 {
@@ -163,7 +165,7 @@ h1 {
 
 .share-options {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
 }
 
@@ -190,13 +192,12 @@ h1 {
 }
 
 .chart-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
+  display: grid;
+  gap: 10px;
   width: max-content;
   min-width: 1228px;
   margin: 0 auto 20px;
+  text-align: left;
 }
 
 .chart-heading h2 {
@@ -243,7 +244,7 @@ h1 {
   border: 0;
   border-radius: 2px;
   padding: 0;
-  background: var(--stage);
+  background: #d8d4cc;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
 }
 
@@ -322,8 +323,12 @@ h1 {
 
   .share-wedge {
     align-items: stretch;
-    flex-direction: column;
     width: min(100%, 360px);
+    text-align: left;
+  }
+
+  .share-options {
+    flex-wrap: wrap;
   }
 
   .share-options button {

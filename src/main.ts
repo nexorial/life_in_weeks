@@ -22,6 +22,16 @@ const weeksPerYear = 52;
 const years = 100;
 const totalWeeks = weeksPerYear * years;
 const animationChunkSize = 44;
+const msPerDay = 24 * 60 * 60 * 1000;
+
+type LifeAge = {
+  fullYears: number;
+  fullWeeksThisYear: number;
+  remainingDaysThisYear: number;
+  currentWeekCell: number;
+  filledCells: number;
+  elapsedWeeks: number;
+};
 const sharePrompts = {
   parents: "I just saw my life in weeks. It made me want to call you.",
   partner: "This is my life in weeks. I want more of these with you.",
@@ -51,6 +61,7 @@ const shareButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[d
 
 let selectedWeeks = 0;
 let selectedBirthday = "";
+let selectedLifeAge: LifeAge | null = null;
 let animationFrame = 0;
 let selectedSharePrompt: keyof typeof sharePrompts | null = null;
 
@@ -63,7 +74,7 @@ function createGrid() {
   const labels: string[] = [];
 
   for (let displayRow = 0; displayRow < years; displayRow += 1) {
-    const age = years - 1 - displayRow;
+    const age = displayRow;
     labels.push(`<span>${age}</span>`);
 
     for (let week = 0; week < weeksPerYear; week += 1) {
@@ -93,15 +104,65 @@ function createLegend() {
     .join("");
 }
 
-function calculateWeeksSinceBirth(value: string) {
+function startOfLocalDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function parseLocalDate(value: string) {
   const birthday = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(birthday.getTime())) return 0;
+  return Number.isNaN(birthday.getTime()) ? null : birthday;
+}
 
-  const now = new Date();
-  const diff = now.getTime() - birthday.getTime();
-  if (diff <= 0) return 0;
+function calculateLifeAge(value: string, referenceDate = new Date()): LifeAge {
+  const birthday = parseLocalDate(value);
+  if (!birthday) {
+    return {
+      fullYears: 0,
+      fullWeeksThisYear: 0,
+      remainingDaysThisYear: 0,
+      currentWeekCell: 0,
+      filledCells: 0,
+      elapsedWeeks: 0
+    };
+  }
 
-  return Math.min(totalWeeks, Math.floor(diff / (7 * 24 * 60 * 60 * 1000)));
+  const today = startOfLocalDay(referenceDate);
+  const birthDate = startOfLocalDay(birthday);
+  const elapsedDaysSinceBirth = Math.floor((today.getTime() - birthDate.getTime()) / msPerDay);
+  if (elapsedDaysSinceBirth < 0) {
+    return {
+      fullYears: 0,
+      fullWeeksThisYear: 0,
+      remainingDaysThisYear: 0,
+      currentWeekCell: 0,
+      filledCells: 0,
+      elapsedWeeks: 0
+    };
+  }
+
+  let fullYears = today.getFullYear() - birthDate.getFullYear();
+  const birthdayThisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+  if (birthdayThisYear.getTime() > today.getTime()) {
+    fullYears -= 1;
+  }
+
+  const lastBirthday = new Date(birthDate.getFullYear() + fullYears, birthDate.getMonth(), birthDate.getDate());
+  const daysThisYear = Math.floor((today.getTime() - lastBirthday.getTime()) / msPerDay);
+  const fullWeeksThisYear = Math.floor(daysThisYear / 7);
+  const remainingDaysThisYear = daysThisYear % 7;
+  const currentWeekCell = Math.min(
+    weeksPerYear,
+    fullWeeksThisYear + (remainingDaysThisYear > 0 || daysThisYear === 0 ? 1 : 0)
+  );
+
+  return {
+    fullYears,
+    fullWeeksThisYear,
+    remainingDaysThisYear,
+    currentWeekCell,
+    filledCells: Math.min(totalWeeks, fullYears * weeksPerYear + currentWeekCell),
+    elapsedWeeks: Math.min(totalWeeks, Math.floor(elapsedDaysSinceBirth / 7))
+  };
 }
 
 function updateCellState(filledWeeks: number) {
@@ -132,16 +193,18 @@ function formatBirthday(value: string) {
   return new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(date);
 }
 
-function updateCopy(weeks: number, birthday: string) {
-  const ageYears = Math.floor(weeks / weeksPerYear);
-  const weekInYear = weeks % weeksPerYear;
-  const remaining = Math.max(0, totalWeeks - weeks);
-  const percent = Math.min(100, (weeks / totalWeeks) * 100);
+function formatAgeDetail(age: LifeAge) {
+  return `${age.fullYears} years, ${age.fullWeeksThisYear} weeks, ${age.remainingDaysThisYear} days`;
+}
 
-  stats.textContent = `${formatBirthday(birthday)} · week ${weeks.toLocaleString()} lived · age ${ageYears}, week ${weekInYear + 1} · ${remaining.toLocaleString()} weeks before 100.`;
+function updateCopy(age: LifeAge, birthday: string) {
+  const remaining = Math.max(0, totalWeeks - age.filledCells);
+  const percent = Math.min(100, (age.filledCells / totalWeeks) * 100);
+
+  stats.textContent = `${formatBirthday(birthday)} · ${age.elapsedWeeks.toLocaleString()} elapsed weeks · age ${formatAgeDetail(age)} · current square week ${age.currentWeekCell} · ${remaining.toLocaleString()} squares before 100.`;
   shareLine.textContent = selectedSharePrompt ? sharePrompts[selectedSharePrompt] : `This week is one square. Choose it like it matters.`;
-  exportTitle.textContent = `Life in Weeks: ${ageYears} years, ${weekInYear + 1} weeks`;
-  exportSummary.textContent = `${weeks.toLocaleString()} of 5,200 weeks lived (${percent.toFixed(1)}%).`;
+  exportTitle.textContent = `Life in Weeks: ${age.fullYears} years, week ${age.currentWeekCell}`;
+  exportSummary.textContent = `${age.filledCells.toLocaleString()} of 5,200 squares filled (${percent.toFixed(1)}%). Actual age: ${formatAgeDetail(age)}.`;
 }
 
 function setSharePrompt(prompt: keyof typeof sharePrompts) {
@@ -155,9 +218,11 @@ function setSharePrompt(prompt: keyof typeof sharePrompts) {
 }
 
 function displayLife(value: string) {
+  const lifeAge = calculateLifeAge(value);
   selectedBirthday = value;
-  selectedWeeks = calculateWeeksSinceBirth(value);
-  updateCopy(selectedWeeks, value);
+  selectedLifeAge = lifeAge;
+  selectedWeeks = lifeAge.filledCells;
+  updateCopy(lifeAge, value);
   animateTo(selectedWeeks);
 }
 
@@ -194,8 +259,8 @@ function drawExportImage() {
   ctx.fillStyle = "#73706A";
   ctx.font = "28px ui-monospace, SFMono-Regular, Menlo, monospace";
   const summary = selectedBirthday
-    ? `${formatBirthday(selectedBirthday)} · ${selectedWeeks.toLocaleString()} lived weeks · ${Math.max(0, totalWeeks - selectedWeeks).toLocaleString()} weeks before 100`
-    : "5,200 weeks = 100 years. Color = age season.";
+    ? `${formatBirthday(selectedBirthday)} · age ${selectedLifeAge ? formatAgeDetail(selectedLifeAge) : ""} · ${Math.max(0, totalWeeks - selectedWeeks).toLocaleString()} squares before 100`
+    : "5,200 squares = 100 birthday years. Filled squares use age-season color.";
   ctx.fillText(summary, width / 2, 164);
 
   const left = 116;
@@ -208,7 +273,7 @@ function drawExportImage() {
   ctx.font = "18px ui-monospace, SFMono-Regular, Menlo, monospace";
 
   for (let displayRow = 0; displayRow < years; displayRow += 1) {
-    const age = years - 1 - displayRow;
+    const age = displayRow;
     const y = top + displayRow * (cell + gap);
     const stage = stageForAge(age);
     ctx.fillStyle = "#8D8981";
@@ -217,7 +282,7 @@ function drawExportImage() {
     for (let week = 0; week < weeksPerYear; week += 1) {
       const index = age * weeksPerYear + week;
       const x = left + axisGap + week * (cell + gap);
-      ctx.fillStyle = index < selectedWeeks ? stage.filled : stage.color;
+      ctx.fillStyle = index < selectedWeeks ? stage.filled : "#D8D4CC";
       roundedRect(ctx, x, y, cell, cell, 2);
       ctx.fill();
     }
