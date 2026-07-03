@@ -1803,33 +1803,121 @@ function wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: n
   return lines.length ? lines : [text];
 }
 
+type ExportNoteStyle = {
+  width: number;
+  radius: number;
+  stripeWidth: number;
+  paddingTop: number;
+  paddingX: number;
+  paddingBottom: number;
+  metaFontSize: number;
+  metaLineHeight: number;
+  metaGap: number;
+  messageFontSize: number;
+  messageLineHeight: number;
+  noteGap: number;
+  columnGap: number;
+  anchorOffsetY: number;
+  background: string;
+};
+
+type ExportNoteLayout = PositionedEvent & {
+  metaLines: string[];
+  messageLines: string[];
+  height: number;
+  left: number;
+  top: number;
+  column: number;
+};
+
+function exportNoteStyle(width: number, compact: boolean): ExportNoteStyle {
+  return compact
+    ? {
+        width,
+        radius: 4,
+        stripeWidth: 4,
+        paddingTop: 7,
+        paddingX: 16,
+        paddingBottom: 10,
+        metaFontSize: 10.5,
+        metaLineHeight: 13,
+        metaGap: 5,
+        messageFontSize: 17,
+        messageLineHeight: 20,
+        noteGap: 8,
+        columnGap: 24,
+        anchorOffsetY: 22,
+        background: "rgba(255, 253, 248, 0.94)"
+      }
+    : {
+        width,
+        radius: 4,
+        stripeWidth: 4,
+        paddingTop: 8,
+        paddingX: 18,
+        paddingBottom: 20,
+        metaFontSize: 15,
+        metaLineHeight: 18,
+        metaGap: 5,
+        messageFontSize: 23,
+        messageLineHeight: 27,
+        noteGap: 12,
+        columnGap: 0,
+        anchorOffsetY: 31,
+        background: "rgba(255, 253, 248, 0.92)"
+      };
+}
+
+function exportNoteTextWidth(style: ExportNoteStyle) {
+  return style.width - style.paddingX - 22;
+}
+
+function measureExportNotes(
+  ctx: CanvasRenderingContext2D,
+  positionedEvents: PositionedEvent[],
+  style: ExportNoteStyle
+): ExportNoteLayout[] {
+  const textWidth = exportNoteTextWidth(style);
+
+  return positionedEvents.map(({ lifeEvent, position }) => {
+    ctx.font = `${style.metaFontSize}px Avenir Next, Avenir, Gill Sans, sans-serif`;
+    const metaLines = wrapCanvasText(
+      ctx,
+      `${formatEventDate(lifeEvent)} / ${formatEventPositionDetail(position)} / ${eventStageLabel(lifeEvent)}`,
+      textWidth
+    );
+
+    ctx.font = `${style.messageFontSize}px Georgia, serif`;
+    const messageLines = wrapCanvasText(ctx, lifeEvent.message, textWidth);
+    const height =
+      style.paddingTop +
+      metaLines.length * style.metaLineHeight +
+      style.metaGap +
+      messageLines.length * style.messageLineHeight +
+      style.paddingBottom;
+
+    return {
+      lifeEvent,
+      position,
+      metaLines,
+      messageLines,
+      height,
+      left: 0,
+      top: 0,
+      column: 0
+    };
+  });
+}
+
+function stackedHeight(noteHeights: number[], gap: number) {
+  if (!noteHeights.length) return 0;
+  return noteHeights.reduce((total, height) => total + height, 0) + (noteHeights.length - 1) * gap;
+}
+
 function drawExportImage() {
-  const canvas = document.createElement("canvas");
   const scale = 2;
   const width = 1700;
-  const height = 2220;
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Canvas is not available.");
-
-  ctx.scale(scale, scale);
-  ctx.fillStyle = "#F6F4EC";
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.fillStyle = "#141414";
-  ctx.textAlign = "center";
-  ctx.font = "76px Georgia, serif";
-  ctx.fillText(activeMode === "personal" ? "Personal Timeline" : `${selectedProfile.name} in Weeks`, width / 2, 112);
-
-  ctx.fillStyle = "#73706A";
-  ctx.font = "26px Avenir Next, Avenir, Gill Sans, sans-serif";
-  const summary = selectedLifeAge
-    ? `${formatProfileDate(selectedProfile.birthDate)}${selectedProfile.deathDate ? ` - ${formatProfileDate(selectedProfile.deathDate)}` : ""} / ${selectedProfile.deathDate ? "lifespan" : "age"} ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} mapped events`
-    : "5,200 squares = 100 birthday years.";
-  ctx.fillText(summary, width / 2, 164);
-
+  const baseHeight = 2220;
   const left = 96;
   const top = 236;
   const cell = 12;
@@ -1838,27 +1926,27 @@ function drawExportImage() {
   const gridWidth = weeksPerYear * cell + (weeksPerYear - 1) * gap;
   const gridHeight = years * cell + (years - 1) * gap;
   const gridLeft = left + axisGap;
-  const referenceDate = getReferenceDate(selectedProfile);
-
-  ctx.textAlign = "right";
-  ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
-
-  for (let displayRow = 0; displayRow < years; displayRow += 1) {
-    const age = displayRow;
-    const y = top + displayRow * (cell + gap);
-    ctx.fillStyle = "#8D8981";
-    if (age % 5 === 0) ctx.fillText(String(age), left - 18, y + 15);
-
-    for (let week = 0; week < weeksPerYear; week += 1) {
-      const index = age * weeksPerYear + week;
-      const x = gridLeft + week * (cell + gap);
-      const stages = index < selectedWeeks ? stagesForWeek(selectedProfile, age, week, referenceDate) : [];
-      drawSplitCell(ctx, x, y, cell, index < selectedWeeks ? activeStageColors(stages) : ["#ddd8cc80"]);
-    }
-  }
-
+  const noteAreaRight = width - 76;
   const positionedEvents = getPositionedEvents();
-  const noteLeft = gridLeft + gridWidth + 70;
+  const measureCanvas = document.createElement("canvas");
+  const measureContext = measureCanvas.getContext("2d");
+  if (!measureContext) throw new Error("Canvas is not available.");
+
+  const regularStyle = exportNoteStyle(470, false);
+  const regularNotes = measureExportNotes(measureContext, positionedEvents, regularStyle);
+  const regularStackHeight = stackedHeight(
+    regularNotes.map((note) => note.height),
+    regularStyle.noteGap
+  );
+  const useDenseNotes = positionedEvents.length >= 14 || regularStackHeight > gridHeight * 0.96;
+  const noteColumnCount = useDenseNotes && positionedEvents.length > 1 ? 2 : 1;
+  const noteLeft = gridLeft + gridWidth + (noteColumnCount > 1 ? 44 : 70);
+  const denseNoteWidth = Math.floor((noteAreaRight - noteLeft - 24) / 2);
+  const noteStyle =
+    noteColumnCount > 1 ? exportNoteStyle(Math.max(286, Math.min(324, denseNoteWidth)), true) : regularStyle;
+  const exportNotes =
+    noteColumnCount > 1 ? measureExportNotes(measureContext, positionedEvents, noteStyle) : regularNotes;
+  const noteLefts = Array.from({ length: noteColumnCount }, (_, index) => noteLeft + index * (noteStyle.width + noteStyle.columnGap));
   const canvasRailY = (age: number) => top + age * (cell + gap) + cell + 2;
   const canvasAnchor = (position: EventPosition) => {
     if (position.precision === "day") {
@@ -1887,32 +1975,94 @@ function drawExportImage() {
       y: canvasRailY(widestSegment.age)
     };
   };
-  ctx.font = "23px Georgia, serif";
-  const exportNotes = positionedEvents.map(({ lifeEvent }) => {
-    const lines = wrapCanvasText(ctx, lifeEvent.message, 430).slice(0, 3);
-    return {
-      lines,
-      height: 78 + (lines.length - 1) * 27
-    };
+  const splitIndex = Math.ceil(exportNotes.length / noteColumnCount);
+  exportNotes.forEach((note, index) => {
+    note.column = noteColumnCount === 1 ? 0 : Math.min(noteColumnCount - 1, Math.floor(index / splitIndex));
+    note.left = noteLefts[note.column];
   });
-  const noteTops = placeVariableEventNotes(
-    positionedEvents.map(({ position }) => canvasAnchor(position).y - top),
-    exportNotes.map((note) => note.height),
-    gridHeight,
-    12
-  );
 
-  positionedEvents.forEach(({ lifeEvent, position }, index) => {
-    const exportNote = exportNotes[index];
+  const columnStackHeights = noteLefts.map((_, column) =>
+    stackedHeight(
+      exportNotes.filter((note) => note.column === column).map((note) => note.height),
+      noteStyle.noteGap
+    )
+  );
+  const eventContentHeight = Math.max(gridHeight, ...columnStackHeights, 0);
+  noteLefts.forEach((_, column) => {
+    const columnNotes = exportNotes.filter((note) => note.column === column);
+    const noteTops = placeVariableEventNotes(
+      columnNotes.map((note) => canvasAnchor(note.position).y - top),
+      columnNotes.map((note) => note.height),
+      eventContentHeight,
+      noteStyle.noteGap
+    );
+    columnNotes.forEach((note, index) => {
+      note.top = top + noteTops[index];
+    });
+  });
+
+  const contentHeight = Math.max(
+    gridHeight,
+    ...exportNotes.map((note) => note.top - top + note.height),
+    0
+  );
+  const legendTop = top + contentHeight + 58;
+  const legendRows = Math.ceil(selectedProfile.stages.length / 2);
+  const legendBottom = legendTop + Math.max(0, legendRows - 1) * 64 + 34;
+  const height = Math.max(baseHeight, legendBottom + 140);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas is not available.");
+
+  ctx.scale(scale, scale);
+  ctx.fillStyle = "#F6F4EC";
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = "#141414";
+  ctx.textAlign = "center";
+  ctx.font = "76px Georgia, serif";
+  ctx.fillText(activeMode === "personal" ? "Personal Timeline" : `${selectedProfile.name} in Weeks`, width / 2, 112);
+
+  ctx.fillStyle = "#73706A";
+  ctx.font = "26px Avenir Next, Avenir, Gill Sans, sans-serif";
+  const summary = selectedLifeAge
+    ? `${formatProfileDate(selectedProfile.birthDate)}${selectedProfile.deathDate ? ` - ${formatProfileDate(selectedProfile.deathDate)}` : ""} / ${selectedProfile.deathDate ? "lifespan" : "age"} ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} mapped events`
+    : "5,200 squares = 100 birthday years.";
+  ctx.fillText(summary, width / 2, 164);
+
+  const referenceDate = getReferenceDate(selectedProfile);
+
+  ctx.textAlign = "right";
+  ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
+
+  for (let displayRow = 0; displayRow < years; displayRow += 1) {
+    const age = displayRow;
+    const y = top + displayRow * (cell + gap);
+    ctx.fillStyle = "#8D8981";
+    if (age % 5 === 0) ctx.fillText(String(age), left - 18, y + 15);
+
+    for (let week = 0; week < weeksPerYear; week += 1) {
+      const index = age * weeksPerYear + week;
+      const x = gridLeft + week * (cell + gap);
+      const stages = index < selectedWeeks ? stagesForWeek(selectedProfile, age, week, referenceDate) : [];
+      drawSplitCell(ctx, x, y, cell, index < selectedWeeks ? activeStageColors(stages) : ["#ddd8cc80"]);
+    }
+  }
+
+  exportNotes.forEach(({ lifeEvent, position, left: noteX, top: noteTop }) => {
     const color = eventColor(lifeEvent);
     const { x: anchorX, y: anchorY } = canvasAnchor(position);
-    const noteTop = top + noteTops[index];
-    const noteAnchorY = noteTop + 31;
+    const noteAnchorY = noteTop + noteStyle.anchorOffsetY;
 
+    ctx.save();
+    ctx.globalAlpha = noteColumnCount > 1 ? 0.72 : 1;
     ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = noteColumnCount > 1 ? 1.25 : 1.5;
     if (position.precision !== "day") {
-      ctx.save();
       ctx.globalAlpha = 0.82;
       ctx.lineWidth = position.precision === "month" ? 3 : 2.2;
       ctx.setLineDash(position.precision === "month" ? [] : [7, 6]);
@@ -1925,14 +2075,21 @@ function drawExportImage() {
         ctx.lineTo(endX, y);
         ctx.stroke();
       });
-      ctx.restore();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = noteColumnCount > 1 ? 0.72 : 1;
+      ctx.lineWidth = noteColumnCount > 1 ? 1.25 : 1.5;
     }
 
     ctx.beginPath();
     ctx.moveTo(anchorX, anchorY);
-    ctx.bezierCurveTo(anchorX + 42, anchorY, noteLeft - 38, noteAnchorY, noteLeft, noteAnchorY);
+    ctx.bezierCurveTo(anchorX + 42, anchorY, noteX - 38, noteAnchorY, noteX, noteAnchorY);
     ctx.stroke();
+    ctx.restore();
+  });
 
+  exportNotes.forEach(({ lifeEvent, position }) => {
+    const color = eventColor(lifeEvent);
+    const { x: anchorX, y: anchorY } = canvasAnchor(position);
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(anchorX, anchorY, position.precision === "day" ? 4 : 5, 0, Math.PI * 2);
@@ -1947,30 +2104,36 @@ function drawExportImage() {
       ctx.arc(anchorX, anchorY, 6, 0, Math.PI * 2);
       ctx.stroke();
     }
+  });
 
-    ctx.fillStyle = "rgba(255, 253, 248, 0.92)";
-    roundedRect(ctx, noteLeft, noteTop, 470, exportNote.height, 4);
+  exportNotes.forEach((exportNote) => {
+    const color = eventColor(exportNote.lifeEvent);
+    const textX = exportNote.left + noteStyle.paddingX;
+    let baseline = exportNote.top + noteStyle.paddingTop + noteStyle.metaFontSize;
+
+    ctx.fillStyle = noteStyle.background;
+    roundedRect(ctx, exportNote.left, exportNote.top, noteStyle.width, exportNote.height, noteStyle.radius);
     ctx.fill();
     ctx.fillStyle = color;
-    ctx.fillRect(noteLeft, noteTop, 4, exportNote.height);
+    ctx.fillRect(exportNote.left, exportNote.top, noteStyle.stripeWidth, exportNote.height);
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#777269";
-    ctx.font = "15px Avenir Next, Avenir, Gill Sans, sans-serif";
-    ctx.fillText(
-      `${formatEventDate(lifeEvent)} / ${formatEventPositionDetail(position)} / ${eventStageLabel(lifeEvent)}`,
-      noteLeft + 18,
-      noteTop + 21
-    );
+    ctx.font = `${noteStyle.metaFontSize}px Avenir Next, Avenir, Gill Sans, sans-serif`;
+    exportNote.metaLines.forEach((line) => {
+      ctx.fillText(line, textX, baseline);
+      baseline += noteStyle.metaLineHeight;
+    });
 
     ctx.fillStyle = "#272520";
-    ctx.font = "23px Georgia, serif";
-    exportNote.lines.forEach((line, lineIndex) => {
-      ctx.fillText(line, noteLeft + 18, noteTop + 54 + lineIndex * 27);
+    ctx.font = `${noteStyle.messageFontSize}px Georgia, serif`;
+    baseline = exportNote.top + noteStyle.paddingTop + exportNote.metaLines.length * noteStyle.metaLineHeight + noteStyle.metaGap + noteStyle.messageFontSize;
+    exportNote.messageLines.forEach((line) => {
+      ctx.fillText(line, textX, baseline);
+      baseline += noteStyle.messageLineHeight;
     });
   });
 
-  const legendTop = top + gridHeight + 58;
   ctx.textAlign = "left";
   ctx.font = "21px Avenir Next, Avenir, Gill Sans, sans-serif";
   selectedProfile.stages.forEach((stage, index) => {
