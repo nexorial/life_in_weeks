@@ -146,7 +146,7 @@ const people = [
   { name: "Logan Paul", category: "creator" },
   { name: "Jake Paul", category: "creator" },
   { name: "Taylor Swift", category: "music" },
-  { name: "Kanye West", category: "music", page: "Ye" },
+  { name: "Kanye West", category: "music" },
   { name: "Beyoncé", category: "music" },
   { name: "Rihanna", category: "music" },
   { name: "Bad Bunny", category: "music" },
@@ -299,8 +299,90 @@ const knownDates = {
   "Pope Leo XIV": { birthDate: "1955-09-14" },
   "Alex Karp": { birthDate: "1967-10-02" },
   "Dario Amodei": { birthDate: "1983-07-01", birthDateLabel: "1983" },
+  "Kanye West": { birthDate: "1977-06-08" },
   "Alix Earle": { birthDate: "2000-12-16" },
   "CaseOh": { birthDate: "1998-05-09" }
+};
+
+const manualProfiles = {
+  "CaseOh": {
+    qid: null,
+    title: "CaseOh",
+    fullurl: "https://www.youtube.com/@caseoh_",
+    sources: [
+      { label: "Wikitubia: CaseOh", url: "https://youtube.fandom.com/wiki/CaseOh" },
+      { label: "Famous Birthdays: CaseOh", url: "https://www.famousbirthdays.com/people/caseoh.html" },
+      { label: "The Streamer Awards winners", url: "https://thestreamerawards.com/winners" },
+      { label: "CaseOh YouTube channel", url: "https://www.youtube.com/@caseoh_" }
+    ],
+    sourceNote:
+      "No stable English Wikipedia biography was available during generation; dates were checked against Wikitubia, Famous Birthdays, The Streamer Awards, and public channel pages.",
+    events: [
+      {
+        id: "born",
+        date: "1998-05-09",
+        stageId: "pending",
+        message: "Born in Arkansas as Case Dylan Baker.",
+        validation: "Famous Birthdays; Wikitubia"
+      },
+      {
+        id: "gaming-childhood",
+        date: "2012-07-01",
+        dateLabel: "Age 14",
+        stageId: "pending",
+        message: "Develops a strong interest in games including NBA 2K and Call of Duty.",
+        validation: "Wikitubia; approximate age date"
+      },
+      {
+        id: "pre-streaming-work",
+        date: "2021-07-01",
+        dateLabel: "Before streaming",
+        stageId: "pending",
+        message: "Works maintenance and lawn-mowing jobs before full-time streaming.",
+        validation: "Wikitubia; approximate machine date"
+      },
+      {
+        id: "tiktok-attention",
+        date: "2022-07-01",
+        dateLabel: "2022",
+        stageId: "pending",
+        message: "Starts gaining attention on TikTok with gaming and reaction clips.",
+        validation: "Wikitubia; creator biography summaries"
+      },
+      {
+        id: "viral-rise",
+        date: "2023-07-01",
+        dateLabel: "2023",
+        stageId: "pending",
+        message: "Reaction clips and variety-game streams push him into wider Twitch visibility.",
+        validation: "Wikitubia; public platform pages"
+      },
+      {
+        id: "million-youtube",
+        date: "2024-07-01",
+        dateLabel: "2024",
+        stageId: "pending",
+        message: "YouTube and Twitch audience scale sharply as daily stream clips spread.",
+        validation: "YouTube channel; public creator summaries"
+      },
+      {
+        id: "game-awards",
+        date: "2024-12-12",
+        dateLabel: "2024",
+        stageId: "pending",
+        message: "Wins Content Creator of the Year at The Game Awards 2024.",
+        validation: "The Game Awards public results; public coverage"
+      },
+      {
+        id: "streamer-awards",
+        date: "2025-12-07",
+        dateLabel: "2025",
+        stageId: "pending",
+        message: "Wins Best Variety Streamer at The Streamer Awards.",
+        validation: "The Streamer Awards winners page"
+      }
+    ]
+  }
 };
 
 const monthNames = [
@@ -369,16 +451,21 @@ function sleep(ms) {
 
 async function fetchJson(url) {
   let lastError;
-  for (let attempt = 1; attempt <= 3; attempt += 1) {
+  for (let attempt = 1; attempt <= 6; attempt += 1) {
     try {
       const response = await fetch(url, { headers: { "User-Agent": userAgent } });
       if (!response.ok) {
+        if (response.status === 429) {
+          const retryAfter = Number(response.headers.get("retry-after"));
+          await sleep(Number.isFinite(retryAfter) ? retryAfter * 1000 : 5000 * attempt);
+          continue;
+        }
         throw new Error(`${response.status} ${response.statusText}`);
       }
       return await response.json();
     } catch (error) {
       lastError = error;
-      await sleep(500 * attempt);
+      await sleep(1000 * attempt);
     }
   }
   throw lastError;
@@ -434,6 +521,7 @@ function cleanExtract(value) {
     .replace(/\r/g, "")
     .replace(/==+\s*See also\s*==+[\s\S]*$/i, "")
     .replace(/==+\s*References\s*==+[\s\S]*$/i, "")
+    .replace(/==+\s*[^=]+?\s*==+/g, ". ")
     .replace(/\[[^\]]+\]/g, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -503,20 +591,42 @@ function cleanEventMessage(sentence, personName) {
     .replace(/\([^()]*pronounced[^()]*\)/gi, "")
     .replace(/\([^()]*born[^()]*\)/gi, "")
     .replace(/\([^()]*\)/g, "")
+    .replace(/==+\s*[^=]+?\s*==+/g, " ")
+    .replace(/\bcode:\s*[a-z]{2,3}\s+promoted to code:\s*[a-z]{2,3}\b/gi, "")
+    .replace(/\s+"[^"]{80,}"\s*/g, " ")
     .replace(/^==+\s*[^=]+==+\s*/g, "")
     .replace(new RegExp(`^(In|On|By|After|During|At)\\s+[^,]{1,60},\\s+`, "i"), "")
+    .replace(/^(1[5-9]\d{2}|20\d{2}),\s+/, "")
     .replace(/\s+/g, " ")
     .trim();
 
   message = message.replace(new RegExp(`^${personName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s+`, "i"), "");
   message = message.replace(new RegExp(`^${surname.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s+`, "i"), "");
-  message = message.replace(/^(He|She|They)\s+/i, "");
+  message = message.replace(/^(He|She|They|It|And)\s+/i, "");
   message = message.charAt(0).toUpperCase() + message.slice(1);
+
+  if (message.length > 120) {
+    const clauses = message
+      .split(/;\s+|,\s+|\s+-\s+|\s+—\s+/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+    const eventClause = clauses.find((part) => eventKeywords.some((keyword) => part.toLowerCase().includes(keyword)));
+    if (eventClause && eventClause.length >= 35) {
+      message = eventClause.charAt(0).toUpperCase() + eventClause.slice(1);
+    }
+  }
+
+  if (message.length > 120) {
+    message = message
+      .replace(/\s+(which|where|while|although|however|including|with|after|before)\s+.*$/i, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
   if (message.length <= 120) return message;
 
-  const cleanBreak = message.slice(0, 118).replace(/[,;:]\s+\S*$/, "").trim();
-  return `${cleanBreak || message.slice(0, 117).trim()}...`;
+  const cleanBreak = message.slice(0, 118).replace(/\s+\S*$/, "").replace(/[,;:]\s*$/, "").trim();
+  return `${cleanBreak || message.slice(0, 117).trim()}.`;
 }
 
 function eventId(base, existingIds) {
@@ -550,7 +660,7 @@ async function fetchWikipediaProfile(person) {
   });
   const data = await fetchJson(`https://en.wikipedia.org/w/api.php?${params.toString()}`);
   const page = Object.values(data.query.pages)[0];
-  if (!page || page.missing) {
+  if (!page || Object.hasOwn(page, "missing")) {
     throw new Error(`Wikipedia page not found for ${person.name} (${title})`);
   }
   const qid = page.pageprops?.wikibase_item;
@@ -748,7 +858,9 @@ function buildProfile(person, wiki, birth, death, events, stages) {
     ...(death?.date ? { deathDate: death.date } : {}),
     headline: `${person.name}, one week at a time.`,
     subtitle: `${person.name}'s public life is mapped through stages, overlapping roles, and sourced events from birth${death?.date ? " to death" : " to today"}.`,
-    sourceNote: `Sources checked include English Wikipedia and Wikidata${wiki.page?.title ? ` for ${wiki.page.title}` : ""}; dates with partial precision use visible labels.`,
+    sourceNote:
+      wiki.sourceNote ??
+      `Sources checked include English Wikipedia and Wikidata${wiki.page?.title ? ` for ${wiki.page.title}` : ""}; dates with partial precision use visible labels.`,
     stages,
     events: events.map(({ validation, ...event }) => event)
   };
@@ -797,6 +909,10 @@ function buildMarkdown(person, wiki, profile, events) {
   const wikiTitle = wiki.page.title;
   const wikiUrl = wiki.page.fullurl ?? sourceUrl(wikiTitle);
   const wikidataUrl = qid ? `https://www.wikidata.org/wiki/${qid}` : "https://www.wikidata.org/";
+  const sourceLines = wiki.sources?.length
+    ? wiki.sources.map((source) => `- [${source.label}](${source.url}) for public biography and event cross-checks.`).join("\n")
+    : `- [Wikipedia: ${wikiTitle}](${wikiUrl}) for the public biography chronology and career/life-event cross-checks.
+- [Wikidata: ${qid ?? "linked entity"}](${wikidataUrl}) for structured birth/death date checks when available.`;
   const line = marketingLines[person.name] ?? fallbackLine(person);
   const precisionNote = events.some((event) => event.dateLabel)
     ? "- Some public events have only year or month precision in the source text; those use midpoint machine dates plus visible labels.\n"
@@ -814,8 +930,7 @@ Batch-generated public-figure Life in Weeks profile.
 
 ## Source Families Checked
 
-- [Wikipedia: ${wikiTitle}](${wikiUrl}) for the public biography chronology and career/life-event cross-checks.
-- [Wikidata: ${qid ?? "linked entity"}](${wikidataUrl}) for structured birth/death date checks when available.
+${sourceLines}
 
 ## Verification Notes
 
@@ -848,14 +963,23 @@ async function generateOne(person, options) {
     }
   }
 
-  const wiki = await fetchWikipediaProfile(person);
+  const manual = manualProfiles[person.name];
+  const wiki = manual
+    ? {
+        page: { title: manual.title, fullurl: manual.fullurl, extract: "" },
+        qid: manual.qid,
+        entity: null,
+        sources: manual.sources,
+        sourceNote: manual.sourceNote
+      }
+    : await fetchWikipediaProfile(person);
   const { birth, death } = birthAndDeath(person, wiki.entity);
   if (!birth?.date) {
     throw new Error(`No birth date for ${person.name}`);
   }
 
   const sentences = splitSentences(wiki.page.extract ?? "");
-  let events = buildEvents(person, sentences, birth, death);
+  let events = manual?.events ? manual.events.map((event) => ({ ...event })) : buildEvents(person, sentences, birth, death);
   if (events.length < 8) {
     const fallbackCandidates = sentences
       .map((sentence) => ({ sentence, date: parseDateFromSentence(sentence) }))
@@ -887,7 +1011,7 @@ async function generateOne(person, options) {
 
   await fs.mkdir("profiles", { recursive: true });
   await fs.writeFile(filePath, buildMarkdown(person, wiki, profile, events), "utf8");
-  await sleep(150);
+  await sleep(1200);
   return { person: person.name, status: "generated", filePath, events: events.length, stages: stages.length };
 }
 

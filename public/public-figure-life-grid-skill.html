@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public Figure Life Grid Skill</title>
+    <link rel="stylesheet" href="life/life.css" />
+  </head>
+  <body>
+    <main class="skill-copy-page">
+      <header class="skill-copy-hero">
+        <p class="eyebrow">KISKIR / agent skill</p>
+        <h1>Public Figure Life Grid</h1>
+        <p class="subtitle">
+          A copy-paste skill for turning any public figure name into a sourced Life in Weeks profile and GPT Image
+          poster.
+        </p>
+        <div class="skill-copy-actions">
+          <button class="primary-action" data-copy-skill type="button">Copy SKILL.md</button>
+          <a class="secondary-action" href="downloads/public-figure-life-grid.zip" download>Download ZIP</a>
+          <a class="secondary-action" href="skills/public-figure-life-grid/SKILL.md">Open Raw</a>
+        </div>
+        <p class="mode-status" data-copy-status role="status" aria-live="polite"></p>
+      </header>
+
+      <section class="skill-copy-panel" aria-label="Copyable SKILL.md">
+        <pre data-skill-text>Loading SKILL.md...</pre>
+      </section>
+    </main>
+
+    <script>
+      const skillText = document.querySelector("[data-skill-text]");
+      const copyButton = document.querySelector("[data-copy-skill]");
+      const copyStatus = document.querySelector("[data-copy-status]");
+
+      fetch("skills/public-figure-life-grid/SKILL.md")
+        .then((response) => {
+          if (!response.ok) throw new Error("Could not load SKILL.md.");
+          return response.text();
+        })
+        .then((text) => {
+          skillText.textContent = text;
+        })
+        .catch((error) => {
+          skillText.textContent = error.message;
+          copyStatus.textContent = error.message;
+        });
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.inset = "0 auto auto 0";
+        textarea.style.opacity = "0";
+        document.body.append(textarea);
+        textarea.select();
+        const copied = document.execCommand("copy");
+        textarea.remove();
+
+        if (!copied) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(skillText);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+
+        return copied;
+      }
+
+      copyButton.addEventListener("click", () => {
+        const text = skillText.textContent.trim();
+        if (!text || text === "Loading SKILL.md...") {
+          copyStatus.textContent = "SKILL.md is still loading.";
+          return;
+        }
+
+        if (!navigator.clipboard) {
+          copyStatus.textContent = fallbackCopy(text)
+            ? "SKILL.md copied."
+            : "SKILL.md selected for manual copy.";
+          return;
+        }
+
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            copyStatus.textContent = "SKILL.md copied.";
+          })
+          .catch(() => {
+            copyStatus.textContent = fallbackCopy(text)
+              ? "SKILL.md copied."
+              : "SKILL.md selected for manual copy.";
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Public Figure Life Grid"
+  short_description: "Build life-grid biography image prompts"
+  default_prompt: "Use $public-figure-life-grid to turn Ada Lovelace into a Life in Weeks image."

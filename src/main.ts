@@ -1,3 +1,5 @@
+import { publicFigureProfileGroups, publicFigureProfiles } from "./publicFigureProfiles";
+
 type DevelopmentStage = {
   id: string;
   label: string;
@@ -30,6 +32,11 @@ type PersonProfile = {
   sourceNote: string;
   stages: DevelopmentStage[];
   events: LifeEvent[];
+};
+
+type ProfileGroup = {
+  label: string;
+  profiles: PersonProfile[];
 };
 
 type AppMode = "personal" | "profile";
@@ -257,6 +264,15 @@ const profiles: PersonProfile[] = [
   }
 ];
 
+profiles.splice(0, profiles.length, ...publicFigureProfiles);
+
+const profileCategoryGroups: ProfileGroup[] = publicFigureProfileGroups.map((group) => ({
+  label: group.label,
+  profiles: group.profiles
+}));
+const generatedProfileIds = new Set(publicFigureProfiles.map((profile) => profile.id));
+const customProfileGroupLabel = "Custom Profiles";
+
 const readingPrompts = {
   stages: "Stage recognition: color shows the dominant context; striped cells mean overlapping identities.",
   behavior: "Behavior analysis: read each colored band as the work pattern that dominated that period.",
@@ -433,6 +449,7 @@ let personalEventDrafts: PersonalEventDraft[] = [];
 let nextPersonalEventId = 1;
 let lifeEvents: LifeEvent[] = [];
 let nextEventId = 1;
+const trackedEventElements = new Map<string, Set<Element>>();
 
 function escapeHtml(value: string) {
   return value
@@ -1308,9 +1325,42 @@ function resetEventCells() {
   grid.querySelectorAll<HTMLElement>(".week-cell").forEach((cell) => {
     cell.classList.remove("has-event");
     cell.classList.remove("has-event-range");
+    cell.classList.remove("is-event-active");
     cell.style.removeProperty("--event-color");
+    cell.style.removeProperty("--active-event-color");
+    cell.removeAttribute("data-event-ids");
     if (cell.dataset.baseLabel) {
       cell.setAttribute("aria-label", cell.dataset.baseLabel);
+    }
+  });
+}
+
+function trackEventElement(element: Element, eventId: string) {
+  const eventIds = (element.getAttribute("data-event-ids") ?? "").split(/\s+/).filter(Boolean);
+  if (!eventIds.includes(eventId)) {
+    element.setAttribute("data-event-ids", [...eventIds, eventId].join(" "));
+  }
+  const elements = trackedEventElements.get(eventId) ?? new Set<Element>();
+  elements.add(element);
+  trackedEventElements.set(eventId, elements);
+}
+
+function setActiveLifeEvent(eventId: string, active: boolean) {
+  const elements = trackedEventElements.get(eventId);
+  if (!elements) return;
+  const activeNote = Array.from(elements).find(
+    (element): element is HTMLElement => element instanceof HTMLElement && element.classList.contains("event-note")
+  );
+  const eventColorValue = activeNote?.style.getPropertyValue("--event-color").trim() || "#161512";
+
+  elements.forEach((element) => {
+    element.classList.toggle("is-event-active", active);
+    if (element instanceof HTMLElement || element instanceof SVGElement) {
+      if (active) {
+        element.style.setProperty("--active-event-color", eventColorValue);
+      } else {
+        element.style.removeProperty("--active-event-color");
+      }
     }
   });
 }
@@ -1385,6 +1435,7 @@ function eventStageLabel(lifeEvent: LifeEvent) {
 
 function renderLifeEvents() {
   resetEventCells();
+  trackedEventElements.clear();
   eventLines.replaceChildren();
   eventNotes.replaceChildren();
 
@@ -1460,11 +1511,17 @@ function renderLifeEvents() {
     const note = document.createElement("article");
     note.className = "event-note";
     note.classList.toggle("event-note--range", event.position.precision !== "day");
+    note.tabIndex = 0;
     note.style.left = `${noteLeft}px`;
     note.style.top = "0";
     note.style.visibility = "hidden";
     note.style.setProperty("--event-color", color);
     note.dataset.eventId = event.lifeEvent.id;
+    trackEventElement(note, event.lifeEvent.id);
+    note.addEventListener("pointerenter", () => setActiveLifeEvent(event.lifeEvent.id, true));
+    note.addEventListener("pointerleave", () => setActiveLifeEvent(event.lifeEvent.id, false));
+    note.addEventListener("focus", () => setActiveLifeEvent(event.lifeEvent.id, true));
+    note.addEventListener("blur", () => setActiveLifeEvent(event.lifeEvent.id, false));
 
     const date = document.createElement("time");
     date.dateTime = event.lifeEvent.date;
@@ -1479,9 +1536,9 @@ function renderLifeEvents() {
   });
 
   const noteHeights = notes.map((note) => note.getBoundingClientRect().height);
+  const stackedNoteHeight = noteHeights.reduce((total, height) => total + height + eventNoteGap, 0) + 18;
   if (compact) {
-    const stackHeight = noteHeights.reduce((total, height) => total + height + eventNoteGap, 0) + 18;
-    prepareAnnotationStage(positionedEvents.length, true, stackHeight);
+    prepareAnnotationStage(positionedEvents.length, true, stackedNoteHeight);
     stageRect = annotationStage.getBoundingClientRect();
     gridRect = grid.getBoundingClientRect();
     eventLines.setAttribute("width", String(stageRect.width));
@@ -1492,6 +1549,13 @@ function renderLifeEvents() {
     notes.forEach((note) => {
       note.style.left = `${noteLeft}px`;
     });
+  } else if (stackedNoteHeight > stageRect.height) {
+    annotationStage.style.minHeight = `${stackedNoteHeight + 22}px`;
+    stageRect = annotationStage.getBoundingClientRect();
+    eventLines.setAttribute("width", String(stageRect.width));
+    eventLines.setAttribute("height", String(stageRect.height));
+    eventLines.setAttribute("viewBox", `0 0 ${stageRect.width} ${stageRect.height}`);
+    measuredEvents = measureEvents();
   }
 
   const noteTops = compact
@@ -1506,9 +1570,8 @@ function renderLifeEvents() {
     const color = eventColor(event.lifeEvent);
     const baseLabel = event.cell.getAttribute("aria-label") ?? "";
     event.cell.classList.add(event.position.precision === "day" ? "has-event" : "has-event-range");
-    if (event.position.precision === "day") {
-      event.cell.style.setProperty("--event-color", color);
-    }
+    event.cell.style.setProperty("--event-color", color);
+    trackEventElement(event.cell, event.lifeEvent.id);
     event.cell.setAttribute(
       "aria-label",
       `${baseLabel}. ${event.position.precision === "day" ? "Event" : "Approximate event"} on ${formatEventDate(event.lifeEvent)}: ${event.lifeEvent.message}`
@@ -1521,6 +1584,7 @@ function renderLifeEvents() {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("class", `event-line${event.position.precision === "day" ? "" : " event-line--range"}`);
     path.style.setProperty("--event-color", color);
+    trackEventElement(path, event.lifeEvent.id);
     const pathDefinition = compact
       ? [
           `M ${event.anchorX.toFixed(1)} ${event.anchorY.toFixed(1)}`,
@@ -1539,6 +1603,7 @@ function renderLifeEvents() {
     const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     dot.setAttribute("class", event.position.precision === "day" ? "event-line-dot" : "event-range-anchor");
     dot.style.setProperty("--event-color", color);
+    trackEventElement(dot, event.lifeEvent.id);
     dot.setAttribute("cx", event.anchorX.toFixed(1));
     dot.setAttribute("cy", event.anchorY.toFixed(1));
     dot.setAttribute("r", event.position.precision === "day" ? "3" : "4");
@@ -1550,6 +1615,7 @@ function renderLifeEvents() {
             const rail = document.createElementNS("http://www.w3.org/2000/svg", "path");
             rail.setAttribute("class", `event-range-marker event-range-marker--${event.position.precision}`);
             rail.style.setProperty("--event-color", color);
+            trackEventElement(rail, event.lifeEvent.id);
             rail.setAttribute(
               "d",
               `M ${segment.startX.toFixed(1)} ${segment.y.toFixed(1)} L ${segment.endX.toFixed(1)} ${segment.y.toFixed(1)}`
@@ -1935,10 +2001,37 @@ function exportImage() {
   link.click();
 }
 
+function profileGroupsForSelect() {
+  const activeProfileIds = new Set(profiles.map((profile) => profile.id));
+  const groupedProfiles = profileCategoryGroups
+    .map((group) => ({
+      label: group.label,
+      profiles: group.profiles.filter((profile) => activeProfileIds.has(profile.id))
+    }))
+    .filter((group) => group.profiles.length > 0);
+  const customProfiles = profiles.filter((profile) => !generatedProfileIds.has(profile.id));
+
+  return customProfiles.length
+    ? [...groupedProfiles, { label: customProfileGroupLabel, profiles: customProfiles }]
+    : groupedProfiles;
+}
+
 function populateProfiles() {
-  profileSelect.innerHTML = profiles
-    .map((profile) => `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.name)}</option>`)
-    .join("");
+  profileSelect.replaceChildren();
+
+  profileGroupsForSelect().forEach((group) => {
+    const optionGroup = document.createElement("optgroup");
+    optionGroup.label = group.label;
+
+    group.profiles.forEach((profile) => {
+      const option = document.createElement("option");
+      option.value = profile.id;
+      option.textContent = profile.name;
+      optionGroup.append(option);
+    });
+
+    profileSelect.append(optionGroup);
+  });
 }
 
 function getStoredProfileEvents(profile: PersonProfile) {
