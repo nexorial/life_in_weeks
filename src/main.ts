@@ -9,10 +9,13 @@ type DevelopmentStage = {
   behavior: string;
 };
 
+type EventPrecision = "day" | "month" | "year" | "age";
+
 type LifeEvent = {
   id: string;
   date: string;
   dateLabel?: string;
+  datePrecision?: EventPrecision;
   stageId: string;
   message: string;
 };
@@ -46,11 +49,26 @@ type LifeAge = {
   elapsedWeeks: number;
 };
 
-type EventPosition = {
+type EventCellPosition = {
   index: number;
   age: number;
   weekInYear: number;
   date: Date;
+};
+
+type EventSegment = {
+  age: number;
+  startWeek: number;
+  endWeek: number;
+  startIndex: number;
+  endIndex: number;
+};
+
+type EventPosition = EventCellPosition & {
+  precision: EventPrecision;
+  startDate: Date;
+  endDate: Date;
+  segments: EventSegment[];
 };
 
 type PositionedEvent = {
@@ -155,6 +173,7 @@ const profiles: PersonProfile[] = [
         id: "st-louis",
         date: "1989-07-01",
         dateLabel: "1989",
+        datePrecision: "year",
         stageId: "childhood",
         message: "Family moves to the St. Louis area."
       },
@@ -162,6 +181,7 @@ const profiles: PersonProfile[] = [
         id: "first-mac",
         date: "1993-04-22",
         dateLabel: "Age 8",
+        datePrecision: "age",
         stageId: "childhood",
         message: "Gets an Apple Macintosh and starts learning to code."
       },
@@ -169,6 +189,7 @@ const profiles: PersonProfile[] = [
         id: "stanford-start",
         date: "2003-09-01",
         dateLabel: "2003",
+        datePrecision: "year",
         stageId: "stanford",
         message: "Studies computer science at Stanford and works around the AI lab."
       },
@@ -176,6 +197,7 @@ const profiles: PersonProfile[] = [
         id: "loopt-start",
         date: "2005-01-01",
         dateLabel: "2005",
+        datePrecision: "year",
         stageId: "loopt",
         message: "Leaves Stanford and co-founds Loopt."
       },
@@ -183,6 +205,7 @@ const profiles: PersonProfile[] = [
         id: "yc-join",
         date: "2011-01-01",
         dateLabel: "2011",
+        datePrecision: "year",
         stageId: "yc",
         message: "Joins Y Combinator as a partner."
       },
@@ -208,6 +231,7 @@ const profiles: PersonProfile[] = [
         id: "openai-ceo",
         date: "2019-03-11",
         dateLabel: "2019",
+        datePrecision: "year",
         stageId: "openai",
         message: "Leaves YC leadership to focus full-time on OpenAI as CEO."
       },
@@ -682,9 +706,9 @@ function calculateLifeAge(value: string, referenceDate = new Date()): LifeAge {
   };
 }
 
-function calculateEventPosition(profile: PersonProfile, eventValue: string): EventPosition | null {
+function calculateDatePosition(profile: PersonProfile, eventValue: string | Date): EventCellPosition | null {
   const birthday = parseLocalDate(profile.birthDate);
-  const eventDate = parseLocalDate(eventValue);
+  const eventDate = eventValue instanceof Date ? eventValue : parseLocalDate(eventValue);
   if (!birthday || !eventDate) return null;
 
   const birthDate = startOfLocalDay(birthday);
@@ -712,6 +736,144 @@ function calculateEventPosition(profile: PersonProfile, eventValue: string): Eve
   };
 }
 
+function parseEventPrecision(value: string): EventPrecision | null {
+  if (value === "day" || value === "month" || value === "year" || value === "age") return value;
+  return null;
+}
+
+function ageFromEventLabel(label: string | undefined) {
+  const match = /^\s*age\s+(\d{1,3})\s*$/i.exec(label ?? "");
+  return match ? clamp(Number(match[1]), 0, years - 1) : null;
+}
+
+function inferEventPrecision(lifeEvent: LifeEvent): EventPrecision {
+  if (lifeEvent.datePrecision) return lifeEvent.datePrecision;
+  if (ageFromEventLabel(lifeEvent.dateLabel) !== null) return "age";
+  if (/^\d{4}-\d{1,2}$/.test(lifeEvent.dateLabel ?? "")) return "month";
+  if (/^\d{4}$/.test(lifeEvent.dateLabel ?? "")) return "year";
+  return "day";
+}
+
+function firstDayOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function firstDayOfNextMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+}
+
+function firstDayOfYear(date: Date) {
+  return new Date(date.getFullYear(), 0, 1);
+}
+
+function firstDayOfNextYear(date: Date) {
+  return new Date(date.getFullYear() + 1, 0, 1);
+}
+
+function eventDateRange(profile: PersonProfile, lifeEvent: LifeEvent, precision: EventPrecision) {
+  const birth = parseLocalDate(profile.birthDate);
+  const eventDate = parseLocalDate(lifeEvent.date);
+  if (!birth || !eventDate) return null;
+
+  const birthDate = startOfLocalDay(birth);
+  const anchorDate = startOfLocalDay(eventDate);
+  let startDate = anchorDate;
+  let endDate = addDays(anchorDate, 1);
+
+  if (precision === "month") {
+    startDate = firstDayOfMonth(anchorDate);
+    endDate = firstDayOfNextMonth(anchorDate);
+  }
+
+  if (precision === "year") {
+    startDate = firstDayOfYear(anchorDate);
+    endDate = firstDayOfNextYear(anchorDate);
+  }
+
+  if (precision === "age") {
+    const anchorPosition = calculateDatePosition(profile, anchorDate);
+    const age = ageFromEventLabel(lifeEvent.dateLabel) ?? anchorPosition?.age ?? 0;
+    startDate = addYears(birthDate, age);
+    endDate = addYears(birthDate, age + 1);
+  }
+
+  const hundredthBirthday = addYears(birthDate, years);
+  const clampedStart = startDate.getTime() < birthDate.getTime() ? birthDate : startDate;
+  const clampedEnd = endDate.getTime() > hundredthBirthday.getTime() ? hundredthBirthday : endDate;
+  if (clampedEnd.getTime() <= clampedStart.getTime()) return null;
+
+  return {
+    startDate: clampedStart,
+    endDate: clampedEnd
+  };
+}
+
+function positionFromIndex(index: number, date: Date): EventCellPosition {
+  return {
+    index,
+    age: Math.floor(index / weeksPerYear),
+    weekInYear: index % weeksPerYear,
+    date
+  };
+}
+
+function eventSegmentsForRange(profile: PersonProfile, startDate: Date, endDate: Date) {
+  const startPosition = calculateDatePosition(profile, startDate);
+  const endPosition = calculateDatePosition(profile, addDays(endDate, -1));
+  if (!startPosition || !endPosition) return [];
+
+  const segments: EventSegment[] = [];
+  for (let age = startPosition.age; age <= endPosition.age; age += 1) {
+    const startWeek = age === startPosition.age ? startPosition.weekInYear : 0;
+    const endWeek = age === endPosition.age ? endPosition.weekInYear : weeksPerYear - 1;
+    if (endWeek < startWeek) continue;
+    segments.push({
+      age,
+      startWeek,
+      endWeek,
+      startIndex: age * weeksPerYear + startWeek,
+      endIndex: age * weeksPerYear + endWeek
+    });
+  }
+
+  return segments;
+}
+
+function calculateEventPosition(profile: PersonProfile, eventValue: LifeEvent | string): EventPosition | null {
+  const lifeEvent =
+    typeof eventValue === "string"
+      ? {
+          id: "draft-event",
+          date: eventValue,
+          datePrecision: "day" as const,
+          stageId: "",
+          message: ""
+        }
+      : eventValue;
+  const precision = inferEventPrecision(lifeEvent);
+  const range = eventDateRange(profile, lifeEvent, precision);
+  if (!range) return null;
+
+  const segments = eventSegmentsForRange(profile, range.startDate, range.endDate);
+  if (!segments.length) return null;
+
+  const firstSegment = segments[0];
+  const lastSegment = segments[segments.length - 1];
+  const midpointIndex =
+    precision === "day"
+      ? firstSegment.startIndex
+      : Math.floor((firstSegment.startIndex + lastSegment.endIndex) / 2);
+  const anchorPosition = positionFromIndex(midpointIndex, parseLocalDate(lifeEvent.date) ?? range.startDate);
+
+  return {
+    ...anchorPosition,
+    precision,
+    startDate: range.startDate,
+    endDate: range.endDate,
+    segments
+  };
+}
+
 function formatProfileDate(value: string) {
   const date = parseLocalDate(value);
   if (!date) return value;
@@ -720,6 +882,28 @@ function formatProfileDate(value: string) {
 
 function formatEventDate(lifeEvent: LifeEvent) {
   return lifeEvent.dateLabel ?? formatProfileDate(lifeEvent.date);
+}
+
+function precisionRangeAgeLabel(position: EventPosition) {
+  const firstAge = position.segments[0]?.age ?? position.age;
+  const lastAge = position.segments[position.segments.length - 1]?.age ?? position.age;
+  return firstAge === lastAge ? `age ${firstAge}` : `age ${firstAge}-${lastAge}`;
+}
+
+function formatEventPositionDetail(position: EventPosition) {
+  if (position.precision === "day") {
+    return `age ${position.age}, week ${position.weekInYear + 1}`;
+  }
+
+  if (position.precision === "month") {
+    return `${precisionRangeAgeLabel(position)}, known month`;
+  }
+
+  if (position.precision === "year") {
+    return `${precisionRangeAgeLabel(position)}, known year`;
+  }
+
+  return `age ${position.age} row`;
 }
 
 function formatAgeDetail(age: LifeAge) {
@@ -824,7 +1008,7 @@ function buildAiProfilePrompt(personName: string) {
   return [
     `Research ${target} and return data for a local Life in Weeks profile.`,
     "",
-    "Return only one JSON object. Do not wrap it in Markdown. Use public, high-confidence facts. Use YYYY-MM-DD for every machine date. If an exact day is unknown, use the best known midpoint date such as YYYY-07-01 and add dateLabel with the visible year or age. Omit deathDate if the person is living.",
+    "Return only one JSON object. Do not wrap it in Markdown. Use public, high-confidence facts. Use YYYY-MM-DD for every machine date. If an exact day is unknown, use a representative anchor date inside the known month/year/age, add dateLabel with the visible value, and set datePrecision to month, year, or age. Omit deathDate if the person is living.",
     "",
     "Schema:",
     "{",
@@ -851,6 +1035,7 @@ function buildAiProfilePrompt(personName: string) {
     '      "id": "born",',
     '      "date": "YYYY-MM-DD",',
     '      "dateLabel": "optional visible label",',
+    '      "datePrecision": "day | month | year | age",',
     '      "stageId": "early-life",',
     '      "message": "Short event note, 120 characters max"',
     '    }',
@@ -863,6 +1048,7 @@ function buildAiProfilePrompt(personName: string) {
     "- Use 4 to 9 stages that cover the public life from birth to deathDate or today.",
     "- Each event.stageId must match one stage id.",
     "- Use 8 to 16 events, ordered chronologically, including birth and the most trajectory-changing moments.",
+    "- Use datePrecision day only when the exact day is known. Use month/year/age when only that precision is supported.",
     "- Keep event messages factual, concrete, and no longer than 120 characters.",
     "- Colors may be omitted; if included, use 6-digit hex values."
   ].join("\n");
@@ -999,11 +1185,13 @@ function normalizeImportedEvents(value: unknown, stages: DevelopmentStage[], bir
     const stageId = requestedStageId && stageIds.has(requestedStageId) ? requestedStageId : stageIdForImportedEvent(stages, date);
     const id = uniqueId(slugFromText(firstTextField(item, ["id", "message"], message), `event-${index + 1}`), usedIds);
     const dateLabel = textField(item, "dateLabel");
+    const datePrecision = parseEventPrecision(textField(item, "datePrecision"));
 
     return {
       id,
       date,
       ...(dateLabel ? { dateLabel: clampText(dateLabel, 24) } : {}),
+      ...(datePrecision ? { datePrecision } : {}),
       stageId,
       message: clampText(message, maxEventCharacters)
     };
@@ -1119,6 +1307,7 @@ function updateCellState(filledWeeks: number) {
 function resetEventCells() {
   grid.querySelectorAll<HTMLElement>(".week-cell").forEach((cell) => {
     cell.classList.remove("has-event");
+    cell.classList.remove("has-event-range");
     cell.style.removeProperty("--event-color");
     if (cell.dataset.baseLabel) {
       cell.setAttribute("aria-label", cell.dataset.baseLabel);
@@ -1129,7 +1318,7 @@ function resetEventCells() {
 function getPositionedEvents() {
   return lifeEvents
     .map((lifeEvent) => {
-      const position = calculateEventPosition(selectedProfile, lifeEvent.date);
+      const position = calculateEventPosition(selectedProfile, lifeEvent);
       return position ? { lifeEvent, position } : null;
     })
     .filter((lifeEvent): lifeEvent is PositionedEvent => lifeEvent !== null)
@@ -1216,6 +1405,11 @@ function renderLifeEvents() {
     cell: HTMLElement;
     anchorX: number;
     anchorY: number;
+    railSegments: {
+      startX: number;
+      endX: number;
+      y: number;
+    }[];
   };
 
   const measureEvents = (): MeasuredEvent[] =>
@@ -1225,12 +1419,36 @@ function renderLifeEvents() {
         if (!cell) return null;
 
         const cellRect = cell.getBoundingClientRect();
+        const railSegments = position.segments
+          .map((segment) => {
+            const startCell = grid.querySelector<HTMLElement>(`[data-week-index="${segment.startIndex}"]`);
+            const endCell = grid.querySelector<HTMLElement>(`[data-week-index="${segment.endIndex}"]`);
+            if (!startCell || !endCell) return null;
+            const startRect = startCell.getBoundingClientRect();
+            const endRect = endCell.getBoundingClientRect();
+            const railOffset = compact ? 1 : 2;
+            return {
+              startX: startRect.left - stageRect.left + startRect.width / 2,
+              endX: endRect.left - stageRect.left + endRect.width / 2,
+              y: startRect.top - stageRect.top + startRect.height + railOffset
+            };
+          })
+          .filter((segment): segment is { startX: number; endX: number; y: number } => segment !== null);
+        const anchorSegment =
+          position.precision === "day"
+            ? null
+            : railSegments.reduce<{ startX: number; endX: number; y: number } | null>((widest, segment) => {
+                if (!widest) return segment;
+                return segment.endX - segment.startX > widest.endX - widest.startX ? segment : widest;
+              }, null);
+
         return {
           lifeEvent,
           position,
           cell,
-          anchorX: cellRect.left - stageRect.left + cellRect.width / 2,
-          anchorY: cellRect.top - stageRect.top + cellRect.height / 2
+          anchorX: anchorSegment ? (anchorSegment.startX + anchorSegment.endX) / 2 : cellRect.left - stageRect.left + cellRect.width / 2,
+          anchorY: anchorSegment ? anchorSegment.y : cellRect.top - stageRect.top + cellRect.height / 2,
+          railSegments
         };
       })
       .filter((event): event is MeasuredEvent => event !== null);
@@ -1241,6 +1459,7 @@ function renderLifeEvents() {
     const color = eventColor(event.lifeEvent);
     const note = document.createElement("article");
     note.className = "event-note";
+    note.classList.toggle("event-note--range", event.position.precision !== "day");
     note.style.left = `${noteLeft}px`;
     note.style.top = "0";
     note.style.visibility = "hidden";
@@ -1249,7 +1468,7 @@ function renderLifeEvents() {
 
     const date = document.createElement("time");
     date.dateTime = event.lifeEvent.date;
-    date.textContent = `${formatEventDate(event.lifeEvent)} / age ${event.position.age}, week ${event.position.weekInYear + 1} / ${eventStageLabel(event.lifeEvent)}`;
+    date.textContent = `${formatEventDate(event.lifeEvent)} / ${formatEventPositionDetail(event.position)} / ${eventStageLabel(event.lifeEvent)}`;
 
     const message = document.createElement("div");
     message.textContent = event.lifeEvent.message;
@@ -1286,11 +1505,13 @@ function renderLifeEvents() {
   measuredEvents.forEach((event, index) => {
     const color = eventColor(event.lifeEvent);
     const baseLabel = event.cell.getAttribute("aria-label") ?? "";
-    event.cell.classList.add("has-event");
-    event.cell.style.setProperty("--event-color", color);
+    event.cell.classList.add(event.position.precision === "day" ? "has-event" : "has-event-range");
+    if (event.position.precision === "day") {
+      event.cell.style.setProperty("--event-color", color);
+    }
     event.cell.setAttribute(
       "aria-label",
-      `${baseLabel}. Event on ${formatEventDate(event.lifeEvent)}: ${event.lifeEvent.message}`
+      `${baseLabel}. ${event.position.precision === "day" ? "Event" : "Approximate event"} on ${formatEventDate(event.lifeEvent)}: ${event.lifeEvent.message}`
     );
 
     const noteTop = noteTops[index];
@@ -1298,7 +1519,7 @@ function renderLifeEvents() {
     const noteAnchorY = compact ? noteTop : noteTop + 22;
     const compactRailY = gridRect.bottom - stageRect.top + 10;
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("class", "event-line");
+    path.setAttribute("class", `event-line${event.position.precision === "day" ? "" : " event-line--range"}`);
     path.style.setProperty("--event-color", color);
     const pathDefinition = compact
       ? [
@@ -1316,18 +1537,32 @@ function renderLifeEvents() {
     path.setAttribute("d", pathDefinition);
 
     const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    dot.setAttribute("class", "event-line-dot");
+    dot.setAttribute("class", event.position.precision === "day" ? "event-line-dot" : "event-range-anchor");
     dot.style.setProperty("--event-color", color);
     dot.setAttribute("cx", event.anchorX.toFixed(1));
     dot.setAttribute("cy", event.anchorY.toFixed(1));
-    dot.setAttribute("r", "3");
+    dot.setAttribute("r", event.position.precision === "day" ? "3" : "4");
+
+    const rangeRails =
+      event.position.precision === "day"
+        ? []
+        : event.railSegments.map((segment) => {
+            const rail = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            rail.setAttribute("class", `event-range-marker event-range-marker--${event.position.precision}`);
+            rail.style.setProperty("--event-color", color);
+            rail.setAttribute(
+              "d",
+              `M ${segment.startX.toFixed(1)} ${segment.y.toFixed(1)} L ${segment.endX.toFixed(1)} ${segment.y.toFixed(1)}`
+            );
+            return rail;
+          });
 
     const note = notes[index];
     note.style.left = `${noteLeft}px`;
     note.style.top = `${noteTop}px`;
     note.style.visibility = "";
 
-    eventLines.append(path, dot);
+    eventLines.append(...rangeRails, path, dot);
   });
 }
 
@@ -1371,7 +1606,10 @@ function updateCopy(age: LifeAge) {
 
   updateProfileTitle();
   profileSubtitle.textContent = selectedProfile.subtitle;
-  sourceNote.textContent = activeMode === "personal" ? activeReflectionLine() : selectedProfile.sourceNote;
+  sourceNote.textContent =
+    activeMode === "personal"
+      ? activeReflectionLine()
+      : `${selectedProfile.sourceNote} ${activeReflectionLine()}`;
 
   if (activeMode === "personal") {
     pageEyebrow.textContent = "KISKIR / personal timeline";
@@ -1379,7 +1617,7 @@ function updateCopy(age: LifeAge) {
     shareLine.textContent = "";
     viralNoteContainer?.setAttribute("hidden", "");
     exportTitle.textContent = "Personal Timeline";
-    exportSummary.textContent = `${selectedProfile.stages.length} life phases / ${lifeEvents.length} personal events / ${percent.toFixed(1)}% of the 100-year grid filled.`;
+    exportSummary.textContent = `${selectedProfile.stages.length} life phases / ${lifeEvents.length} personal events mapped / ${percent.toFixed(1)}% of the 100-year grid filled.`;
     stageCardLabel.textContent = "Life phases";
     stageCardCopy.textContent = "Each color maps to a broad life phase.";
     stageMetric.textContent = `${selectedProfile.stages.length} phases`;
@@ -1387,17 +1625,17 @@ function updateCopy(age: LifeAge) {
     behaviorCardCopy.textContent = "Phase notes describe the general context of this birthday year.";
     behaviorMetric.textContent = currentPersonalPhase ?? "No active phase";
     eventCardLabel.textContent = "Personal moments";
-    eventCardCopy.textContent = "Your notes sit directly on their week squares.";
-    eventMetric.textContent = `${lifeEvents.length} events pinned`;
+    eventCardCopy.textContent = "Exact notes pin to weeks; approximate moments can span a month, year, or age row.";
+    eventMetric.textContent = `${lifeEvents.length} events mapped`;
     return;
   }
 
   pageEyebrow.textContent = "KISKIR / public figure profile";
-  viralNoteContainer?.removeAttribute("hidden");
+  viralNoteContainer?.setAttribute("hidden", "");
   stats.textContent = `${selectedProfile.name} / ${dateRange} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / ${ageLabel} ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
   shareLine.textContent = activeReflectionLine();
   exportTitle.textContent = `${selectedProfile.name} in Weeks`;
-  exportSummary.textContent = `${selectedProfile.stages.length} stages / ${lifeEvents.length} pinned events / ${overlapCount.toLocaleString()} lived weeks contain overlapping stages / ${percent.toFixed(1)}% of the 100-year grid filled.`;
+  exportSummary.textContent = `${selectedProfile.stages.length} stages / ${lifeEvents.length} mapped events / ${overlapCount.toLocaleString()} lived weeks contain overlapping stages / ${percent.toFixed(1)}% of the 100-year grid filled.`;
   stageCardLabel.textContent = "Stage recognition";
   stageCardCopy.textContent = "Each color maps to a named public development stage.";
   stageMetric.textContent = `${selectedProfile.stages.length} stages`;
@@ -1407,8 +1645,8 @@ function updateCopy(age: LifeAge) {
     ? `${activeStageLabel}: ${activeNow.join(" + ")}`
     : "No active public stage";
   eventCardLabel.textContent = "Event tracking";
-  eventCardCopy.textContent = "Public life events sit directly on their week squares.";
-  eventMetric.textContent = `${lifeEvents.length} events pinned`;
+  eventCardCopy.textContent = "Exact events pin to weeks; approximate public dates draw honest month, year, or age spans.";
+  eventMetric.textContent = `${lifeEvents.length} events mapped`;
   viralNote.textContent = activeReflectionLine();
 }
 
@@ -1522,7 +1760,7 @@ function drawExportImage() {
   ctx.fillStyle = "#73706A";
   ctx.font = "26px Avenir Next, Avenir, Gill Sans, sans-serif";
   const summary = selectedLifeAge
-    ? `${formatProfileDate(selectedProfile.birthDate)}${selectedProfile.deathDate ? ` - ${formatProfileDate(selectedProfile.deathDate)}` : ""} / ${selectedProfile.deathDate ? "lifespan" : "age"} ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} events`
+    ? `${formatProfileDate(selectedProfile.birthDate)}${selectedProfile.deathDate ? ` - ${formatProfileDate(selectedProfile.deathDate)}` : ""} / ${selectedProfile.deathDate ? "lifespan" : "age"} ${formatAgeDetail(selectedLifeAge)} / ${selectedProfile.stages.length} stages / ${lifeEvents.length} mapped events`
     : "5,200 squares = 100 birthday years.";
   ctx.fillText(summary, width / 2, 164);
 
@@ -1543,7 +1781,7 @@ function drawExportImage() {
     const age = displayRow;
     const y = top + displayRow * (cell + gap);
     ctx.fillStyle = "#8D8981";
-    if (age === 0 || (age >= 10 && age % 5 === 0)) ctx.fillText(String(age), left - 18, y + 15);
+    if (age % 5 === 0) ctx.fillText(String(age), left - 18, y + 15);
 
     for (let week = 0; week < weeksPerYear; week += 1) {
       const index = age * weeksPerYear + week;
@@ -1555,6 +1793,34 @@ function drawExportImage() {
 
   const positionedEvents = getPositionedEvents();
   const noteLeft = gridLeft + gridWidth + 70;
+  const canvasRailY = (age: number) => top + age * (cell + gap) + cell + 2;
+  const canvasAnchor = (position: EventPosition) => {
+    if (position.precision === "day") {
+      return {
+        x: gridLeft + position.weekInYear * (cell + gap) + cell / 2,
+        y: top + position.age * (cell + gap) + cell / 2
+      };
+    }
+
+    const widestSegment = position.segments.reduce<EventSegment | null>((widest, segment) => {
+      if (!widest) return segment;
+      return segment.endIndex - segment.startIndex > widest.endIndex - widest.startIndex ? segment : widest;
+    }, null);
+
+    if (!widestSegment) {
+      return {
+        x: gridLeft + position.weekInYear * (cell + gap) + cell / 2,
+        y: top + position.age * (cell + gap) + cell / 2
+      };
+    }
+
+    const startX = gridLeft + widestSegment.startWeek * (cell + gap) + cell / 2;
+    const endX = gridLeft + widestSegment.endWeek * (cell + gap) + cell / 2;
+    return {
+      x: (startX + endX) / 2,
+      y: canvasRailY(widestSegment.age)
+    };
+  };
   ctx.font = "23px Georgia, serif";
   const exportNotes = positionedEvents.map(({ lifeEvent }) => {
     const lines = wrapCanvasText(ctx, lifeEvent.message, 430).slice(0, 3);
@@ -1564,7 +1830,7 @@ function drawExportImage() {
     };
   });
   const noteTops = placeVariableEventNotes(
-    positionedEvents.map(({ position }) => position.age * (cell + gap) + cell / 2),
+    positionedEvents.map(({ position }) => canvasAnchor(position).y - top),
     exportNotes.map((note) => note.height),
     gridHeight,
     12
@@ -1573,13 +1839,29 @@ function drawExportImage() {
   positionedEvents.forEach(({ lifeEvent, position }, index) => {
     const exportNote = exportNotes[index];
     const color = eventColor(lifeEvent);
-    const anchorX = gridLeft + position.weekInYear * (cell + gap) + cell / 2;
-    const anchorY = top + position.age * (cell + gap) + cell / 2;
+    const { x: anchorX, y: anchorY } = canvasAnchor(position);
     const noteTop = top + noteTops[index];
     const noteAnchorY = noteTop + 31;
 
     ctx.strokeStyle = color;
     ctx.lineWidth = 1.5;
+    if (position.precision !== "day") {
+      ctx.save();
+      ctx.globalAlpha = 0.82;
+      ctx.lineWidth = position.precision === "month" ? 3 : 2.2;
+      ctx.setLineDash(position.precision === "month" ? [] : [7, 6]);
+      position.segments.forEach((segment) => {
+        const startX = gridLeft + segment.startWeek * (cell + gap) + cell / 2;
+        const endX = gridLeft + segment.endWeek * (cell + gap) + cell / 2;
+        const y = canvasRailY(segment.age);
+        ctx.beginPath();
+        ctx.moveTo(startX, y);
+        ctx.lineTo(endX, y);
+        ctx.stroke();
+      });
+      ctx.restore();
+    }
+
     ctx.beginPath();
     ctx.moveTo(anchorX, anchorY);
     ctx.bezierCurveTo(anchorX + 42, anchorY, noteLeft - 38, noteAnchorY, noteLeft, noteAnchorY);
@@ -1587,12 +1869,18 @@ function drawExportImage() {
 
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(anchorX, anchorY, 4, 0, Math.PI * 2);
+    ctx.arc(anchorX, anchorY, position.precision === "day" ? 4 : 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = "#FFFDF8";
     ctx.lineWidth = 3;
-    roundedRect(ctx, anchorX - 6, anchorY - 6, 12, 12, 2);
-    ctx.stroke();
+    if (position.precision === "day") {
+      roundedRect(ctx, anchorX - 6, anchorY - 6, 12, 12, 2);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(anchorX, anchorY, 6, 0, Math.PI * 2);
+      ctx.stroke();
+    }
 
     ctx.fillStyle = "rgba(255, 253, 248, 0.92)";
     roundedRect(ctx, noteLeft, noteTop, 470, exportNote.height, 4);
@@ -1604,7 +1892,7 @@ function drawExportImage() {
     ctx.fillStyle = "#777269";
     ctx.font = "15px Avenir Next, Avenir, Gill Sans, sans-serif";
     ctx.fillText(
-      `${formatEventDate(lifeEvent)} / age ${position.age}, week ${position.weekInYear + 1} / ${eventStageLabel(lifeEvent)}`,
+      `${formatEventDate(lifeEvent)} / ${formatEventPositionDetail(position)} / ${eventStageLabel(lifeEvent)}`,
       noteLeft + 18,
       noteTop + 21
     );

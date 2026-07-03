@@ -1,5 +1,9 @@
 :root {
   --rail: 1228px;
+  --week-cell-size: 12px;
+  --week-gap: 3px;
+  --decade-row-size: 16px;
+  --life-grid-rows: repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(9, var(--week-cell-size)) var(--decade-row-size) repeat(10, var(--week-cell-size));
   color: #171614;
   background: #f6f4ec;
   font-family: "Avenir Next", Avenir, "Gill Sans", "Trebuchet MS", sans-serif;
@@ -390,7 +394,7 @@ h1 {
 
 .ai-builder__textareas {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   min-width: 0;
 }
@@ -406,7 +410,7 @@ h1 {
 
 .ai-textarea-field textarea {
   width: 100%;
-  min-height: 178px;
+  min-height: 226px;
   border: 1px solid #cfcbc0;
   border-radius: 8px;
   padding: 12px 13px;
@@ -673,25 +677,25 @@ h1 {
 
 .age-axis {
   display: grid;
-  grid-template-rows: repeat(100, 12px);
-  gap: 3px;
+  grid-template-rows: var(--life-grid-rows);
+  gap: var(--week-gap);
   color: #8c887f;
   font-size: 10px;
   font-weight: 600;
-  line-height: 12px;
+  line-height: var(--week-cell-size);
   text-align: right;
 }
 
 .life-grid {
   display: grid;
-  grid-template-columns: repeat(52, 12px);
-  grid-template-rows: repeat(100, 12px);
-  gap: 3px;
+  grid-template-columns: repeat(52, var(--week-cell-size));
+  grid-template-rows: var(--life-grid-rows);
+  gap: var(--week-gap);
 }
 
 .week-cell {
-  width: 12px;
-  height: 12px;
+  width: var(--week-cell-size);
+  height: var(--week-cell-size);
   border: 0;
   border-radius: 2px;
   padding: 0;
@@ -744,10 +748,38 @@ h1 {
   vector-effect: non-scaling-stroke;
 }
 
+.event-line--range {
+  stroke-opacity: 0.6;
+}
+
+.event-range-marker {
+  fill: none;
+  stroke: var(--event-color, rgba(22, 21, 18, 0.78));
+  stroke-linecap: round;
+  stroke-width: 2.4;
+  opacity: 0.82;
+  vector-effect: non-scaling-stroke;
+}
+
+.event-range-marker--year,
+.event-range-marker--age {
+  stroke-dasharray: 4 4;
+}
+
+.event-range-marker--month {
+  stroke-width: 2.8;
+}
+
 .event-line-dot {
   fill: var(--event-color, #161512);
   stroke: #fffdf8;
   stroke-width: 1.4;
+}
+
+.event-range-anchor {
+  fill: #fffdf8;
+  stroke: var(--event-color, #161512);
+  stroke-width: 2.2;
 }
 
 .event-notes {
@@ -771,6 +803,10 @@ h1 {
   box-shadow: 0 8px 16px rgba(39, 36, 29, 0.06);
 }
 
+.event-note--range {
+  background: rgba(255, 253, 248, 0.88);
+}
+
 .event-note time {
   display: block;
   margin-bottom: 3px;
@@ -783,7 +819,8 @@ h1 {
 
 .legend {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(260px, 300px));
+  justify-content: center;
   gap: 13px 26px;
   width: var(--rail);
   min-width: 760px;
@@ -851,6 +888,12 @@ h1 {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --week-cell-size: 5.5px;
+    --week-gap: 1px;
+    --decade-row-size: 7.5px;
+  }
+
   .page-shell {
     width: 100vw;
     max-width: 100vw;
@@ -1041,7 +1084,7 @@ h1 {
   }
 
   .ai-textarea-field textarea {
-    min-height: 170px;
+    min-height: 220px;
   }
 
   .ai-textarea-field--large textarea {
@@ -1076,21 +1119,14 @@ h1 {
   }
 
   .age-axis {
-    grid-template-rows: repeat(100, 5.5px);
-    gap: 1px;
     font-size: 7px;
-    line-height: 5.5px;
   }
 
   .life-grid {
-    grid-template-columns: repeat(52, 5.5px);
-    grid-template-rows: repeat(100, 5.5px);
-    gap: 1px;
+    grid-template-columns: repeat(52, var(--week-cell-size));
   }
 
   .week-cell {
-    width: 5.5px;
-    height: 5.5px;
     border-radius: 1px;
   }
 
@@ -1101,6 +1137,14 @@ h1 {
   .event-line {
     stroke-opacity: 0.44;
     stroke-width: 0.8;
+  }
+
+  .event-range-marker {
+    stroke-width: 1.4;
+  }
+
+  .event-range-anchor {
+    stroke-width: 1.4;
   }
 
   .chart-heading {
@@ -1123,6 +1167,7 @@ h1 {
 
   .legend {
     grid-template-columns: 1fr;
+    justify-content: stretch;
     min-width: 0;
     width: 100%;
     font-size: 12px;
