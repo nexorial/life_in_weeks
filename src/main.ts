@@ -92,6 +92,7 @@ const eventNoteHeight = 94;
 const eventNoteGap = 8;
 const compactEventBreakpoint = 760;
 const defaultPersonalBirthDate = "1990-01-01";
+const defaultExportBranding = "visualized at kiskir.dev/life";
 const personalReflectionLine =
   "Your weeks are grouped by life phase, and pinned moments stay local to this browser session using only the birthday and events entered here.";
 
@@ -2151,7 +2152,11 @@ function drawExportImage() {
   ctx.textAlign = "center";
   ctx.fillStyle = "#8D8981";
   ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
-  ctx.fillText(activeReflectionLine(), width / 2, height - 62);
+  ctx.fillText(activeReflectionLine(), width / 2, height - 76);
+
+  ctx.fillStyle = "#AAA69D";
+  ctx.font = "600 20px Avenir Next, Avenir, Gill Sans, sans-serif";
+  ctx.fillText(defaultExportBranding, width / 2, height - 38);
 
   return canvas;
 }
