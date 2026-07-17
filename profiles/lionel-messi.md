@@ -2,52 +2,54 @@
 
 ## Status
 
-Batch-generated public-figure Life in Weeks profile.
+Curated news profile for 2026-07-10.
 
-## Agency Agents Line
+## Story Line
 
-> Quiet playmaker whose control turns crowded fields into open space.
+> At 39, with Argentina eleven minutes from elimination, he found one more World Cup equalizer.
+
+## Why This Is in the News
+
+On 2026-07-07, Argentina trailed Egypt 2–0 late in its World Cup round-of-16 match. Messi scored the
+83rd-minute equalizer, extending his record to 21 World Cup goals, before Argentina completed a 3–2 comeback.
+
+The match produced unusually strong public-interest evidence: Google said Search reached its highest usage ever
+immediately after Argentina's winner. Google did not publish a raw query count, so the profile treats that as a
+company-reported usage record rather than a measured audience total.
 
 ## Source Families Checked
 
-- [Wikipedia: Lionel Messi](https://en.wikipedia.org/wiki/Lionel_Messi) for the public biography chronology and career/life-event cross-checks.
-- [Wikidata: Q615](https://www.wikidata.org/wiki/Q615) for structured birth/death date checks when available.
+- [Associated Press: Argentina's 3–2 comeback](https://apnews.com/article/5129f0693b78e1ca7efeee87c46cc4cb) and the [official FIFA match report](https://fdp.fifa.org/assetspublic/ce281/r12537/pdf/FullTimeMatchReport-English.pdf) for the 2026-07-07 event.
+- [FIFA: Messi's 200th Argentina appearance and World Cup hat trick](https://www.fifa.com/en/articles/lionel-messi-argentina-algeria-hat-trick) for the 2026 tournament milestone.
+- [FC Barcelona: Lionel Messi profile](https://www.fcbarcelona.com/en/futbol/primer-equip/jugadors/4974/lionel-messi) for his academy and first-team chronology.
+- FIFA, CONMEBOL, Paris Saint-Germain, Inter Miami, and Ballon d'Or records for senior career milestones.
+- [Search Engine Journal: Google usage statement](https://www.searchenginejournal.com/google-says-search-hit-all-time-usage-high-during-world-cup/581796/) for the bounded virality signal.
 
 ## Verification Notes
 
-- Birth and death dates prefer Wikidata structured values, then the Wikipedia biography when Wikidata is incomplete.
-- Some public events have only year or month precision in the source text; those use midpoint machine dates plus visible labels.
-- The chronology below is intentionally selective: it favors dated, source-visible turning points over exhaustive coverage.
-- Stage labels are editorial groupings for the Life in Weeks visualization; event rows carry the source-grounded facts.
+- The 2000 Barcelona move is represented at year precision because public sources do not agree on one exact relocation day.
+- The latest event is the equalizer, not the later winning goal; the profile wording keeps Messi's contribution distinct from the team's final result.
+- Stage labels are editorial groupings. Club and national-team stages overlap because those responsibilities ran in parallel.
 
 ## Verified Chronology
 
 | Date | Event | Validation |
 | --- | --- | --- |
-| 1987-06-24 | Born. | Wikidata birth date; Wikipedia biography |
-| February 2001 | Messi's family relocated to Barcelona, where they moved into an apartment near the club's stadium, Camp Nou. | Wikipedia biography; approximate machine date |
-| 2004-02-04 | His progress was reflected in his first professional contract, signed on 4 February 2004, | Wikipedia biography |
-| 2004 | Began his international career in 2004 with Argentina's U20 team | Wikipedia biography; approximate machine date |
-| 2009 | For his efforts in 2009, Messi won the Ballon d'Or, the FIFA World Player of the Year award and his first European. | Wikipedia biography; approximate machine date |
-| 2016-01-11 | Won the FIFA Ballon d'Or for a record fifth time in his career. | Wikipedia biography |
-| 2016-06-07 | Won a libel case against La Razón newspaper and was awarded €65,000 in damages | Wikipedia biography |
-| June 2016 | Several days after Messi announced his retirement from Argentina's national team in June 2016 | Wikipedia biography; approximate machine date |
-| 2017-06-30 | Who he married on 30 June 2017 in their hometown of Rosario. | Wikipedia biography |
-| 2017-11-25 | Signed a new deal with Barcelona on 25 November 2017, keeping him with the club through 2021. | Wikipedia biography |
-| May 2018 | With the departure of captain Andrés Iniesta in May 2018, Messi was named the team's new captain for the 2018–19 season. | Wikipedia biography; approximate machine date |
-| 2020 | Was named the Laureus World Sportsman of the Year, the first team-sport athlete to win the award. | Wikipedia biography; approximate machine date |
-| 2020 | Where he was jointly named Best Player and won the Golden Boot | Wikipedia biography; approximate machine date |
-| June 2021 | Signed a five-year deal to become a brand ambassador for Hard Rock Cafe | Wikipedia biography; approximate machine date |
-| 2021 | Where he won the Ligue 1 title twice and was awarded the Ligue 1 Foreign Player of the Year for 2022–23. | Wikipedia biography; approximate machine date |
-| 2021-08-10 | Messi joined the Ligue 1 club Paris Saint-Germain on a two-year contract with an option for an extra year. | Wikipedia biography |
-| March 2023 | A life-sized statue of Messi holding the World Cup trophy was unveiled outside the CONMEBOL headquarters in Luque | Wikipedia biography; approximate machine date |
-| 2023 | Joined the Major League Soccer club Inter Miami in 2023 and led them to their first MLS Cup victory in 2025 | Wikipedia biography; approximate machine date |
-| 2023 | Messi was named Time's Athlete of the Year in 2023 | Wikipedia biography; approximate machine date |
-| 2023-07-15 | The Major League Soccer club Inter Miami CF announced the signing of Messi on a two-and-a-half-year contract. | Wikipedia biography |
-| 2023-10-30 | Following his World Cup win | Wikipedia biography |
-| 2024-06-04 | Announced the release of Más+, an American brand of sports drinks and energy drinks. | Wikipedia biography |
-| 2025 | Led Miami to MLS Cup 2025, where they won 3–1 over the Vancouver Whitecaps to win the team's first league championship. | Wikipedia biography; approximate machine date |
-| 2026-04-16 | Acquired full ownership of the Spanish football club UE Cornellà. . | Wikipedia biography |
+| 1987-06-24 | Born in Rosario, Argentina. | FC Barcelona; FIFA; public records |
+| 2000 | Moves to Barcelona and enters the club's youth system after leaving Newell's Old Boys. | FC Barcelona; year precision |
+| 2004-10-16 | Makes his official FC Barcelona first-team debut. | FC Barcelona |
+| 2006-06-16 | Scores on his World Cup debut, becoming Argentina's youngest World Cup scorer. | FIFA |
+| 2009-05-27 | Scores as Barcelona wins the Champions League final and completes a historic treble. | UEFA; FC Barcelona |
+| 2009-12-01 | Wins his first Ballon d'Or. | Ballon d'Or; France Football |
+| 2021-07-10 | Captains Argentina to the Copa América title, his first senior international trophy. | CONMEBOL |
+| 2021-08-10 | Joins Paris Saint-Germain after leaving Barcelona. | Paris Saint-Germain |
+| 2022-12-18 | Captains Argentina to the World Cup title and receives the Golden Ball. | FIFA |
+| 2023-07-15 | Inter Miami announces his signing. | Inter Miami |
+| 2023-08-19 | Leads Inter Miami to the Leagues Cup, the club's first trophy. | Leagues Cup; Inter Miami |
+| 2023-10-30 | Wins a record-extending eighth Ballon d'Or. | Ballon d'Or |
+| 2024-07-14 | Argentina retains the Copa América title. | CONMEBOL |
+| 2026-06-16 | Scores a hat trick in his 200th Argentina appearance and sixth World Cup. | FIFA; Associated Press |
+| 2026-07-07 | Scores the late equalizer as Argentina comes from 2–0 down to beat Egypt 3–2. | FIFA match report; Associated Press |
 
 ## Life in Weeks JSON
 
@@ -56,236 +58,180 @@ Batch-generated public-figure Life in Weeks profile.
   "name": "Lionel Messi",
   "birthDate": "1987-06-24",
   "headline": "Lionel Messi, one week at a time.",
-  "subtitle": "Lionel Messi's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-  "sourceNote": "Sources checked include English Wikipedia and Wikidata for Lionel Messi; dates with partial precision use visible labels.",
+  "subtitle": "Rosario, La Masia, Barcelona, Argentina's long wait, a World Cup title, Miami, and one more comeback at 39 share the same grid.",
+  "sourceNote": "Checked against FIFA, AP, FC Barcelona, CONMEBOL, Inter Miami, and official match records.",
   "stages": [
     {
-      "id": "early-life",
-      "label": "Early life",
+      "id": "rosario-newells",
+      "label": "Rosario and Newell's",
       "startDate": "1987-06-24",
-      "endDate": "2001-02-15",
-      "location": "Public record",
-      "behavior": "Early life: Training, competition, championships, endorsement power, and legacy formation",
+      "endDate": "2000-09-01",
+      "location": "Rosario, Argentina",
+      "behavior": "Family, youth football, growth-hormone treatment, and a left-footed game taking shape",
       "color": "#ead1cc",
       "filled": "#bd6658"
     },
     {
-      "id": "development",
-      "label": "Development and entry",
-      "startDate": "2001-02-15",
-      "endDate": "2009-07-01",
-      "location": "Public record",
-      "behavior": "Development and entry: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "la-masia",
+      "label": "La Masia formation",
+      "startDate": "2000-09-01",
+      "endDate": "2004-10-16",
+      "location": "Barcelona, Spain",
+      "behavior": "Relocation, academy progression, physical development, and accelerated promotion",
       "color": "#b8ddd9",
       "filled": "#247f85"
     },
     {
-      "id": "breakthrough",
-      "label": "Breakthrough season",
-      "startDate": "2009-07-01",
-      "endDate": "2017-06-30",
-      "location": "Public record",
-      "behavior": "Breakthrough season: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "barcelona-rise",
+      "label": "Barcelona rise",
+      "startDate": "2004-10-16",
+      "endDate": "2009-05-27",
+      "location": "Barcelona, Spain",
+      "behavior": "First-team adaptation, positional freedom, goals, and a generation becoming a system",
       "color": "#edce8c",
       "filled": "#b7791f"
     },
     {
-      "id": "prime",
-      "label": "Prime dominance",
-      "startDate": "2017-06-30",
-      "endDate": "2020-07-01",
-      "location": "Public record",
-      "behavior": "Prime dominance: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "barcelona-dominance",
+      "label": "Barcelona dominance",
+      "startDate": "2009-05-27",
+      "endDate": "2021-08-10",
+      "location": "Barcelona, Spain",
+      "behavior": "Playmaking, record scoring, trophies, captaincy, and sustained club identity",
       "color": "#c9c0df",
       "filled": "#725ca0"
     },
     {
-      "id": "business",
-      "label": "Business and public role",
-      "startDate": "2020-07-01",
-      "endDate": "2023-03-15",
-      "location": "Public record",
-      "behavior": "Business and public role: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "argentina-burden",
+      "label": "Argentina pressure",
+      "startDate": "2011-08-01",
+      "endDate": "2021-07-10",
+      "location": "Argentina and global tournaments",
+      "behavior": "Captaincy, repeated final losses, public doubt, brief retirement, and return",
       "color": "#c4d8ad",
       "filled": "#5f8b3d"
     },
     {
-      "id": "legacy",
-      "label": "Legacy",
-      "startDate": "2023-03-15",
-      "endDate": "2023-10-30",
-      "location": "Public record",
-      "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "argentina-champion",
+      "label": "Argentina champion",
+      "startDate": "2021-07-10",
+      "location": "South America and FIFA World Cups",
+      "behavior": "Copa América, Finalissima, World Cup leadership, records, and late-career resilience",
       "color": "#b7cbe8",
       "filled": "#3f6fa9"
     },
     {
-      "id": "legacy-2",
-      "label": "Legacy",
-      "startDate": "2023-10-30",
-      "location": "Public record",
-      "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
+      "id": "psg-transition",
+      "label": "Paris transition",
+      "startDate": "2021-08-10",
+      "endDate": "2023-07-15",
+      "location": "Paris, France",
+      "behavior": "Leaving Barcelona, adapting to a new club, league titles, and World Cup preparation",
       "color": "#e5bbb2",
       "filled": "#a44f43"
+    },
+    {
+      "id": "miami-final-world-cups",
+      "label": "Miami and final World Cups",
+      "startDate": "2023-07-15",
+      "location": "Miami and Argentina",
+      "behavior": "MLS growth, club-building influence, family stability, and selective international peaks",
+      "color": "#d9c7a7",
+      "filled": "#8e6b35"
     }
   ],
   "events": [
     {
       "id": "born",
       "date": "1987-06-24",
-      "stageId": "early-life",
-      "message": "Born."
+      "stageId": "rosario-newells",
+      "message": "Born in Rosario, Argentina."
     },
     {
-      "id": "messi-s-family-relocated-to-barcelona-where-",
-      "date": "2001-02-15",
-      "dateLabel": "February 2001",
-      "stageId": "development",
-      "message": "Messi's family relocated to Barcelona, where they moved into an apartment near the club's stadium, Camp Nou."
+      "id": "moves-to-barcelona",
+      "date": "2000-09-01",
+      "dateLabel": "2000",
+      "datePrecision": "year",
+      "stageId": "la-masia",
+      "message": "Moves to Barcelona and enters the club's youth system after leaving Newell's Old Boys."
     },
     {
-      "id": "his-progress-was-reflected-in-his-first-prof",
-      "date": "2004-02-04",
-      "stageId": "development",
-      "message": "His progress was reflected in his first professional contract, signed on 4 February 2004,"
+      "id": "barcelona-debut",
+      "date": "2004-10-16",
+      "stageId": "barcelona-rise",
+      "message": "Makes his official FC Barcelona first-team debut."
     },
     {
-      "id": "began-his-international-career-in-2004-with-",
-      "date": "2004-07-01",
-      "dateLabel": "2004",
-      "stageId": "development",
-      "message": "Began his international career in 2004 with Argentina's U20 team"
+      "id": "first-world-cup-goal",
+      "date": "2006-06-16",
+      "stageId": "barcelona-rise",
+      "message": "Scores on his World Cup debut, becoming Argentina's youngest scorer at the tournament."
     },
     {
-      "id": "for-his-efforts-in-2009-messi-won-the-ballon",
-      "date": "2009-07-01",
-      "dateLabel": "2009",
-      "stageId": "breakthrough",
-      "message": "For his efforts in 2009, Messi won the Ballon d'Or, the FIFA World Player of the Year award and his first European."
+      "id": "barcelona-treble",
+      "date": "2009-05-27",
+      "stageId": "barcelona-dominance",
+      "message": "Scores in the Champions League final as Barcelona completes a historic treble."
     },
     {
-      "id": "won-the-fifa-ballon-d-or-for-a-record-fifth-",
-      "date": "2016-01-11",
-      "stageId": "breakthrough",
-      "message": "Won the FIFA Ballon d'Or for a record fifth time in his career."
+      "id": "first-ballon-dor",
+      "date": "2009-12-01",
+      "stageId": "barcelona-dominance",
+      "message": "Wins his first Ballon d'Or."
     },
     {
-      "id": "won-a-libel-case-against-la-razon-newspaper-",
-      "date": "2016-06-07",
-      "stageId": "breakthrough",
-      "message": "Won a libel case against La Razón newspaper and was awarded €65,000 in damages"
+      "id": "copa-america-2021",
+      "date": "2021-07-10",
+      "stageId": "argentina-champion",
+      "message": "Captains Argentina to the Copa América title, his first senior international trophy."
     },
     {
-      "id": "several-days-after-messi-announced-his-retir",
-      "date": "2016-06-15",
-      "dateLabel": "June 2016",
-      "stageId": "breakthrough",
-      "message": "Several days after Messi announced his retirement from Argentina's national team in June 2016"
-    },
-    {
-      "id": "who-he-married-on-30-june-2017-in-their-home",
-      "date": "2017-06-30",
-      "stageId": "prime",
-      "message": "Who he married on 30 June 2017 in their hometown of Rosario."
-    },
-    {
-      "id": "signed-a-new-deal-with-barcelona-on-25-novem",
-      "date": "2017-11-25",
-      "stageId": "prime",
-      "message": "Signed a new deal with Barcelona on 25 November 2017, keeping him with the club through 2021."
-    },
-    {
-      "id": "with-the-departure-of-captain-andres-iniesta",
-      "date": "2018-05-15",
-      "dateLabel": "May 2018",
-      "stageId": "prime",
-      "message": "With the departure of captain Andrés Iniesta in May 2018, Messi was named the team's new captain for the 2018–19 season."
-    },
-    {
-      "id": "was-named-the-laureus-world-sportsman-of-the",
-      "date": "2020-07-01",
-      "dateLabel": "2020",
-      "stageId": "business",
-      "message": "Was named the Laureus World Sportsman of the Year, the first team-sport athlete to win the award."
-    },
-    {
-      "id": "where-he-was-jointly-named-best-player-and-w",
-      "date": "2020-07-01",
-      "dateLabel": "2020",
-      "stageId": "business",
-      "message": "Where he was jointly named Best Player and won the Golden Boot"
-    },
-    {
-      "id": "signed-a-five-year-deal-to-become-a-brand-am",
-      "date": "2021-06-15",
-      "dateLabel": "June 2021",
-      "stageId": "business",
-      "message": "Signed a five-year deal to become a brand ambassador for Hard Rock Cafe"
-    },
-    {
-      "id": "where-he-won-the-ligue-1-title-twice-and-was",
-      "date": "2021-07-01",
-      "dateLabel": "2021",
-      "stageId": "business",
-      "message": "Where he won the Ligue 1 title twice and was awarded the Ligue 1 Foreign Player of the Year for 2022–23."
-    },
-    {
-      "id": "messi-joined-the-ligue-1-club-paris-saint-ge",
+      "id": "joins-psg",
       "date": "2021-08-10",
-      "stageId": "business",
-      "message": "Messi joined the Ligue 1 club Paris Saint-Germain on a two-year contract with an option for an extra year."
+      "stageId": "psg-transition",
+      "message": "Joins Paris Saint-Germain after leaving Barcelona."
     },
     {
-      "id": "a-life-sized-statue-of-messi-holding-the-wor",
-      "date": "2023-03-15",
-      "dateLabel": "March 2023",
-      "stageId": "legacy",
-      "message": "A life-sized statue of Messi holding the World Cup trophy was unveiled outside the CONMEBOL headquarters in Luque"
+      "id": "world-cup-2022",
+      "date": "2022-12-18",
+      "stageId": "argentina-champion",
+      "message": "Captains Argentina to the World Cup title and receives the tournament's Golden Ball."
     },
     {
-      "id": "joined-the-major-league-soccer-club-inter-mi",
-      "date": "2023-07-01",
-      "dateLabel": "2023",
-      "stageId": "legacy",
-      "message": "Joined the Major League Soccer club Inter Miami in 2023 and led them to their first MLS Cup victory in 2025"
-    },
-    {
-      "id": "messi-was-named-time-s-athlete-of-the-year-i",
-      "date": "2023-07-01",
-      "dateLabel": "2023",
-      "stageId": "legacy",
-      "message": "Messi was named Time's Athlete of the Year in 2023"
-    },
-    {
-      "id": "the-major-league-soccer-club-inter-miami-cf-",
+      "id": "joins-inter-miami",
       "date": "2023-07-15",
-      "stageId": "legacy",
-      "message": "The Major League Soccer club Inter Miami CF announced the signing of Messi on a two-and-a-half-year contract."
+      "stageId": "miami-final-world-cups",
+      "message": "Inter Miami announces his signing."
     },
     {
-      "id": "following-his-world-cup-win",
+      "id": "leagues-cup",
+      "date": "2023-08-19",
+      "stageId": "miami-final-world-cups",
+      "message": "Leads Inter Miami to the Leagues Cup, the club's first trophy."
+    },
+    {
+      "id": "eighth-ballon-dor",
       "date": "2023-10-30",
-      "stageId": "legacy-2",
-      "message": "Following his World Cup win"
+      "stageId": "miami-final-world-cups",
+      "message": "Wins a record-extending eighth Ballon d'Or."
     },
     {
-      "id": "announced-the-release-of-mas-an-american-bra",
-      "date": "2024-06-04",
-      "stageId": "legacy-2",
-      "message": "Announced the release of Más+, an American brand of sports drinks and energy drinks."
+      "id": "copa-america-2024",
+      "date": "2024-07-14",
+      "stageId": "argentina-champion",
+      "message": "Argentina retains the Copa América title."
     },
     {
-      "id": "led-miami-to-mls-cup-2025-where-they-won-3-1",
-      "date": "2025-07-01",
-      "dateLabel": "2025",
-      "stageId": "legacy-2",
-      "message": "Led Miami to MLS Cup 2025, where they won 3–1 over the Vancouver Whitecaps to win the team's first league championship."
+      "id": "world-cup-hat-trick",
+      "date": "2026-06-16",
+      "stageId": "argentina-champion",
+      "message": "Scores a hat trick in his 200th Argentina appearance and sixth World Cup."
     },
     {
-      "id": "acquired-full-ownership-of-the-spanish-footb",
-      "date": "2026-04-16",
-      "stageId": "legacy-2",
-      "message": "Acquired full ownership of the Spanish football club UE Cornellà. ."
+      "id": "egypt-comeback",
+      "date": "2026-07-07",
+      "stageId": "argentina-champion",
+      "message": "Scores the 83rd-minute equalizer as Argentina comes from 2–0 down to beat Egypt 3–2."
     }
   ]
 }

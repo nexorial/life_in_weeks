@@ -2,52 +2,53 @@
 
 ## Status
 
-Batch-generated public-figure Life in Weeks profile.
+Curated news profile for 2026-07-10.
 
-## Agency Agents Line
+## Story Line
 
-> Rewired pop stardom through authorship, reinvention, and fan-scale strategy.
+> A public career built from autobiographical songs reaches a private milestone announced on the world's stage.
+
+## Why This Is in the News
+
+On 2026-07-03, Taylor Swift and Travis Kelce married at Madison Square Garden in New York. Swift's representative
+confirmed the marriage while the venue displayed a restrained “Just Married” message.
+
+The event drew live coverage from multiple international outlets and substantial fan discussion. This profile
+keeps the treatment factual: it includes the confirmed marriage, date, and place without reproducing speculative
+or private ceremony details.
 
 ## Source Families Checked
 
-- [Wikipedia: Taylor Swift](https://en.wikipedia.org/wiki/Taylor_Swift) for the public biography chronology and career/life-event cross-checks.
-- [Wikidata: Q26876](https://www.wikidata.org/wiki/Q26876) for structured birth/death date checks when available.
+- [Associated Press: wedding report](https://apnews.com/article/640147a06d9bb28c9ac5a7c7b62898bc), [CBS News: representative confirmation](https://www.cbsnews.com/news/taylor-swift-travis-kelce-wedding-day-madison-square-garden-nyc/), and [Reuters: New York celebration](https://www.reutersconnect.com/item/wrap-taylor-swift-and-travis-kelce-are-married-publicist-says-as-pair-hosts-new-york-celebration/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1ZBNDkzMTAzMDcyMDI2UlAx/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX0xWQTAwMzQ5MzEwMzA3MjAyNlJQMQ) for the 2026-07-03 event.
+- [Recording Academy: Taylor Swift](https://www.grammy.com/artists/taylor-swift/15450/) and [2010 Grammy rewind](https://www.grammy.com/news/grammy-rewind-52nd-annual-grammy-awards/) for award chronology.
+- [TIME: 2023 Person of the Year](https://time.com/6343492/time-reveals-poy/) for the 2023 recognition.
+- Billboard, official album-release records, and Swift's public statements for releases, touring, re-recordings, and ownership chronology.
 
 ## Verification Notes
 
-- Birth and death dates prefer Wikidata structured values, then the Wikipedia biography when Wikidata is incomplete.
-- Some public events have only year or month precision in the source text; those use midpoint machine dates plus visible labels.
-- The chronology below is intentionally selective: it favors dated, source-visible turning points over exhaustive coverage.
-- Stage labels are editorial groupings for the Life in Weeks visualization; event rows carry the source-grounded facts.
+- The 2004 publishing agreement is represented at year precision rather than assigned an unsupported exact day.
+- The marriage is the only ceremony fact pinned to the grid. Guest lists, clothing, vows, and other private details are intentionally excluded.
+- Stage labels are editorial groupings. Re-recording and touring stages overlap because both projects ran concurrently.
 
 ## Verified Chronology
 
 | Date | Event | Validation |
 | --- | --- | --- |
-| 1989-12-13 | Born. | Wikidata birth date; Wikipedia biography |
-| 2004 | Signed with Sony/ATV Tree Music Publishing in 2004 | Wikipedia biography; approximate machine date |
-| June 2006 | Swift's debut single, "Tim McGraw", was released in June 2006. | Wikipedia biography; approximate machine date |
-| 2006-10-24 | Was released on October 24, 2006. | Wikipedia biography |
-| 2007 | Became the youngest person to be awarded | Wikipedia biography; approximate machine date |
-| 2008-11-11 | Swift's second album, Fearless, was released on November 11, 2008, in North America, and in March 2009 in other markets. | Wikipedia biography |
-| 2009 | Won the three highest awards for a country album: Album of the Year by both the Country Music Association Awards and. | Wikipedia biography; approximate machine date |
-| 2009 | Swift was named Artist of the Year by both the American Music Awards and Billboard | Wikipedia biography; approximate machine date |
-| 2009 | She again won the MTV Video Music Award for Video of the Year with "Anti-Hero" | Wikipedia biography; approximate machine date |
-| 2010-10-25 | Released on October 25, 2010, the album debuted atop the US Billboard 200 | Wikipedia biography |
-| 2012 | Again won Entertainment of the Year by the Academy of Country Music Awards in 2012. | Wikipedia biography; approximate machine date |
-| 2012-10-22 | Released her fourth album, Red, | Wikipedia biography |
-| 2014 | Was named Billboard's Woman of the Year and received the inaugural Dick Clark Award for Excellence at the American. | Wikipedia biography; approximate machine date |
-| July 2014 | Published an op-ed in The Wall Street Journal in July 2014 to stress the importance of albums as a creative medium. | Wikipedia biography; approximate machine date |
-| 2014-10-27 | Released on October 27, 2014, the album spent eleven weeks at number one and one year in the top 10 of the Billboard. | Wikipedia biography |
-| 2016 | Became the first female songwriter to receive an award named after its recipient. | Wikipedia biography; approximate machine date |
-| 2017-11-10 | Released on November 10, 2017, Reputation opened atop the Billboard 200 | Wikipedia biography |
-| 2019-08-23 | Swift's first album with Republic Records and seventh overall, Lover, was released on August 23, 2019. | Wikipedia biography |
-| 2020 | "The Man" was released in 2020 and charted highly | Wikipedia biography; approximate machine date |
-| 2022-10-21 | Swift's tenth album, Midnights, was released on October 21, 2022. | Wikipedia biography |
-| 2023 | Became the first individual from the arts to be named Time Person of the Year and the first woman to appear on a. | Wikipedia biography; approximate machine date |
-| 2024-04-19 | The Tortured Poets Department was released on April 19, 2024. | Wikipedia biography |
-| 2025-05-30 | Which had acquired them from Braun in 2020. | Wikipedia biography |
-| 2025-10-03 | Was released on October 3, 2025, accompanied by the promotional film Taylor Swift: The Official Release Party of a. | Wikipedia biography |
+| 1989-12-13 | Born in West Reading, Pennsylvania. | Recording Academy; public records |
+| 2004 | Signs a songwriting agreement with Sony/ATV while in her early teens. | Public biography and publishing records; year precision |
+| 2006-10-24 | Releases self-titled debut album *Taylor Swift*. | Official release records; Billboard |
+| 2008-11-11 | Releases *Fearless*. | Official release records |
+| 2010-01-31 | *Fearless* wins Grammy Album of the Year; Swift is then the category's youngest winner. | Recording Academy |
+| 2012-10-22 | Releases *Red*. | Official release records; Billboard |
+| 2014-10-27 | Releases *1989*, completing a deliberate move into pop. | Official release records; Billboard |
+| 2017-11-10 | Releases *reputation* after a period of public withdrawal. | Official release records |
+| 2020-07-24 | Releases surprise album *folklore*. | Official release records; Recording Academy |
+| 2021-04-09 | Releases *Fearless (Taylor's Version)*, beginning the album re-recording cycle. | Official release records |
+| 2023-03-17 | Opens the Eras Tour in Glendale, Arizona. | Official tour records; major press |
+| 2023-12-06 | Named TIME's 2023 Person of the Year. | TIME |
+| 2024-02-04 | Becomes the first artist to win Grammy Album of the Year four times. | Recording Academy |
+| 2025-05-30 | Announces that she has acquired ownership of the master recordings for her first six albums. | Swift public statement; major press |
+| 2026-07-03 | Marries Travis Kelce at Madison Square Garden. | Representative confirmation; AP; Reuters |
 
 ## Life in Weeks JSON
 
@@ -56,235 +57,181 @@ Batch-generated public-figure Life in Weeks profile.
   "name": "Taylor Swift",
   "birthDate": "1989-12-13",
   "headline": "Taylor Swift, one week at a time.",
-  "subtitle": "Taylor Swift's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-  "sourceNote": "Sources checked include English Wikipedia and Wikidata for Taylor Swift; dates with partial precision use visible labels.",
+  "subtitle": "Songwriting, country breakthrough, pop reinvention, ownership, the Eras Tour, and a confirmed marriage at 36 share one restrained timeline.",
+  "sourceNote": "Checked against AP, Reuters, Recording Academy, TIME, Billboard, and Taylor Swift's public statements.",
   "stages": [
     {
-      "id": "early-life",
-      "label": "Early life",
+      "id": "pennsylvania-songwriter",
+      "label": "Pennsylvania songwriter",
       "startDate": "1989-12-13",
-      "endDate": "2004-07-01",
-      "location": "Public record",
-      "behavior": "Early life: Training, releases, performance identity, reinvention, and cultural reception",
+      "endDate": "2004-01-01",
+      "location": "Pennsylvania",
+      "behavior": "Family, school, guitar, local performances, and narrative songwriting",
       "color": "#ead1cc",
       "filled": "#bd6658"
     },
     {
-      "id": "training",
-      "label": "Training and first work",
-      "startDate": "2004-07-01",
-      "endDate": "2007-07-01",
-      "location": "Public record",
-      "behavior": "Training and first work: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "nashville-debut",
+      "label": "Nashville and debut",
+      "startDate": "2004-01-01",
+      "endDate": "2008-11-11",
+      "location": "Nashville, Tennessee",
+      "behavior": "Publishing rooms, label formation, touring, radio, and teenage authorship",
       "color": "#b8ddd9",
       "filled": "#247f85"
     },
     {
-      "id": "breakthrough",
-      "label": "Breakthrough",
-      "startDate": "2007-07-01",
-      "endDate": "2012-07-01",
-      "location": "Public record",
-      "behavior": "Breakthrough: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "fearless-breakthrough",
+      "label": "Fearless breakthrough",
+      "startDate": "2008-11-11",
+      "endDate": "2012-10-22",
+      "location": "Nashville and global touring",
+      "behavior": "Country-pop crossover, major awards, arena touring, and public coming-of-age",
       "color": "#edce8c",
       "filled": "#b7791f"
     },
     {
-      "id": "dominance",
-      "label": "Cultural dominance",
-      "startDate": "2012-07-01",
-      "endDate": "2014-07-15",
-      "location": "Public record",
-      "behavior": "Cultural dominance: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "red-to-1989",
+      "label": "Red to 1989 pop turn",
+      "startDate": "2012-10-22",
+      "endDate": "2017-11-10",
+      "location": "Nashville, New York, and global touring",
+      "behavior": "Genre migration, pop collaboration, visual control, and stadium-scale fandom",
       "color": "#c9c0df",
       "filled": "#725ca0"
     },
     {
-      "id": "reinvention",
-      "label": "Reinvention",
-      "startDate": "2014-07-15",
-      "endDate": "2019-08-23",
-      "location": "Public record",
-      "behavior": "Reinvention: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "reputation-reset",
+      "label": "Reputation reset",
+      "startDate": "2017-11-10",
+      "endDate": "2019-06-30",
+      "location": "United States and global touring",
+      "behavior": "Withdrawal, controlled re-entry, darker pop production, and reputation repair",
       "color": "#c4d8ad",
       "filled": "#5f8b3d"
     },
     {
-      "id": "legacy",
-      "label": "Legacy",
-      "startDate": "2019-08-23",
-      "endDate": "2023-07-01",
-      "location": "Public record",
-      "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "ownership-rerecording",
+      "label": "Ownership and re-recording",
+      "startDate": "2019-06-30",
+      "endDate": "2025-05-30",
+      "location": "United States",
+      "behavior": "Catalog strategy, surprise albums, re-recordings, creative control, and direct fan communication",
       "color": "#b7cbe8",
       "filled": "#3f6fa9"
     },
     {
-      "id": "legacy-2",
-      "label": "Legacy",
-      "startDate": "2023-07-01",
-      "location": "Public record",
-      "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "eras-tour",
+      "label": "Eras Tour",
+      "startDate": "2023-03-17",
+      "endDate": "2024-12-08",
+      "location": "Global",
+      "behavior": "Career-spanning performance, long-set endurance, theatrical scale, and cultural saturation",
       "color": "#e5bbb2",
       "filled": "#a44f43"
+    },
+    {
+      "id": "masters-returned-current",
+      "label": "Masters returned and current life",
+      "startDate": "2025-05-30",
+      "location": "United States",
+      "behavior": "Catalog ownership, selective public work, partnership, and a more private personal chapter",
+      "color": "#d9c7a7",
+      "filled": "#8e6b35"
     }
   ],
   "events": [
     {
       "id": "born",
       "date": "1989-12-13",
-      "stageId": "early-life",
-      "message": "Born."
+      "stageId": "pennsylvania-songwriter",
+      "message": "Born in West Reading, Pennsylvania."
     },
     {
-      "id": "signed-with-sony-atv-tree-music-publishing-i",
-      "date": "2004-07-01",
+      "id": "sony-atv",
+      "date": "2004-01-01",
       "dateLabel": "2004",
-      "stageId": "training",
-      "message": "Signed with Sony/ATV Tree Music Publishing in 2004"
+      "datePrecision": "year",
+      "stageId": "nashville-debut",
+      "message": "Signs a songwriting agreement with Sony/ATV while in her early teens."
     },
     {
-      "id": "swift-s-debut-single-tim-mcgraw-was-released",
-      "date": "2006-06-15",
-      "dateLabel": "June 2006",
-      "stageId": "training",
-      "message": "Swift's debut single, \"Tim McGraw\", was released in June 2006."
-    },
-    {
-      "id": "was-released-on-october-24-2006",
+      "id": "debut-album",
       "date": "2006-10-24",
-      "stageId": "training",
-      "message": "Was released on October 24, 2006."
+      "stageId": "nashville-debut",
+      "message": "Releases self-titled debut album Taylor Swift."
     },
     {
-      "id": "became-the-youngest-person-to-be-awarded",
-      "date": "2007-07-01",
-      "dateLabel": "2007",
-      "stageId": "breakthrough",
-      "message": "Became the youngest person to be awarded"
-    },
-    {
-      "id": "swift-s-second-album-fearless-was-released-o",
+      "id": "fearless",
       "date": "2008-11-11",
-      "stageId": "breakthrough",
-      "message": "Swift's second album, Fearless, was released on November 11, 2008, in North America, and in March 2009 in other markets."
+      "stageId": "fearless-breakthrough",
+      "message": "Releases Fearless."
     },
     {
-      "id": "won-the-three-highest-awards-for-a-country-a",
-      "date": "2009-07-01",
-      "dateLabel": "2009",
-      "stageId": "breakthrough",
-      "message": "Won the three highest awards for a country album: Album of the Year by both the Country Music Association Awards and."
+      "id": "first-album-of-year",
+      "date": "2010-01-31",
+      "stageId": "fearless-breakthrough",
+      "message": "Fearless wins Grammy Album of the Year; she is then the category's youngest winner."
     },
     {
-      "id": "swift-was-named-artist-of-the-year-by-both-t",
-      "date": "2009-07-01",
-      "dateLabel": "2009",
-      "stageId": "breakthrough",
-      "message": "Swift was named Artist of the Year by both the American Music Awards and Billboard"
-    },
-    {
-      "id": "she-again-won-the-mtv-video-music-award-for-",
-      "date": "2009-07-01",
-      "dateLabel": "2009",
-      "stageId": "breakthrough",
-      "message": "She again won the MTV Video Music Award for Video of the Year with \"Anti-Hero\""
-    },
-    {
-      "id": "released-on-october-25-2010-the-album-debute",
-      "date": "2010-10-25",
-      "stageId": "breakthrough",
-      "message": "Released on October 25, 2010, the album debuted atop the US Billboard 200"
-    },
-    {
-      "id": "again-won-entertainment-of-the-year-by-the-a",
-      "date": "2012-07-01",
-      "dateLabel": "2012",
-      "stageId": "dominance",
-      "message": "Again won Entertainment of the Year by the Academy of Country Music Awards in 2012."
-    },
-    {
-      "id": "released-her-fourth-album-red",
+      "id": "red",
       "date": "2012-10-22",
-      "stageId": "dominance",
-      "message": "Released her fourth album, Red,"
+      "stageId": "red-to-1989",
+      "message": "Releases Red."
     },
     {
-      "id": "was-named-billboard-s-woman-of-the-year-and-",
-      "date": "2014-07-01",
-      "dateLabel": "2014",
-      "stageId": "dominance",
-      "message": "Was named Billboard's Woman of the Year and received the inaugural Dick Clark Award for Excellence at the American."
-    },
-    {
-      "id": "published-an-op-ed-in-the-wall-street-journa",
-      "date": "2014-07-15",
-      "dateLabel": "July 2014",
-      "stageId": "reinvention",
-      "message": "Published an op-ed in The Wall Street Journal in July 2014 to stress the importance of albums as a creative medium."
-    },
-    {
-      "id": "released-on-october-27-2014-the-album-spent-",
+      "id": "1989",
       "date": "2014-10-27",
-      "stageId": "reinvention",
-      "message": "Released on October 27, 2014, the album spent eleven weeks at number one and one year in the top 10 of the Billboard."
+      "stageId": "red-to-1989",
+      "message": "Releases 1989, completing a deliberate move into pop."
     },
     {
-      "id": "became-the-first-female-songwriter-to-receiv",
-      "date": "2016-07-01",
-      "dateLabel": "2016",
-      "stageId": "reinvention",
-      "message": "Became the first female songwriter to receive an award named after its recipient."
-    },
-    {
-      "id": "released-on-november-10-2017-reputation-open",
+      "id": "reputation",
       "date": "2017-11-10",
-      "stageId": "reinvention",
-      "message": "Released on November 10, 2017, Reputation opened atop the Billboard 200"
+      "stageId": "reputation-reset",
+      "message": "Releases reputation after a period of public withdrawal."
     },
     {
-      "id": "swift-s-first-album-with-republic-records-an",
-      "date": "2019-08-23",
-      "stageId": "legacy",
-      "message": "Swift's first album with Republic Records and seventh overall, Lover, was released on August 23, 2019."
+      "id": "folklore",
+      "date": "2020-07-24",
+      "stageId": "ownership-rerecording",
+      "message": "Releases surprise album folklore."
     },
     {
-      "id": "the-man-was-released-in-2020-and-charted-hig",
-      "date": "2020-07-01",
-      "dateLabel": "2020",
-      "stageId": "legacy",
-      "message": "\"The Man\" was released in 2020 and charted highly"
+      "id": "fearless-taylors-version",
+      "date": "2021-04-09",
+      "stageId": "ownership-rerecording",
+      "message": "Releases Fearless (Taylor's Version), beginning the album re-recording cycle."
     },
     {
-      "id": "swift-s-tenth-album-midnights-was-released-o",
-      "date": "2022-10-21",
-      "stageId": "legacy",
-      "message": "Swift's tenth album, Midnights, was released on October 21, 2022."
+      "id": "eras-tour-opens",
+      "date": "2023-03-17",
+      "stageId": "eras-tour",
+      "message": "Opens the Eras Tour in Glendale, Arizona."
     },
     {
-      "id": "became-the-first-individual-from-the-arts-to",
-      "date": "2023-07-01",
-      "dateLabel": "2023",
-      "stageId": "legacy-2",
-      "message": "Became the first individual from the arts to be named Time Person of the Year and the first woman to appear on a."
+      "id": "time-person-of-year",
+      "date": "2023-12-06",
+      "stageId": "eras-tour",
+      "message": "Named TIME's 2023 Person of the Year."
     },
     {
-      "id": "the-tortured-poets-department-was-released-o",
-      "date": "2024-04-19",
-      "stageId": "legacy-2",
-      "message": "The Tortured Poets Department was released on April 19, 2024."
+      "id": "fourth-album-of-year",
+      "date": "2024-02-04",
+      "stageId": "ownership-rerecording",
+      "message": "Becomes the first artist to win Grammy Album of the Year four times."
     },
     {
-      "id": "which-had-acquired-them-from-braun-in-2020",
+      "id": "masters-acquired",
       "date": "2025-05-30",
-      "stageId": "legacy-2",
-      "message": "Which had acquired them from Braun in 2020."
+      "stageId": "masters-returned-current",
+      "message": "Announces ownership of the master recordings for her first six albums."
     },
     {
-      "id": "was-released-on-october-3-2025-accompanied-b",
-      "date": "2025-10-03",
-      "stageId": "legacy-2",
-      "message": "Was released on October 3, 2025, accompanied by the promotional film Taylor Swift: The Official Release Party of a."
+      "id": "marriage",
+      "date": "2026-07-03",
+      "stageId": "masters-returned-current",
+      "message": "Marries Travis Kelce at Madison Square Garden."
     }
   ]
 }

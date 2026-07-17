@@ -6,6 +6,11 @@ const outputPath = "src/publicFigureProfiles.ts";
 
 const categoryGroups = [
   {
+    id: "in-the-news-2026-07-10",
+    label: "In the News · Jul 10, 2026",
+    names: ["Bad Bunny", "Lionel Messi", "Taylor Swift", "Cristiano Ronaldo"]
+  },
+  {
     id: "tech-ai-internet",
     label: "Tech / AI / Internet",
     names: [
@@ -88,11 +93,9 @@ const categoryGroups = [
     id: "music-pop-culture",
     label: "Music / Pop Culture",
     names: [
-      "Taylor Swift",
       "Kanye West",
       "Beyoncé",
       "Rihanna",
-      "Bad Bunny",
       "Drake",
       "Kendrick Lamar",
       "Lady Gaga",
@@ -126,8 +129,6 @@ const categoryGroups = [
       "Michael Jordan",
       "LeBron James",
       "Kobe Bryant",
-      "Lionel Messi",
-      "Cristiano Ronaldo",
       "Serena Williams",
       "Simone Biles",
       "Shohei Ohtani",

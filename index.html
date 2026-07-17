@@ -69,69 +69,10 @@
             <button class="secondary-action" data-export type="button">Export Image</button>
           </form>
 
-          <section class="ai-builder" aria-labelledby="ai-builder-title">
-            <div class="ai-builder__intro">
-              <p class="chart-kicker">AI profile builder</p>
-              <h2 id="ai-builder-title">Convert any public life into profile data.</h2>
-            </div>
-
-            <div class="ai-builder__controls">
-              <label class="ai-name-field">
-                <span>Person name</span>
-                <input data-ai-name type="text" placeholder="Ada Lovelace" autocomplete="off" />
-              </label>
-              <button class="secondary-action" data-copy-profile-prompt type="button">Copy Prompt</button>
-            </div>
-
-            <div class="ai-builder__textareas">
-              <label class="ai-textarea-field">
-                <span>Prompt to give your AI</span>
-                <textarea data-ai-prompt rows="8" readonly></textarea>
-              </label>
-              <label class="ai-textarea-field ai-textarea-field--large">
-                <span>Paste AI JSON response</span>
-                <textarea data-ai-profile-json rows="10" placeholder="Paste one JSON object here"></textarea>
-              </label>
-            </div>
-
-            <div class="ai-builder__footer">
-              <span data-ai-profile-status role="status" aria-live="polite"></span>
-              <button class="primary-action" data-import-profile type="button">Render Pasted Profile</button>
-            </div>
-          </section>
-
-          <section class="skill-pack" aria-labelledby="skill-pack-title">
-            <div>
-              <p class="chart-kicker">Agent skill</p>
-              <h2 id="skill-pack-title">Package this workflow for another agent.</h2>
-              <p>
-                Download the Skill folder, or open a copy-paste page that works for Codex, Claude Code, and other
-                coding agents.
-              </p>
-            </div>
-            <div class="skill-actions" aria-label="Public Figure Life Grid skill links">
-              <a class="secondary-action" href="/life/downloads/public-figure-life-grid.zip" download>Download ZIP</a>
-              <a class="secondary-action" href="/life/public-figure-life-grid-skill.html">Copy Skill Page</a>
-              <a class="secondary-action" href="/life/skills/public-figure-life-grid/SKILL.md">Raw SKILL.md</a>
-            </div>
-          </section>
-
-          <section class="share-wedge" aria-labelledby="reading-title">
-            <div>
-              <p class="chart-kicker">Reading lens</p>
-              <h2 id="reading-title">What should the public grid explain?</h2>
-            </div>
-            <div class="share-options" role="group" aria-label="Choose a reading lens">
-              <button type="button" data-reading-prompt="stages">Stages</button>
-              <button type="button" data-reading-prompt="behavior">Behavior</button>
-              <button type="button" data-reading-prompt="events">Events</button>
-            </div>
-          </section>
         </section>
 
         <div class="insight-strip" aria-live="polite">
           <span data-life-stats>Loading profile.</span>
-          <span data-share-line>Stage recognition, behavior analysis, and event tracking share one grid.</span>
         </div>
 
         <section class="profile-summary" aria-label="Profile reading summary">
@@ -196,9 +137,76 @@
           <p class="source-note" data-source-note></p>
         </section>
 
-        <p class="viral-note">
-          <span data-viral-note>Stage recognition, behavior analysis, and event tracking share one grid.</span>
-        </p>
+        <section class="profile-tools" data-mode-panel="profile" aria-label="Public profile creation tools" hidden>
+          <details class="ai-builder collapsible-section" aria-labelledby="ai-builder-title" open>
+            <summary class="section-toggle">
+              <span>
+                <span class="chart-kicker">AI profile builder</span>
+                <span class="section-toggle__title" id="ai-builder-title">Convert any public life into profile data.</span>
+              </span>
+            </summary>
+
+            <div class="ai-builder__body">
+              <div class="ai-builder__controls">
+                <label class="ai-name-field">
+                  <span>Person name</span>
+                  <input data-ai-name type="text" placeholder="Ada Lovelace" autocomplete="off" />
+                </label>
+                <button class="secondary-action" data-copy-profile-prompt type="button">Copy Prompt</button>
+              </div>
+
+              <div class="ai-builder__textareas">
+                <label class="ai-textarea-field">
+                  <span>Prompt to give your AI</span>
+                  <textarea data-ai-prompt rows="8" readonly></textarea>
+                </label>
+                <label class="ai-textarea-field ai-textarea-field--large">
+                  <span>Paste AI JSON response</span>
+                  <textarea data-ai-profile-json rows="10" placeholder="Paste one JSON object here"></textarea>
+                </label>
+              </div>
+
+              <div class="ai-builder__footer">
+                <span data-ai-profile-status role="status" aria-live="polite"></span>
+                <button class="primary-action" data-import-profile type="button">Render Pasted Profile</button>
+              </div>
+            </div>
+          </details>
+
+          <details class="skill-pack collapsible-section" aria-labelledby="skill-pack-title">
+            <summary class="section-toggle">
+              <span>
+                <span class="chart-kicker">Agent skill</span>
+                <span class="section-toggle__title" id="skill-pack-title">Package this workflow for another agent.</span>
+                <span class="section-toggle__copy">
+                  Download the Skill folder, or open a copy-paste page that works for Codex, Claude Code, and other
+                  coding agents.
+                </span>
+              </span>
+            </summary>
+
+            <div class="skill-pack__body">
+              <div class="skill-actions" aria-label="Public Figure Life Grid skill links">
+                <a
+                  class="primary-action skill-action skill-action--featured"
+                  href="/life/downloads/public-figure-life-grid.zip"
+                  download
+                >
+                  <span class="skill-action__label">Download ZIP</span>
+                  <small>Complete portable skill folder</small>
+                </a>
+                <a class="secondary-action skill-action" href="/life/public-figure-life-grid-skill.html">
+                  <span class="skill-action__label">Copy Skill Page</span>
+                  <small>Open the copy-ready handoff</small>
+                </a>
+                <a class="secondary-action skill-action" href="/life/skills/public-figure-life-grid/SKILL.md">
+                  <span class="skill-action__label">Raw SKILL.md</span>
+                  <small>Inspect the source file</small>
+                </a>
+              </div>
+            </div>
+          </details>
+        </section>
       </section>
     </main>
 

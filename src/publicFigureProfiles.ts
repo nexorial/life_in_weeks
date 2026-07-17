@@ -43,6 +43,761 @@ type PublicFigureProfileGroup = {
 
 export const publicFigureProfileGroups: PublicFigureProfileGroup[] = [
   {
+    "id": "in-the-news-2026-07-10",
+    "label": "In the News · Jul 10, 2026",
+    "profiles": [
+      {
+        "id": "bad-bunny",
+        "name": "Bad Bunny",
+        "birthDate": "1994-03-10",
+        "headline": "Bad Bunny, one week at a time.",
+        "subtitle": "A grocery-store job, SoundCloud, Spanish-language chart firsts, Puerto Rico, the Grammys, and the Super Bowl converge before age 33.",
+        "sourceNote": "Checked against Television Academy, AP, NFL, Recording Academy, Billboard, and artist-release records.",
+        "stages": [
+          {
+            "id": "vega-baja",
+            "label": "Vega Baja formation",
+            "startDate": "1994-03-10",
+            "endDate": "2016-01-01",
+            "location": "Vega Baja, Puerto Rico",
+            "behavior": "Family, church music, school, local culture, and early songwriting",
+            "color": "#ead1cc",
+            "filled": "#bd6658"
+          },
+          {
+            "id": "soundcloud-rise",
+            "label": "SoundCloud and Latin trap rise",
+            "startDate": "2016-01-01",
+            "endDate": "2018-12-24",
+            "location": "Puerto Rico",
+            "behavior": "Independent uploads, grocery shifts, collaborations, and rapid audience discovery",
+            "color": "#b8ddd9",
+            "filled": "#247f85"
+          },
+          {
+            "id": "album-breakthrough",
+            "label": "Album breakthrough",
+            "startDate": "2018-12-24",
+            "endDate": "2020-11-27",
+            "location": "Puerto Rico and global touring",
+            "behavior": "Album craft, genre expansion, visual identity, and crossover collaborations",
+            "color": "#edce8c",
+            "filled": "#b7791f"
+          },
+          {
+            "id": "spanish-global-number-one",
+            "label": "Spanish-language global No. 1",
+            "startDate": "2020-11-27",
+            "endDate": "2022-05-06",
+            "location": "Puerto Rico and global charts",
+            "behavior": "Spanish-first releases, streaming scale, chart records, and cultural visibility",
+            "color": "#c9c0df",
+            "filled": "#725ca0"
+          },
+          {
+            "id": "stadium-scale",
+            "label": "Stadium-scale dominance",
+            "startDate": "2022-05-06",
+            "endDate": "2025-01-05",
+            "location": "Global",
+            "behavior": "Stadium touring, sustained streaming, fashion, acting, and headline performance",
+            "color": "#c4d8ad",
+            "filled": "#5f8b3d"
+          },
+          {
+            "id": "puerto-rico-return",
+            "label": "Puerto Rico return",
+            "startDate": "2025-01-05",
+            "location": "Puerto Rico",
+            "behavior": "Cultural memory, local genres, residency economics, and island-centered storytelling",
+            "color": "#b7cbe8",
+            "filled": "#3f6fa9"
+          },
+          {
+            "id": "global-live-stage",
+            "label": "Global live-stage record",
+            "startDate": "2025-09-28",
+            "location": "United States and global broadcast",
+            "behavior": "Mass-audience performance, production leadership, awards recognition, and scrutiny",
+            "color": "#e5bbb2",
+            "filled": "#a44f43"
+          }
+        ],
+        "events": [
+          {
+            "id": "born",
+            "date": "1994-03-10",
+            "stageId": "vega-baja",
+            "message": "Born Benito Antonio Martínez Ocasio in Vega Baja, Puerto Rico."
+          },
+          {
+            "id": "diles-soundcloud",
+            "date": "2016-01-01",
+            "dateLabel": "2016",
+            "datePrecision": "year",
+            "stageId": "soundcloud-rise",
+            "message": "“Diles” gains attention on SoundCloud while he is working at a grocery store."
+          },
+          {
+            "id": "mia",
+            "date": "2018-10-11",
+            "stageId": "soundcloud-rise",
+            "message": "Releases “MIA” with Drake, widening his audience across Spanish- and English-language pop."
+          },
+          {
+            "id": "x-100pre",
+            "date": "2018-12-24",
+            "stageId": "album-breakthrough",
+            "message": "Releases debut album X 100pre."
+          },
+          {
+            "id": "yhlqmdlg",
+            "date": "2020-02-29",
+            "stageId": "album-breakthrough",
+            "message": "Releases YHLQMDLG, expanding Latin trap through reggaeton and older Puerto Rican sounds."
+          },
+          {
+            "id": "eutdm",
+            "date": "2020-11-27",
+            "stageId": "spanish-global-number-one",
+            "message": "Releases El Último Tour del Mundo, the first all-Spanish album to top the Billboard 200."
+          },
+          {
+            "id": "un-verano-sin-ti",
+            "date": "2022-05-06",
+            "stageId": "stadium-scale",
+            "message": "Releases Un Verano Sin Ti, a global streaming and stadium-era breakthrough."
+          },
+          {
+            "id": "dtmf",
+            "date": "2025-01-05",
+            "stageId": "puerto-rico-return",
+            "message": "Releases Debí Tirar Más Fotos, centering Puerto Rican memory, place, and musical lineage."
+          },
+          {
+            "id": "san-juan-residency",
+            "date": "2025-07-11",
+            "stageId": "puerto-rico-return",
+            "message": "Opens the No Me Quiero Ir de Aquí residency in San Juan."
+          },
+          {
+            "id": "halftime-announcement",
+            "date": "2025-09-28",
+            "stageId": "global-live-stage",
+            "message": "Announced as the headliner of the Super Bowl LX halftime show."
+          },
+          {
+            "id": "grammy-album-of-year",
+            "date": "2026-02-01",
+            "stageId": "puerto-rico-return",
+            "message": "Debí Tirar Más Fotos becomes the first Spanish-language Grammy Album of the Year winner."
+          },
+          {
+            "id": "super-bowl-lx",
+            "date": "2026-02-08",
+            "stageId": "global-live-stage",
+            "message": "Headlines the Super Bowl LX halftime show before an average U.S. audience of 128.2 million."
+          },
+          {
+            "id": "emmy-record",
+            "date": "2026-07-08",
+            "stageId": "global-live-stage",
+            "message": "His halftime show receives nine Emmy nominations—the most ever for a Super Bowl halftime show."
+          }
+        ]
+      },
+      {
+        "id": "lionel-messi",
+        "name": "Lionel Messi",
+        "birthDate": "1987-06-24",
+        "headline": "Lionel Messi, one week at a time.",
+        "subtitle": "Rosario, La Masia, Barcelona, Argentina's long wait, a World Cup title, Miami, and one more comeback at 39 share the same grid.",
+        "sourceNote": "Checked against FIFA, AP, FC Barcelona, CONMEBOL, Inter Miami, and official match records.",
+        "stages": [
+          {
+            "id": "rosario-newells",
+            "label": "Rosario and Newell's",
+            "startDate": "1987-06-24",
+            "endDate": "2000-09-01",
+            "location": "Rosario, Argentina",
+            "behavior": "Family, youth football, growth-hormone treatment, and a left-footed game taking shape",
+            "color": "#ead1cc",
+            "filled": "#bd6658"
+          },
+          {
+            "id": "la-masia",
+            "label": "La Masia formation",
+            "startDate": "2000-09-01",
+            "endDate": "2004-10-16",
+            "location": "Barcelona, Spain",
+            "behavior": "Relocation, academy progression, physical development, and accelerated promotion",
+            "color": "#b8ddd9",
+            "filled": "#247f85"
+          },
+          {
+            "id": "barcelona-rise",
+            "label": "Barcelona rise",
+            "startDate": "2004-10-16",
+            "endDate": "2009-05-27",
+            "location": "Barcelona, Spain",
+            "behavior": "First-team adaptation, positional freedom, goals, and a generation becoming a system",
+            "color": "#edce8c",
+            "filled": "#b7791f"
+          },
+          {
+            "id": "barcelona-dominance",
+            "label": "Barcelona dominance",
+            "startDate": "2009-05-27",
+            "endDate": "2021-08-10",
+            "location": "Barcelona, Spain",
+            "behavior": "Playmaking, record scoring, trophies, captaincy, and sustained club identity",
+            "color": "#c9c0df",
+            "filled": "#725ca0"
+          },
+          {
+            "id": "argentina-burden",
+            "label": "Argentina pressure",
+            "startDate": "2011-08-01",
+            "endDate": "2021-07-10",
+            "location": "Argentina and global tournaments",
+            "behavior": "Captaincy, repeated final losses, public doubt, brief retirement, and return",
+            "color": "#c4d8ad",
+            "filled": "#5f8b3d"
+          },
+          {
+            "id": "argentina-champion",
+            "label": "Argentina champion",
+            "startDate": "2021-07-10",
+            "location": "South America and FIFA World Cups",
+            "behavior": "Copa América, Finalissima, World Cup leadership, records, and late-career resilience",
+            "color": "#b7cbe8",
+            "filled": "#3f6fa9"
+          },
+          {
+            "id": "psg-transition",
+            "label": "Paris transition",
+            "startDate": "2021-08-10",
+            "endDate": "2023-07-15",
+            "location": "Paris, France",
+            "behavior": "Leaving Barcelona, adapting to a new club, league titles, and World Cup preparation",
+            "color": "#e5bbb2",
+            "filled": "#a44f43"
+          },
+          {
+            "id": "miami-final-world-cups",
+            "label": "Miami and final World Cups",
+            "startDate": "2023-07-15",
+            "location": "Miami and Argentina",
+            "behavior": "MLS growth, club-building influence, family stability, and selective international peaks",
+            "color": "#d9c7a7",
+            "filled": "#8e6b35"
+          }
+        ],
+        "events": [
+          {
+            "id": "born",
+            "date": "1987-06-24",
+            "stageId": "rosario-newells",
+            "message": "Born in Rosario, Argentina."
+          },
+          {
+            "id": "moves-to-barcelona",
+            "date": "2000-09-01",
+            "dateLabel": "2000",
+            "datePrecision": "year",
+            "stageId": "la-masia",
+            "message": "Moves to Barcelona and enters the club's youth system after leaving Newell's Old Boys."
+          },
+          {
+            "id": "barcelona-debut",
+            "date": "2004-10-16",
+            "stageId": "barcelona-rise",
+            "message": "Makes his official FC Barcelona first-team debut."
+          },
+          {
+            "id": "first-world-cup-goal",
+            "date": "2006-06-16",
+            "stageId": "barcelona-rise",
+            "message": "Scores on his World Cup debut, becoming Argentina's youngest scorer at the tournament."
+          },
+          {
+            "id": "barcelona-treble",
+            "date": "2009-05-27",
+            "stageId": "barcelona-dominance",
+            "message": "Scores in the Champions League final as Barcelona completes a historic treble."
+          },
+          {
+            "id": "first-ballon-dor",
+            "date": "2009-12-01",
+            "stageId": "barcelona-dominance",
+            "message": "Wins his first Ballon d'Or."
+          },
+          {
+            "id": "copa-america-2021",
+            "date": "2021-07-10",
+            "stageId": "argentina-champion",
+            "message": "Captains Argentina to the Copa América title, his first senior international trophy."
+          },
+          {
+            "id": "joins-psg",
+            "date": "2021-08-10",
+            "stageId": "psg-transition",
+            "message": "Joins Paris Saint-Germain after leaving Barcelona."
+          },
+          {
+            "id": "world-cup-2022",
+            "date": "2022-12-18",
+            "stageId": "argentina-champion",
+            "message": "Captains Argentina to the World Cup title and receives the tournament's Golden Ball."
+          },
+          {
+            "id": "joins-inter-miami",
+            "date": "2023-07-15",
+            "stageId": "miami-final-world-cups",
+            "message": "Inter Miami announces his signing."
+          },
+          {
+            "id": "leagues-cup",
+            "date": "2023-08-19",
+            "stageId": "miami-final-world-cups",
+            "message": "Leads Inter Miami to the Leagues Cup, the club's first trophy."
+          },
+          {
+            "id": "eighth-ballon-dor",
+            "date": "2023-10-30",
+            "stageId": "miami-final-world-cups",
+            "message": "Wins a record-extending eighth Ballon d'Or."
+          },
+          {
+            "id": "copa-america-2024",
+            "date": "2024-07-14",
+            "stageId": "argentina-champion",
+            "message": "Argentina retains the Copa América title."
+          },
+          {
+            "id": "world-cup-hat-trick",
+            "date": "2026-06-16",
+            "stageId": "argentina-champion",
+            "message": "Scores a hat trick in his 200th Argentina appearance and sixth World Cup."
+          },
+          {
+            "id": "egypt-comeback",
+            "date": "2026-07-07",
+            "stageId": "argentina-champion",
+            "message": "Scores the 83rd-minute equalizer as Argentina comes from 2–0 down to beat Egypt 3–2."
+          }
+        ]
+      },
+      {
+        "id": "taylor-swift",
+        "name": "Taylor Swift",
+        "birthDate": "1989-12-13",
+        "headline": "Taylor Swift, one week at a time.",
+        "subtitle": "Songwriting, country breakthrough, pop reinvention, ownership, the Eras Tour, and a confirmed marriage at 36 share one restrained timeline.",
+        "sourceNote": "Checked against AP, Reuters, Recording Academy, TIME, Billboard, and Taylor Swift's public statements.",
+        "stages": [
+          {
+            "id": "pennsylvania-songwriter",
+            "label": "Pennsylvania songwriter",
+            "startDate": "1989-12-13",
+            "endDate": "2004-01-01",
+            "location": "Pennsylvania",
+            "behavior": "Family, school, guitar, local performances, and narrative songwriting",
+            "color": "#ead1cc",
+            "filled": "#bd6658"
+          },
+          {
+            "id": "nashville-debut",
+            "label": "Nashville and debut",
+            "startDate": "2004-01-01",
+            "endDate": "2008-11-11",
+            "location": "Nashville, Tennessee",
+            "behavior": "Publishing rooms, label formation, touring, radio, and teenage authorship",
+            "color": "#b8ddd9",
+            "filled": "#247f85"
+          },
+          {
+            "id": "fearless-breakthrough",
+            "label": "Fearless breakthrough",
+            "startDate": "2008-11-11",
+            "endDate": "2012-10-22",
+            "location": "Nashville and global touring",
+            "behavior": "Country-pop crossover, major awards, arena touring, and public coming-of-age",
+            "color": "#edce8c",
+            "filled": "#b7791f"
+          },
+          {
+            "id": "red-to-1989",
+            "label": "Red to 1989 pop turn",
+            "startDate": "2012-10-22",
+            "endDate": "2017-11-10",
+            "location": "Nashville, New York, and global touring",
+            "behavior": "Genre migration, pop collaboration, visual control, and stadium-scale fandom",
+            "color": "#c9c0df",
+            "filled": "#725ca0"
+          },
+          {
+            "id": "reputation-reset",
+            "label": "Reputation reset",
+            "startDate": "2017-11-10",
+            "endDate": "2019-06-30",
+            "location": "United States and global touring",
+            "behavior": "Withdrawal, controlled re-entry, darker pop production, and reputation repair",
+            "color": "#c4d8ad",
+            "filled": "#5f8b3d"
+          },
+          {
+            "id": "ownership-rerecording",
+            "label": "Ownership and re-recording",
+            "startDate": "2019-06-30",
+            "endDate": "2025-05-30",
+            "location": "United States",
+            "behavior": "Catalog strategy, surprise albums, re-recordings, creative control, and direct fan communication",
+            "color": "#b7cbe8",
+            "filled": "#3f6fa9"
+          },
+          {
+            "id": "eras-tour",
+            "label": "Eras Tour",
+            "startDate": "2023-03-17",
+            "endDate": "2024-12-08",
+            "location": "Global",
+            "behavior": "Career-spanning performance, long-set endurance, theatrical scale, and cultural saturation",
+            "color": "#e5bbb2",
+            "filled": "#a44f43"
+          },
+          {
+            "id": "masters-returned-current",
+            "label": "Masters returned and current life",
+            "startDate": "2025-05-30",
+            "location": "United States",
+            "behavior": "Catalog ownership, selective public work, partnership, and a more private personal chapter",
+            "color": "#d9c7a7",
+            "filled": "#8e6b35"
+          }
+        ],
+        "events": [
+          {
+            "id": "born",
+            "date": "1989-12-13",
+            "stageId": "pennsylvania-songwriter",
+            "message": "Born in West Reading, Pennsylvania."
+          },
+          {
+            "id": "sony-atv",
+            "date": "2004-01-01",
+            "dateLabel": "2004",
+            "datePrecision": "year",
+            "stageId": "nashville-debut",
+            "message": "Signs a songwriting agreement with Sony/ATV while in her early teens."
+          },
+          {
+            "id": "debut-album",
+            "date": "2006-10-24",
+            "stageId": "nashville-debut",
+            "message": "Releases self-titled debut album Taylor Swift."
+          },
+          {
+            "id": "fearless",
+            "date": "2008-11-11",
+            "stageId": "fearless-breakthrough",
+            "message": "Releases Fearless."
+          },
+          {
+            "id": "first-album-of-year",
+            "date": "2010-01-31",
+            "stageId": "fearless-breakthrough",
+            "message": "Fearless wins Grammy Album of the Year; she is then the category's youngest winner."
+          },
+          {
+            "id": "red",
+            "date": "2012-10-22",
+            "stageId": "red-to-1989",
+            "message": "Releases Red."
+          },
+          {
+            "id": "1989",
+            "date": "2014-10-27",
+            "stageId": "red-to-1989",
+            "message": "Releases 1989, completing a deliberate move into pop."
+          },
+          {
+            "id": "reputation",
+            "date": "2017-11-10",
+            "stageId": "reputation-reset",
+            "message": "Releases reputation after a period of public withdrawal."
+          },
+          {
+            "id": "folklore",
+            "date": "2020-07-24",
+            "stageId": "ownership-rerecording",
+            "message": "Releases surprise album folklore."
+          },
+          {
+            "id": "fearless-taylors-version",
+            "date": "2021-04-09",
+            "stageId": "ownership-rerecording",
+            "message": "Releases Fearless (Taylor's Version), beginning the album re-recording cycle."
+          },
+          {
+            "id": "eras-tour-opens",
+            "date": "2023-03-17",
+            "stageId": "eras-tour",
+            "message": "Opens the Eras Tour in Glendale, Arizona."
+          },
+          {
+            "id": "time-person-of-year",
+            "date": "2023-12-06",
+            "stageId": "eras-tour",
+            "message": "Named TIME's 2023 Person of the Year."
+          },
+          {
+            "id": "fourth-album-of-year",
+            "date": "2024-02-04",
+            "stageId": "ownership-rerecording",
+            "message": "Becomes the first artist to win Grammy Album of the Year four times."
+          },
+          {
+            "id": "masters-acquired",
+            "date": "2025-05-30",
+            "stageId": "masters-returned-current",
+            "message": "Announces ownership of the master recordings for her first six albums."
+          },
+          {
+            "id": "marriage",
+            "date": "2026-07-03",
+            "stageId": "masters-returned-current",
+            "message": "Marries Travis Kelce at Madison Square Garden."
+          }
+        ]
+      },
+      {
+        "id": "cristiano-ronaldo",
+        "name": "Cristiano Ronaldo",
+        "birthDate": "1985-02-05",
+        "headline": "Cristiano Ronaldo, one week at a time.",
+        "subtitle": "Madeira, Manchester, Madrid, Portugal's first major trophy, 146 international goals, six World Cups, and one final tournament at 41 share the same grid.",
+        "sourceNote": "Checked against FIFA, UEFA, AP, official club records, and FIFA match reports.",
+        "stages": [
+          {
+            "id": "madeira-sporting-formation",
+            "label": "Madeira and Sporting formation",
+            "startDate": "1985-02-05",
+            "endDate": "2003-08-12",
+            "location": "Madeira and Lisbon, Portugal",
+            "behavior": "Family, island football, relocation at 12, academy training, and first-team acceleration",
+            "color": "#ead1cc",
+            "filled": "#bd6658"
+          },
+          {
+            "id": "manchester-emergence",
+            "label": "Manchester emergence",
+            "startDate": "2003-08-12",
+            "endDate": "2009-07-06",
+            "location": "Manchester, England",
+            "behavior": "Wing play, physical development, relentless training, trophies, and a first Ballon d'Or",
+            "color": "#b8ddd9",
+            "filled": "#247f85"
+          },
+          {
+            "id": "real-madrid-record-years",
+            "label": "Real Madrid record years",
+            "startDate": "2009-07-06",
+            "endDate": "2018-07-10",
+            "location": "Madrid, Spain",
+            "behavior": "High-volume finishing, Champions League peaks, individual awards, and club scoring records",
+            "color": "#edce8c",
+            "filled": "#b7791f"
+          },
+          {
+            "id": "juventus-reinvention",
+            "label": "Juventus reinvention",
+            "startDate": "2018-07-10",
+            "endDate": "2021-08-27",
+            "location": "Turin, Italy",
+            "behavior": "Adapting to Serie A, title pressure, late-career conditioning, and continued goal production",
+            "color": "#c9c0df",
+            "filled": "#725ca0"
+          },
+          {
+            "id": "manchester-return-transition",
+            "label": "Manchester return and transition",
+            "startDate": "2021-08-27",
+            "endDate": "2022-12-30",
+            "location": "Manchester and Portugal",
+            "behavior": "A high-emotion return, goals under institutional strain, separation, and career redirection",
+            "color": "#c4d8ad",
+            "filled": "#5f8b3d"
+          },
+          {
+            "id": "al-nassr-global-platform",
+            "label": "Al Nassr and global platform",
+            "startDate": "2022-12-30",
+            "location": "Riyadh, Saudi Arabia",
+            "behavior": "Saudi football visibility, record contracts, personal media, longevity, and global audience scale",
+            "color": "#b7cbe8",
+            "filled": "#3f6fa9"
+          },
+          {
+            "id": "portugal-rise-captaincy",
+            "label": "Portugal rise and captaincy",
+            "startDate": "2003-08-20",
+            "endDate": "2016-07-10",
+            "location": "Portugal and international tournaments",
+            "behavior": "National-team emergence, a home EURO final, captaincy, repeated qualification, and pressure",
+            "color": "#e5bbb2",
+            "filled": "#a44f43"
+          },
+          {
+            "id": "portugal-champion-record-era",
+            "label": "Portugal champion and record era",
+            "startDate": "2016-07-10",
+            "location": "Portugal, UEFA, and FIFA tournaments",
+            "behavior": "EURO and Nations League titles, cap and goal records, six World Cups, and a long farewell",
+            "color": "#d9c7a7",
+            "filled": "#8e6b35"
+          }
+        ],
+        "events": [
+          {
+            "id": "born",
+            "date": "1985-02-05",
+            "stageId": "madeira-sporting-formation",
+            "message": "Born in Funchal, Madeira, Portugal."
+          },
+          {
+            "id": "sporting-academy",
+            "date": "1997-01-01",
+            "dateLabel": "1997",
+            "datePrecision": "year",
+            "stageId": "madeira-sporting-formation",
+            "message": "Leaves Madeira to join Sporting CP's academy in Lisbon."
+          },
+          {
+            "id": "joins-manchester-united",
+            "date": "2003-08-12",
+            "stageId": "manchester-emergence",
+            "message": "Joins Manchester United from Sporting CP."
+          },
+          {
+            "id": "portugal-debut",
+            "date": "2003-08-20",
+            "stageId": "portugal-rise-captaincy",
+            "message": "Makes his senior Portugal debut against Kazakhstan."
+          },
+          {
+            "id": "first-portugal-goal",
+            "date": "2004-06-12",
+            "stageId": "portugal-rise-captaincy",
+            "message": "Scores his first Portugal goal in the EURO opener against Greece."
+          },
+          {
+            "id": "first-ballon-dor",
+            "date": "2008-12-02",
+            "stageId": "manchester-emergence",
+            "message": "Wins his first Ballon d'Or after a Champions League and Premier League double."
+          },
+          {
+            "id": "real-madrid-presentation",
+            "date": "2009-07-06",
+            "stageId": "real-madrid-record-years",
+            "message": "Is presented by Real Madrid at the Santiago Bernabéu."
+          },
+          {
+            "id": "la-decima",
+            "date": "2014-05-24",
+            "stageId": "real-madrid-record-years",
+            "message": "Scores in the Champions League final as Real Madrid wins La Décima."
+          },
+          {
+            "id": "euro-2016-champion",
+            "date": "2016-07-10",
+            "stageId": "portugal-champion-record-era",
+            "message": "Captains Portugal to its first major trophy at EURO 2016."
+          },
+          {
+            "id": "fifth-ballon-dor",
+            "date": "2017-12-07",
+            "stageId": "real-madrid-record-years",
+            "message": "Wins his fifth Ballon d'Or."
+          },
+          {
+            "id": "joins-juventus",
+            "date": "2018-07-10",
+            "stageId": "juventus-reinvention",
+            "message": "Juventus announces his transfer from Real Madrid."
+          },
+          {
+            "id": "one-hundred-portugal-goals",
+            "date": "2020-09-08",
+            "stageId": "portugal-champion-record-era",
+            "message": "Becomes the second man to score 100 senior international goals."
+          },
+          {
+            "id": "manchester-united-return",
+            "date": "2021-08-27",
+            "stageId": "manchester-return-transition",
+            "message": "Manchester United announces an agreement for his return."
+          },
+          {
+            "id": "international-goal-record",
+            "date": "2021-09-01",
+            "stageId": "portugal-champion-record-era",
+            "message": "Breaks the men's international scoring record."
+          },
+          {
+            "id": "joins-al-nassr",
+            "date": "2022-12-30",
+            "stageId": "al-nassr-global-platform",
+            "message": "Al Nassr announces his signing."
+          },
+          {
+            "id": "two-hundred-portugal-caps",
+            "date": "2023-06-20",
+            "stageId": "portugal-champion-record-era",
+            "message": "Becomes the first man to make 200 senior international appearances."
+          },
+          {
+            "id": "youtube-record",
+            "date": "2024-08-21",
+            "stageId": "al-nassr-global-platform",
+            "message": "UR Cristiano gains a record 19,729,827 YouTube subscribers in 24 hours."
+          },
+          {
+            "id": "second-nations-league",
+            "date": "2025-06-08",
+            "stageId": "portugal-champion-record-era",
+            "message": "Wins a second UEFA Nations League title with Portugal."
+          },
+          {
+            "id": "scores-at-six-world-cups",
+            "date": "2026-06-23",
+            "stageId": "portugal-champion-record-era",
+            "message": "Scores twice against Uzbekistan, becoming the first man to score at six World Cups."
+          },
+          {
+            "id": "first-world-cup-knockout-goal",
+            "date": "2026-07-02",
+            "stageId": "portugal-champion-record-era",
+            "message": "Scores his first World Cup knockout-stage goal as Portugal beats Croatia 2–1."
+          },
+          {
+            "id": "last-world-cup-confirmed",
+            "date": "2026-07-05",
+            "stageId": "portugal-champion-record-era",
+            "message": "Confirms that the 2026 tournament will be his last World Cup."
+          },
+          {
+            "id": "final-world-cup-match",
+            "date": "2026-07-06",
+            "stageId": "portugal-champion-record-era",
+            "message": "Plays his final World Cup match as Portugal loses 1–0 to Spain in the round of 16."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "tech-ai-internet",
     "label": "Tech / AI / Internet",
     "profiles": [
@@ -13684,255 +14439,6 @@ export const publicFigureProfileGroups: PublicFigureProfileGroup[] = [
     "label": "Music / Pop Culture",
     "profiles": [
       {
-        "id": "taylor-swift",
-        "name": "Taylor Swift",
-        "birthDate": "1989-12-13",
-        "headline": "Taylor Swift, one week at a time.",
-        "subtitle": "Taylor Swift's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-        "sourceNote": "Sources checked include English Wikipedia and Wikidata for Taylor Swift; dates with partial precision use visible labels.",
-        "stages": [
-          {
-            "id": "early-life",
-            "label": "Early life",
-            "startDate": "1989-12-13",
-            "endDate": "2004-07-01",
-            "location": "Public record",
-            "behavior": "Early life: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#ead1cc",
-            "filled": "#bd6658"
-          },
-          {
-            "id": "training",
-            "label": "Training and first work",
-            "startDate": "2004-07-01",
-            "endDate": "2007-07-01",
-            "location": "Public record",
-            "behavior": "Training and first work: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#b8ddd9",
-            "filled": "#247f85"
-          },
-          {
-            "id": "breakthrough",
-            "label": "Breakthrough",
-            "startDate": "2007-07-01",
-            "endDate": "2012-07-01",
-            "location": "Public record",
-            "behavior": "Breakthrough: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#edce8c",
-            "filled": "#b7791f"
-          },
-          {
-            "id": "dominance",
-            "label": "Cultural dominance",
-            "startDate": "2012-07-01",
-            "endDate": "2014-07-15",
-            "location": "Public record",
-            "behavior": "Cultural dominance: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#c9c0df",
-            "filled": "#725ca0"
-          },
-          {
-            "id": "reinvention",
-            "label": "Reinvention",
-            "startDate": "2014-07-15",
-            "endDate": "2019-08-23",
-            "location": "Public record",
-            "behavior": "Reinvention: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#c4d8ad",
-            "filled": "#5f8b3d"
-          },
-          {
-            "id": "legacy",
-            "label": "Legacy",
-            "startDate": "2019-08-23",
-            "endDate": "2023-07-01",
-            "location": "Public record",
-            "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#b7cbe8",
-            "filled": "#3f6fa9"
-          },
-          {
-            "id": "legacy-2",
-            "label": "Legacy",
-            "startDate": "2023-07-01",
-            "location": "Public record",
-            "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#e5bbb2",
-            "filled": "#a44f43"
-          }
-        ],
-        "events": [
-          {
-            "id": "born",
-            "date": "1989-12-13",
-            "stageId": "early-life",
-            "message": "Born."
-          },
-          {
-            "id": "signed-with-sony-atv-tree-music-publishing-i",
-            "date": "2004-07-01",
-            "dateLabel": "2004",
-            "stageId": "training",
-            "message": "Signed with Sony/ATV Tree Music Publishing in 2004",
-            "datePrecision": "year"
-          },
-          {
-            "id": "swift-s-debut-single-tim-mcgraw-was-released",
-            "date": "2006-06-15",
-            "dateLabel": "June 2006",
-            "stageId": "training",
-            "message": "Swift's debut single, \"Tim McGraw\", was released in June 2006.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "was-released-on-october-24-2006",
-            "date": "2006-10-24",
-            "stageId": "training",
-            "message": "Was released on October 24, 2006."
-          },
-          {
-            "id": "became-the-youngest-person-to-be-awarded",
-            "date": "2007-07-01",
-            "dateLabel": "2007",
-            "stageId": "breakthrough",
-            "message": "Became the youngest person to be awarded",
-            "datePrecision": "year"
-          },
-          {
-            "id": "swift-s-second-album-fearless-was-released-o",
-            "date": "2008-11-11",
-            "stageId": "breakthrough",
-            "message": "Swift's second album, Fearless, was released on November 11, 2008, in North America, and in March 2009 in other markets."
-          },
-          {
-            "id": "won-the-three-highest-awards-for-a-country-a",
-            "date": "2009-07-01",
-            "dateLabel": "2009",
-            "stageId": "breakthrough",
-            "message": "Won the three highest awards for a country album: Album of the Year by both the Country Music Association Awards and.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "swift-was-named-artist-of-the-year-by-both-t",
-            "date": "2009-07-01",
-            "dateLabel": "2009",
-            "stageId": "breakthrough",
-            "message": "Swift was named Artist of the Year by both the American Music Awards and Billboard",
-            "datePrecision": "year"
-          },
-          {
-            "id": "she-again-won-the-mtv-video-music-award-for-",
-            "date": "2009-07-01",
-            "dateLabel": "2009",
-            "stageId": "breakthrough",
-            "message": "She again won the MTV Video Music Award for Video of the Year with \"Anti-Hero\"",
-            "datePrecision": "year"
-          },
-          {
-            "id": "released-on-october-25-2010-the-album-debute",
-            "date": "2010-10-25",
-            "stageId": "breakthrough",
-            "message": "Released on October 25, 2010, the album debuted atop the US Billboard 200"
-          },
-          {
-            "id": "again-won-entertainment-of-the-year-by-the-a",
-            "date": "2012-07-01",
-            "dateLabel": "2012",
-            "stageId": "dominance",
-            "message": "Again won Entertainment of the Year by the Academy of Country Music Awards in 2012.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "released-her-fourth-album-red",
-            "date": "2012-10-22",
-            "stageId": "dominance",
-            "message": "Released her fourth album, Red,"
-          },
-          {
-            "id": "was-named-billboard-s-woman-of-the-year-and-",
-            "date": "2014-07-01",
-            "dateLabel": "2014",
-            "stageId": "dominance",
-            "message": "Was named Billboard's Woman of the Year and received the inaugural Dick Clark Award for Excellence at the American.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "published-an-op-ed-in-the-wall-street-journa",
-            "date": "2014-07-15",
-            "dateLabel": "July 2014",
-            "stageId": "reinvention",
-            "message": "Published an op-ed in The Wall Street Journal in July 2014 to stress the importance of albums as a creative medium.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "released-on-october-27-2014-the-album-spent-",
-            "date": "2014-10-27",
-            "stageId": "reinvention",
-            "message": "Released on October 27, 2014, the album spent eleven weeks at number one and one year in the top 10 of the Billboard."
-          },
-          {
-            "id": "became-the-first-female-songwriter-to-receiv",
-            "date": "2016-07-01",
-            "dateLabel": "2016",
-            "stageId": "reinvention",
-            "message": "Became the first female songwriter to receive an award named after its recipient.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "released-on-november-10-2017-reputation-open",
-            "date": "2017-11-10",
-            "stageId": "reinvention",
-            "message": "Released on November 10, 2017, Reputation opened atop the Billboard 200"
-          },
-          {
-            "id": "swift-s-first-album-with-republic-records-an",
-            "date": "2019-08-23",
-            "stageId": "legacy",
-            "message": "Swift's first album with Republic Records and seventh overall, Lover, was released on August 23, 2019."
-          },
-          {
-            "id": "the-man-was-released-in-2020-and-charted-hig",
-            "date": "2020-07-01",
-            "dateLabel": "2020",
-            "stageId": "legacy",
-            "message": "\"The Man\" was released in 2020 and charted highly",
-            "datePrecision": "year"
-          },
-          {
-            "id": "swift-s-tenth-album-midnights-was-released-o",
-            "date": "2022-10-21",
-            "stageId": "legacy",
-            "message": "Swift's tenth album, Midnights, was released on October 21, 2022."
-          },
-          {
-            "id": "became-the-first-individual-from-the-arts-to",
-            "date": "2023-07-01",
-            "dateLabel": "2023",
-            "stageId": "legacy-2",
-            "message": "Became the first individual from the arts to be named Time Person of the Year and the first woman to appear on a.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "the-tortured-poets-department-was-released-o",
-            "date": "2024-04-19",
-            "stageId": "legacy-2",
-            "message": "The Tortured Poets Department was released on April 19, 2024."
-          },
-          {
-            "id": "which-had-acquired-them-from-braun-in-2020",
-            "date": "2025-05-30",
-            "stageId": "legacy-2",
-            "message": "Which had acquired them from Braun in 2020."
-          },
-          {
-            "id": "was-released-on-october-3-2025-accompanied-b",
-            "date": "2025-10-03",
-            "stageId": "legacy-2",
-            "message": "Was released on October 3, 2025, accompanied by the promotional film Taylor Swift: The Official Release Party of a."
-          }
-        ]
-      },
-      {
         "id": "kanye-west",
         "name": "Kanye West",
         "birthDate": "1977-06-08",
@@ -14662,235 +15168,6 @@ export const publicFigureProfileGroups: PublicFigureProfileGroup[] = [
             "stageId": "legacy-2",
             "message": "Introduced Fenty Skin, a skin care line debuting",
             "datePrecision": "month"
-          }
-        ]
-      },
-      {
-        "id": "bad-bunny",
-        "name": "Bad Bunny",
-        "birthDate": "1994-03-10",
-        "headline": "Bad Bunny, one week at a time.",
-        "subtitle": "Bad Bunny's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-        "sourceNote": "Sources checked include English Wikipedia and Wikidata for Bad Bunny; dates with partial precision use visible labels.",
-        "stages": [
-          {
-            "id": "early-life",
-            "label": "Early life",
-            "startDate": "1994-03-10",
-            "endDate": "2018-10-11",
-            "location": "Public record",
-            "behavior": "Early life: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#ead1cc",
-            "filled": "#bd6658"
-          },
-          {
-            "id": "training",
-            "label": "Training and first work",
-            "startDate": "2018-10-11",
-            "endDate": "2019-07-22",
-            "location": "Public record",
-            "behavior": "Training and first work: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#b8ddd9",
-            "filled": "#247f85"
-          },
-          {
-            "id": "breakthrough",
-            "label": "Breakthrough",
-            "startDate": "2019-07-22",
-            "endDate": "2020-11-27",
-            "location": "Public record",
-            "behavior": "Breakthrough: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#edce8c",
-            "filled": "#b7791f"
-          },
-          {
-            "id": "dominance",
-            "label": "Cultural dominance",
-            "startDate": "2020-11-27",
-            "endDate": "2022-08-05",
-            "location": "Public record",
-            "behavior": "Cultural dominance: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#c9c0df",
-            "filled": "#725ca0"
-          },
-          {
-            "id": "reinvention",
-            "label": "Reinvention",
-            "startDate": "2022-08-05",
-            "endDate": "2023-05-19",
-            "location": "Public record",
-            "behavior": "Reinvention: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#c4d8ad",
-            "filled": "#5f8b3d"
-          },
-          {
-            "id": "legacy",
-            "label": "Legacy",
-            "startDate": "2023-05-19",
-            "endDate": "2025-04-07",
-            "location": "Public record",
-            "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#b7cbe8",
-            "filled": "#3f6fa9"
-          },
-          {
-            "id": "legacy-2",
-            "label": "Legacy",
-            "startDate": "2025-04-07",
-            "location": "Public record",
-            "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
-            "color": "#e5bbb2",
-            "filled": "#a44f43"
-          }
-        ],
-        "events": [
-          {
-            "id": "born",
-            "date": "1994-03-10",
-            "stageId": "early-life",
-            "message": "Born."
-          },
-          {
-            "id": "released-mia-with-drake-which-reached-number",
-            "date": "2018-10-11",
-            "stageId": "training",
-            "message": "Released \"Mia\" with Drake, which reached number five on the Billboard Hot 100."
-          },
-          {
-            "id": "released-his-debut-album-x-100pre-on-decembe",
-            "date": "2018-12-24",
-            "stageId": "training",
-            "message": "Released his debut album X 100pre on December 24, 2018, on the Rimas Entertainment label."
-          },
-          {
-            "id": "released-oasis-an-eight-song-collaborative-a",
-            "date": "2019-06-28",
-            "stageId": "training",
-            "message": "Released Oasis, an eight-song collaborative album with J Balvin."
-          },
-          {
-            "id": "bad-bunny-joined-artists-such-as-residente",
-            "date": "2019-07-22",
-            "stageId": "breakthrough",
-            "message": "Bad Bunny joined artists such as Residente"
-          },
-          {
-            "id": "vete-was-released-as-the-lead-single-of-the-",
-            "date": "2019-11-22",
-            "stageId": "breakthrough",
-            "message": "\"Vete\" was released as the lead single of the album on November 22, 2019."
-          },
-          {
-            "id": "announced-the-album-yhlqmdlg-on-february-27",
-            "date": "2020-02-27",
-            "stageId": "breakthrough",
-            "message": "Announced the album YHLQMDLG on February 27"
-          },
-          {
-            "id": "released-his-first-compilation-las-que-no-ib",
-            "date": "2020-05-10",
-            "stageId": "breakthrough",
-            "message": "Released his first compilation Las que no iban a salircode: spa promoted to code: es , without previous announcements."
-          },
-          {
-            "id": "the-song-is-included-on-his-third-studio-alb",
-            "date": "2020-11-27",
-            "stageId": "dominance",
-            "message": "The song is included on his third studio album, El Último Tour Del Mundo,"
-          },
-          {
-            "id": "was-announced-that-bad-bunny-became-spotify-",
-            "date": "2021-12-15",
-            "dateLabel": "December 2021",
-            "stageId": "dominance",
-            "message": "Was announced that Bad Bunny became Spotify's most-streamed artist of the year globally, for a second year in a row.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "a-short-film-and-music-video-titled-te-deseo",
-            "date": "2021-12-24",
-            "stageId": "dominance",
-            "message": "A short film and music video titled Te Deseo Lo Mejor was released in collaboration with the creators of The Simpsons."
-          },
-          {
-            "id": "released-his-fourth-studio-album-un-verano-s",
-            "date": "2022-05-06",
-            "stageId": "dominance",
-            "message": "Released his fourth studio album, Un Verano Sin Ti,"
-          },
-          {
-            "id": "began-his-fourth-concert-tour-world-s-hottes",
-            "date": "2022-08-05",
-            "stageId": "reinvention",
-            "message": "Began his fourth concert tour World's Hottest Tour on August 5"
-          },
-          {
-            "id": "released-his-music-video-for-el-apagon-on-se",
-            "date": "2022-09-16",
-            "stageId": "reinvention",
-            "message": "Released his music video for \"El Apagón\" on September 16, 2022."
-          },
-          {
-            "id": "the-tour-became-the-highest-grossing-tour-by",
-            "date": "2022-10-04",
-            "stageId": "reinvention",
-            "message": "The tour became the highest-grossing tour by a Latin artist in history, earning US$232.5 million at the time."
-          },
-          {
-            "id": "returned-to-wwe-television-in-april-2023-whe",
-            "date": "2023-04-15",
-            "dateLabel": "April 2023",
-            "stageId": "reinvention",
-            "message": "Returned to WWE television in April 2023, when he initially joined the Spanish commentary team for WrestleMania 39.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "released-his-first-solo-single-of-the-year-t",
-            "date": "2023-05-19",
-            "stageId": "legacy",
-            "message": "Released his first solo single of the year titled \"Where She Goes\", in which he ventured into jersey club music."
-          },
-          {
-            "id": "the-film-was-originally-set-to-be-released-o",
-            "date": "2024-01-12",
-            "stageId": "legacy",
-            "message": "The film was originally set to be released on January 12, 2024, prior to being removed from the release schedule."
-          },
-          {
-            "id": "released-the-lead-single-el-club-followed-by",
-            "date": "2024-12-05",
-            "stageId": "legacy",
-            "message": "Released the lead single \"El Clúb\", followed by the second single \"Pitorro de Coco\" and the announcement of his new."
-          },
-          {
-            "id": "released-his-seventh-album-debi-tirar-mas-fo",
-            "date": "2025-01-05",
-            "stageId": "legacy",
-            "message": "Released his seventh album, Debí Tirar Más Fotos, stating that it \"recommits me to Puerto Rico\"; it contains many."
-          },
-          {
-            "id": "npr-music-released-bad-bunny-s-tiny-desk-con",
-            "date": "2025-04-07",
-            "stageId": "legacy-2",
-            "message": "NPR Music released Bad Bunny's Tiny Desk Concert performance."
-          },
-          {
-            "id": "announced-debi-tirar-mas-fotos-world-tour",
-            "date": "2025-05-05",
-            "stageId": "legacy-2",
-            "message": "Announced Debí Tirar Más Fotos World Tour"
-          },
-          {
-            "id": "was-announced-that-he-would-headline-the-sup",
-            "date": "2025-09-28",
-            "stageId": "legacy-2",
-            "message": "Was announced that he would headline the Super Bowl LX halftime show on February 8"
-          },
-          {
-            "id": "bad-bunny-opened-his-speech-by-saying-before",
-            "date": "2026-02-01",
-            "stageId": "legacy-2",
-            "message": "Bad Bunny opened his speech by saying \"Before I say thanks to God"
           }
         ]
       },
@@ -20184,500 +20461,6 @@ export const publicFigureProfileGroups: PublicFigureProfileGroup[] = [
             "date": "2020-01-26",
             "stageId": "legacy-2",
             "message": "Dies."
-          }
-        ]
-      },
-      {
-        "id": "lionel-messi",
-        "name": "Lionel Messi",
-        "birthDate": "1987-06-24",
-        "headline": "Lionel Messi, one week at a time.",
-        "subtitle": "Lionel Messi's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-        "sourceNote": "Sources checked include English Wikipedia and Wikidata for Lionel Messi; dates with partial precision use visible labels.",
-        "stages": [
-          {
-            "id": "early-life",
-            "label": "Early life",
-            "startDate": "1987-06-24",
-            "endDate": "2001-02-15",
-            "location": "Public record",
-            "behavior": "Early life: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#ead1cc",
-            "filled": "#bd6658"
-          },
-          {
-            "id": "development",
-            "label": "Development and entry",
-            "startDate": "2001-02-15",
-            "endDate": "2009-07-01",
-            "location": "Public record",
-            "behavior": "Development and entry: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#b8ddd9",
-            "filled": "#247f85"
-          },
-          {
-            "id": "breakthrough",
-            "label": "Breakthrough season",
-            "startDate": "2009-07-01",
-            "endDate": "2017-06-30",
-            "location": "Public record",
-            "behavior": "Breakthrough season: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#edce8c",
-            "filled": "#b7791f"
-          },
-          {
-            "id": "prime",
-            "label": "Prime dominance",
-            "startDate": "2017-06-30",
-            "endDate": "2020-07-01",
-            "location": "Public record",
-            "behavior": "Prime dominance: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#c9c0df",
-            "filled": "#725ca0"
-          },
-          {
-            "id": "business",
-            "label": "Business and public role",
-            "startDate": "2020-07-01",
-            "endDate": "2023-03-15",
-            "location": "Public record",
-            "behavior": "Business and public role: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#c4d8ad",
-            "filled": "#5f8b3d"
-          },
-          {
-            "id": "legacy",
-            "label": "Legacy",
-            "startDate": "2023-03-15",
-            "endDate": "2023-10-30",
-            "location": "Public record",
-            "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#b7cbe8",
-            "filled": "#3f6fa9"
-          },
-          {
-            "id": "legacy-2",
-            "label": "Legacy",
-            "startDate": "2023-10-30",
-            "location": "Public record",
-            "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#e5bbb2",
-            "filled": "#a44f43"
-          }
-        ],
-        "events": [
-          {
-            "id": "born",
-            "date": "1987-06-24",
-            "stageId": "early-life",
-            "message": "Born."
-          },
-          {
-            "id": "messi-s-family-relocated-to-barcelona-where-",
-            "date": "2001-02-15",
-            "dateLabel": "February 2001",
-            "stageId": "development",
-            "message": "Messi's family relocated to Barcelona, where they moved into an apartment near the club's stadium, Camp Nou.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "his-progress-was-reflected-in-his-first-prof",
-            "date": "2004-02-04",
-            "stageId": "development",
-            "message": "His progress was reflected in his first professional contract, signed on 4 February 2004,"
-          },
-          {
-            "id": "began-his-international-career-in-2004-with-",
-            "date": "2004-07-01",
-            "dateLabel": "2004",
-            "stageId": "development",
-            "message": "Began his international career in 2004 with Argentina's U20 team",
-            "datePrecision": "year"
-          },
-          {
-            "id": "for-his-efforts-in-2009-messi-won-the-ballon",
-            "date": "2009-07-01",
-            "dateLabel": "2009",
-            "stageId": "breakthrough",
-            "message": "For his efforts in 2009, Messi won the Ballon d'Or, the FIFA World Player of the Year award and his first European.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "won-the-fifa-ballon-d-or-for-a-record-fifth-",
-            "date": "2016-01-11",
-            "stageId": "breakthrough",
-            "message": "Won the FIFA Ballon d'Or for a record fifth time in his career."
-          },
-          {
-            "id": "won-a-libel-case-against-la-razon-newspaper-",
-            "date": "2016-06-07",
-            "stageId": "breakthrough",
-            "message": "Won a libel case against La Razón newspaper and was awarded €65,000 in damages"
-          },
-          {
-            "id": "several-days-after-messi-announced-his-retir",
-            "date": "2016-06-15",
-            "dateLabel": "June 2016",
-            "stageId": "breakthrough",
-            "message": "Several days after Messi announced his retirement from Argentina's national team in June 2016",
-            "datePrecision": "month"
-          },
-          {
-            "id": "who-he-married-on-30-june-2017-in-their-home",
-            "date": "2017-06-30",
-            "stageId": "prime",
-            "message": "Who he married on 30 June 2017 in their hometown of Rosario."
-          },
-          {
-            "id": "signed-a-new-deal-with-barcelona-on-25-novem",
-            "date": "2017-11-25",
-            "stageId": "prime",
-            "message": "Signed a new deal with Barcelona on 25 November 2017, keeping him with the club through 2021."
-          },
-          {
-            "id": "with-the-departure-of-captain-andres-iniesta",
-            "date": "2018-05-15",
-            "dateLabel": "May 2018",
-            "stageId": "prime",
-            "message": "With the departure of captain Andrés Iniesta in May 2018, Messi was named the team's new captain for the 2018–19 season.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "was-named-the-laureus-world-sportsman-of-the",
-            "date": "2020-07-01",
-            "dateLabel": "2020",
-            "stageId": "business",
-            "message": "Was named the Laureus World Sportsman of the Year, the first team-sport athlete to win the award.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "where-he-was-jointly-named-best-player-and-w",
-            "date": "2020-07-01",
-            "dateLabel": "2020",
-            "stageId": "business",
-            "message": "Where he was jointly named Best Player and won the Golden Boot",
-            "datePrecision": "year"
-          },
-          {
-            "id": "signed-a-five-year-deal-to-become-a-brand-am",
-            "date": "2021-06-15",
-            "dateLabel": "June 2021",
-            "stageId": "business",
-            "message": "Signed a five-year deal to become a brand ambassador for Hard Rock Cafe",
-            "datePrecision": "month"
-          },
-          {
-            "id": "where-he-won-the-ligue-1-title-twice-and-was",
-            "date": "2021-07-01",
-            "dateLabel": "2021",
-            "stageId": "business",
-            "message": "Where he won the Ligue 1 title twice and was awarded the Ligue 1 Foreign Player of the Year for 2022–23.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "messi-joined-the-ligue-1-club-paris-saint-ge",
-            "date": "2021-08-10",
-            "stageId": "business",
-            "message": "Messi joined the Ligue 1 club Paris Saint-Germain on a two-year contract with an option for an extra year."
-          },
-          {
-            "id": "a-life-sized-statue-of-messi-holding-the-wor",
-            "date": "2023-03-15",
-            "dateLabel": "March 2023",
-            "stageId": "legacy",
-            "message": "A life-sized statue of Messi holding the World Cup trophy was unveiled outside the CONMEBOL headquarters in Luque",
-            "datePrecision": "month"
-          },
-          {
-            "id": "joined-the-major-league-soccer-club-inter-mi",
-            "date": "2023-07-01",
-            "dateLabel": "2023",
-            "stageId": "legacy",
-            "message": "Joined the Major League Soccer club Inter Miami in 2023 and led them to their first MLS Cup victory in 2025",
-            "datePrecision": "year"
-          },
-          {
-            "id": "messi-was-named-time-s-athlete-of-the-year-i",
-            "date": "2023-07-01",
-            "dateLabel": "2023",
-            "stageId": "legacy",
-            "message": "Messi was named Time's Athlete of the Year in 2023",
-            "datePrecision": "year"
-          },
-          {
-            "id": "the-major-league-soccer-club-inter-miami-cf-",
-            "date": "2023-07-15",
-            "stageId": "legacy",
-            "message": "The Major League Soccer club Inter Miami CF announced the signing of Messi on a two-and-a-half-year contract."
-          },
-          {
-            "id": "following-his-world-cup-win",
-            "date": "2023-10-30",
-            "stageId": "legacy-2",
-            "message": "Following his World Cup win"
-          },
-          {
-            "id": "announced-the-release-of-mas-an-american-bra",
-            "date": "2024-06-04",
-            "stageId": "legacy-2",
-            "message": "Announced the release of Más+, an American brand of sports drinks and energy drinks."
-          },
-          {
-            "id": "led-miami-to-mls-cup-2025-where-they-won-3-1",
-            "date": "2025-07-01",
-            "dateLabel": "2025",
-            "stageId": "legacy-2",
-            "message": "Led Miami to MLS Cup 2025, where they won 3–1 over the Vancouver Whitecaps to win the team's first league championship.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "acquired-full-ownership-of-the-spanish-footb",
-            "date": "2026-04-16",
-            "stageId": "legacy-2",
-            "message": "Acquired full ownership of the Spanish football club UE Cornellà. ."
-          }
-        ]
-      },
-      {
-        "id": "cristiano-ronaldo",
-        "name": "Cristiano Ronaldo",
-        "birthDate": "1985-02-05",
-        "headline": "Cristiano Ronaldo, one week at a time.",
-        "subtitle": "Cristiano Ronaldo's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-        "sourceNote": "Sources checked include English Wikipedia and Wikidata for Cristiano Ronaldo; dates with partial precision use visible labels.",
-        "stages": [
-          {
-            "id": "early-life",
-            "label": "Early life",
-            "startDate": "1985-02-05",
-            "endDate": "2003-08-12",
-            "location": "Public record",
-            "behavior": "Early life: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#ead1cc",
-            "filled": "#bd6658"
-          },
-          {
-            "id": "development",
-            "label": "Development and entry",
-            "startDate": "2003-08-12",
-            "endDate": "2009-07-01",
-            "location": "Public record",
-            "behavior": "Development and entry: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#b8ddd9",
-            "filled": "#247f85"
-          },
-          {
-            "id": "breakthrough",
-            "label": "Breakthrough season",
-            "startDate": "2009-07-01",
-            "endDate": "2014-12-15",
-            "location": "Public record",
-            "behavior": "Breakthrough season: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#edce8c",
-            "filled": "#b7791f"
-          },
-          {
-            "id": "prime",
-            "label": "Prime dominance",
-            "startDate": "2014-12-15",
-            "endDate": "2017-07-01",
-            "location": "Public record",
-            "behavior": "Prime dominance: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#c9c0df",
-            "filled": "#725ca0"
-          },
-          {
-            "id": "business",
-            "label": "Business and public role",
-            "startDate": "2017-07-01",
-            "endDate": "2021-08-27",
-            "location": "Public record",
-            "behavior": "Business and public role: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#c4d8ad",
-            "filled": "#5f8b3d"
-          },
-          {
-            "id": "legacy",
-            "label": "Legacy",
-            "startDate": "2021-08-27",
-            "endDate": "2025-06-08",
-            "location": "Public record",
-            "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#b7cbe8",
-            "filled": "#3f6fa9"
-          },
-          {
-            "id": "legacy-2",
-            "label": "Legacy",
-            "startDate": "2025-06-08",
-            "location": "Public record",
-            "behavior": "Legacy: Training, competition, championships, endorsement power, and legacy formation",
-            "color": "#e5bbb2",
-            "filled": "#a44f43"
-          }
-        ],
-        "events": [
-          {
-            "id": "born",
-            "date": "1985-02-05",
-            "stageId": "early-life",
-            "message": "Born."
-          },
-          {
-            "id": "manchester-united-signed-ronaldo-for-12-mill",
-            "date": "2003-08-12",
-            "stageId": "development",
-            "message": "Manchester United signed Ronaldo for £12 million"
-          },
-          {
-            "id": "was-named-runner-up-to-kaka-for-the-2007-bal",
-            "date": "2007-07-01",
-            "dateLabel": "2007",
-            "stageId": "development",
-            "message": "Was named runner-up to Kaká for the 2007 Ballon d'Or",
-            "datePrecision": "year"
-          },
-          {
-            "id": "ronaldo-became-united-s-first-ballon-d-or-wi",
-            "date": "2008-07-01",
-            "dateLabel": "2008",
-            "stageId": "development",
-            "message": "Ronaldo became United's first Ballon d'Or winner since Best in 1968",
-            "datePrecision": "year"
-          },
-          {
-            "id": "became-the-subject-of-the-then-most-expensiv",
-            "date": "2009-07-01",
-            "dateLabel": "2009",
-            "stageId": "breakthrough",
-            "message": "Became the subject of the then-most expensive transfer in history when he joined Real Madrid in a deal worth €94.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "launched-an-iphone-game-called-heads-up-with",
-            "date": "2011-12-15",
-            "dateLabel": "December 2011",
-            "stageId": "breakthrough",
-            "message": "Launched an iPhone game called Heads Up with Cristiano",
-            "datePrecision": "month"
-          },
-          {
-            "id": "ronaldo-co-designed-a-range-of-underwear-and",
-            "date": "2013-11-15",
-            "dateLabel": "November 2013",
-            "stageId": "breakthrough",
-            "message": "Ronaldo co-designed a range of underwear and sock line",
-            "datePrecision": "month"
-          },
-          {
-            "id": "sports-market-research-company-repucom-named",
-            "date": "2014-05-15",
-            "dateLabel": "May 2014",
-            "stageId": "breakthrough",
-            "message": "Sports market research company Repucom named Ronaldo the most marketable and most recognised football player in the.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "a-bronze-statue-of-ronaldo-designed-by-artis",
-            "date": "2014-12-15",
-            "dateLabel": "December 2014",
-            "stageId": "prime",
-            "message": "A bronze statue of Ronaldo, designed by artist Ricardo Madeira Veloso, was unveiled in Funchal in December 2014.",
-            "datePrecision": "month"
-          },
-          {
-            "id": "became-real-madrid-s-all-time-top-scorer-on-",
-            "date": "2015-09-12",
-            "stageId": "prime",
-            "message": "Became Real Madrid's all-time top scorer on 12 September 2015 against Espanyol"
-          },
-          {
-            "id": "a-documentary-film-directed-by-anthony-wonke",
-            "date": "2015-11-09",
-            "stageId": "prime",
-            "message": "A documentary film directed by Anthony Wonke about his life and career, titled Ronaldo, was released on 9 November 2015."
-          },
-          {
-            "id": "madeira-airport-in-funchal-was-renamed-as-cr",
-            "date": "2016-07-23",
-            "stageId": "prime",
-            "message": "Madeira Airport in Funchal was renamed as Cristiano Ronaldo International Airport."
-          },
-          {
-            "id": "a-day-later-ronaldo-won-the-2017-ballon-d-or",
-            "date": "2017-07-01",
-            "dateLabel": "2017",
-            "stageId": "business",
-            "message": "A day later, Ronaldo won the 2017 Ballon d'Or, receiving his fifth-time award on the Eiffel Tower in Paris.",
-            "datePrecision": "year"
-          },
-          {
-            "id": "won-his-first-trophy-with-the-club-on-16-jan",
-            "date": "2019-01-16",
-            "stageId": "business",
-            "message": "Won his first trophy with the club on 16 January 2019"
-          },
-          {
-            "id": "in-a-4-0-home-win-against-cagliari-and-becam",
-            "date": "2020-01-06",
-            "stageId": "business",
-            "message": "In a 4–0 home win against Cagliari and became only the second player to score hat-tricks in the Premier League"
-          },
-          {
-            "id": "was-renamed-academia-cristiano-ronaldo",
-            "date": "2020-09-21",
-            "stageId": "business",
-            "message": "Was renamed Academia Cristiano Ronaldo."
-          },
-          {
-            "id": "manchester-united-announced-they-had-reached",
-            "date": "2021-08-27",
-            "stageId": "legacy",
-            "message": "Manchester United announced they had reached an agreement with Juventus to re-sign Ronaldo"
-          },
-          {
-            "id": "ronaldo-became-the-first-player-to-feature-i",
-            "date": "2024-07-01",
-            "dateLabel": "2024",
-            "stageId": "legacy",
-            "message": "Ronaldo became the first player to feature in six European Championships",
-            "datePrecision": "year"
-          },
-          {
-            "id": "it-became-the-fastest-to-reach-the-1-million",
-            "date": "2024-08-21",
-            "stageId": "legacy",
-            "message": "It became the fastest to reach the 1 million subscribers milestone"
-          },
-          {
-            "id": "became-the-first-player-to-reach-700-club-le",
-            "date": "2025-01-30",
-            "stageId": "legacy",
-            "message": "Became the first player to reach 700 club-level wins, while also scoring a goal in a 2–1 away victory against Al Raed."
-          },
-          {
-            "id": "won-his-second-nations-league-title",
-            "date": "2025-06-08",
-            "stageId": "legacy-2",
-            "message": "Won his second Nations League title"
-          },
-          {
-            "id": "rodriguez-announced-their-engagement-via-ins",
-            "date": "2025-08-11",
-            "stageId": "legacy-2",
-            "message": "Rodríguez announced their engagement via Instagram. ."
-          },
-          {
-            "id": "acquired-a-25-ownership-stake-in-spanish-clu",
-            "date": "2026-02-26",
-            "stageId": "legacy-2",
-            "message": "Acquired a 25% ownership stake in Spanish club UD Almería as part of his investment activities through CR7 Sports."
-          },
-          {
-            "id": "was-selected-in-the-26-man-squad-for-the-202",
-            "date": "2026-05-19",
-            "stageId": "legacy-2",
-            "message": "Was selected in the 26-man squad for the 2026 FIFA World Cup for a sixth time."
           }
         ]
       },

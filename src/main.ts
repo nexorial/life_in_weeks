@@ -274,12 +274,6 @@ const profileCategoryGroups: ProfileGroup[] = publicFigureProfileGroups.map((gro
 const generatedProfileIds = new Set(publicFigureProfiles.map((profile) => profile.id));
 const customProfileGroupLabel = "Custom Profiles";
 
-const readingPrompts = {
-  stages: "Stage recognition: color shows the dominant context; striped cells mean overlapping identities.",
-  behavior: "Behavior analysis: read each colored band as the work pattern that dominated that period.",
-  events: "Event tracking: pinned notes show the weeks where public events changed the trajectory."
-} as const;
-
 const generatedStagePalette = [
   { color: "#ead1cc", filled: "#bd6658" },
   { color: "#b8ddd9", filled: "#247f85" },
@@ -290,6 +284,18 @@ const generatedStagePalette = [
   { color: "#e5bbb2", filled: "#a44f43" },
   { color: "#d9c7a7", filled: "#8e6b35" }
 ];
+
+const pastelBloomStageColors = [
+  "#f2a7b8",
+  "#f7bd8f",
+  "#efd978",
+  "#aadf9d",
+  "#8fd9d0",
+  "#9bc9ef",
+  "#c5b5ee",
+  "#e0a8d2",
+  "#d8bd9a"
+] as const;
 
 const personalStageTemplates = [
   {
@@ -394,12 +400,9 @@ const grid = requireElement<HTMLElement>("[data-life-grid]");
 const axis = requireElement<HTMLElement>("[data-age-axis]");
 const legend = requireElement<HTMLElement>("[data-legend]");
 const stats = requireElement<HTMLElement>("[data-life-stats]");
-const shareLine = requireElement<HTMLElement>("[data-share-line]");
 const exportButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-export]"));
 const exportTitle = requireElement<HTMLElement>("[data-export-title]");
 const exportSummary = requireElement<HTMLElement>("[data-export-summary]");
-const viralNote = requireElement<HTMLElement>("[data-viral-note]");
-const viralNoteContainer = viralNote.closest<HTMLElement>(".viral-note");
 const profileTitle = requireElement<HTMLElement>("[data-profile-title]");
 const profileSubtitle = requireElement<HTMLElement>("[data-profile-subtitle]");
 const stageCardLabel = requireElement<HTMLElement>("[data-stage-card-label]");
@@ -418,7 +421,6 @@ const copyProfilePromptButton = requireElement<HTMLButtonElement>("[data-copy-pr
 const aiProfileJsonInput = requireElement<HTMLTextAreaElement>("[data-ai-profile-json]");
 const importProfileButton = requireElement<HTMLButtonElement>("[data-import-profile]");
 const aiProfileStatus = requireElement<HTMLElement>("[data-ai-profile-status]");
-const readingButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-reading-prompt]"));
 const eventForm = requireElement<HTMLFormElement>("[data-event-form]");
 const eventKicker = requireElement<HTMLElement>("[data-event-kicker]");
 const eventTitle = requireElement<HTMLElement>("[data-event-title]");
@@ -443,7 +445,6 @@ let publicSelectedProfile = profiles[0];
 let selectedProfile = profiles[0];
 let selectedWeeks = 0;
 let selectedLifeAge: LifeAge | null = null;
-let selectedReadingPrompt: keyof typeof readingPrompts = "stages";
 let profileEventState = new Map<string, LifeEvent[]>(profiles.map((profile) => [profile.id, [...profile.events]]));
 let personalBirthDate = defaultPersonalBirthDate;
 let personalEventDrafts: PersonalEventDraft[] = [];
@@ -604,7 +605,7 @@ function createPersonalProfile(birthDateValue: string, eventDrafts: PersonalEven
 }
 
 function activeStageColors(stages: DevelopmentStage[]) {
-  return stages.length ? stages.map((stage) => stage.filled) : ["#9b958c"];
+  return stages.length ? stages.map((stage) => stageDisplayColor(stage)) : ["#9b958c"];
 }
 
 function cellGradient(stages: DevelopmentStage[]) {
@@ -626,10 +627,16 @@ function stageRangeLabel(stage: DevelopmentStage) {
   const birth = parseLocalDate(selectedProfile.birthDate);
   if (!start || !birth) return stage.endDate ? `${stage.startDate} - ${stage.endDate}` : `${stage.startDate} - now`;
 
+  const referenceDate = getReferenceDate(selectedProfile);
   const startAge = calculateLifeAge(selectedProfile.birthDate, start).fullYears;
   const endAge = end ? calculateLifeAge(selectedProfile.birthDate, end).fullYears : selectedLifeAge?.fullYears;
+  if (!end && start.getTime() > referenceDate.getTime()) {
+    return `${start.getFullYear()}+ / age ${startAge}+`;
+  }
+
   const endLabel = end ? String(end.getFullYear()) : "now";
-  return `${start.getFullYear()} - ${endLabel} / age ${startAge}${endAge === undefined ? "+" : `-${endAge}`}`;
+  const ageLabel = endAge === undefined || endAge < startAge ? `${startAge}+` : `${startAge}-${endAge}`;
+  return `${start.getFullYear()} - ${endLabel} / age ${ageLabel}`;
 }
 
 function createGrid() {
@@ -661,7 +668,7 @@ function createLegend() {
     .map(
       (stage) => `
         <span class="legend-item">
-          <i style="--stage-filled:${stage.filled}"></i>
+          <i style="--stage-filled:${stageDisplayColor(stage)}"></i>
           <span>
             <strong>${escapeHtml(stage.label)}</strong>
             <small>${escapeHtml(stageRangeLabel(stage))} / ${escapeHtml(stage.location)}</small>
@@ -1014,6 +1021,11 @@ function uniqueId(baseId: string, existingIds: Set<string>) {
   }
   existingIds.add(candidate);
   return candidate;
+}
+
+function stageDisplayColor(stage: DevelopmentStage) {
+  const stageIndex = selectedProfile.stages.findIndex((item) => item.id === stage.id);
+  return pastelBloomStageColors[(stageIndex < 0 ? 0 : stageIndex) % pastelBloomStageColors.length] ?? stage.filled;
 }
 
 function profilePromptTarget() {
@@ -1427,7 +1439,8 @@ function prepareAnnotationStage(eventCount: number, compact: boolean, stackHeigh
 }
 
 function eventColor(lifeEvent: LifeEvent) {
-  return stageById(lifeEvent.stageId)?.filled ?? "#161512";
+  const stage = stageById(lifeEvent.stageId);
+  return stage ? stageDisplayColor(stage) : "#161512";
 }
 
 function eventStageLabel(lifeEvent: LifeEvent) {
@@ -1645,10 +1658,6 @@ function countOverlappedWeeks(filledWeeks: number) {
   return overlapCount;
 }
 
-function activeReflectionLine() {
-  return activeMode === "personal" ? personalReflectionLine : readingPrompts[selectedReadingPrompt];
-}
-
 function updateProfileTitle() {
   if (activeMode === "personal") {
     profileTitle.replaceChildren("Your life, one week", document.createElement("br"), "at a time.");
@@ -1673,16 +1682,11 @@ function updateCopy(age: LifeAge) {
 
   updateProfileTitle();
   profileSubtitle.textContent = selectedProfile.subtitle;
-  sourceNote.textContent =
-    activeMode === "personal"
-      ? activeReflectionLine()
-      : `${selectedProfile.sourceNote} ${activeReflectionLine()}`;
+  sourceNote.textContent = activeMode === "personal" ? personalReflectionLine : selectedProfile.sourceNote;
 
   if (activeMode === "personal") {
     pageEyebrow.textContent = "KISKIR / personal timeline";
     stats.textContent = `${dateRange} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / ${ageLabel} ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
-    shareLine.textContent = "";
-    viralNoteContainer?.setAttribute("hidden", "");
     exportTitle.textContent = "Personal Timeline";
     exportSummary.textContent = `${selectedProfile.stages.length} life phases / ${lifeEvents.length} personal events mapped / ${percent.toFixed(1)}% of the 100-year grid filled.`;
     stageCardLabel.textContent = "Life phases";
@@ -1698,9 +1702,7 @@ function updateCopy(age: LifeAge) {
   }
 
   pageEyebrow.textContent = "KISKIR / public figure profile";
-  viralNoteContainer?.setAttribute("hidden", "");
   stats.textContent = `${selectedProfile.name} / ${dateRange} / ${age.elapsedWeeks.toLocaleString()} elapsed weeks / ${ageLabel} ${formatAgeDetail(age)} / ${remaining.toLocaleString()} squares before 100.`;
-  shareLine.textContent = activeReflectionLine();
   exportTitle.textContent = `${selectedProfile.name} in Weeks`;
   exportSummary.textContent = `${selectedProfile.stages.length} stages / ${lifeEvents.length} mapped events / ${overlapCount.toLocaleString()} lived weeks contain overlapping stages / ${percent.toFixed(1)}% of the 100-year grid filled.`;
   stageCardLabel.textContent = "Stage recognition";
@@ -1714,17 +1716,6 @@ function updateCopy(age: LifeAge) {
   eventCardLabel.textContent = "Event tracking";
   eventCardCopy.textContent = "Exact events pin to weeks; approximate public dates draw honest month, year, or age spans.";
   eventMetric.textContent = `${lifeEvents.length} events mapped`;
-  viralNote.textContent = activeReflectionLine();
-}
-
-function setReadingPrompt(prompt: keyof typeof readingPrompts) {
-  selectedReadingPrompt = prompt;
-  const copy = activeReflectionLine();
-  shareLine.textContent = copy;
-  viralNote.textContent = copy;
-  readingButtons.forEach((button) => {
-    button.classList.toggle("is-selected", button.dataset.readingPrompt === prompt);
-  });
 }
 
 function displayProfile() {
@@ -2142,7 +2133,7 @@ function drawExportImage() {
     const row = Math.floor(index / 2);
     const x = 176 + col * 630;
     const y = legendTop + row * 64;
-    ctx.fillStyle = stage.filled;
+    ctx.fillStyle = stageDisplayColor(stage);
     roundedRect(ctx, x, y - 22, 26, 26, 3);
     ctx.fill();
     ctx.fillStyle = "#292723";
@@ -2152,7 +2143,8 @@ function drawExportImage() {
   ctx.textAlign = "center";
   ctx.fillStyle = "#8D8981";
   ctx.font = "18px Avenir Next, Avenir, Gill Sans, sans-serif";
-  ctx.fillText(activeReflectionLine(), width / 2, height - 76);
+  const footerLine = activeMode === "personal" ? personalReflectionLine : selectedProfile.sourceNote;
+  ctx.fillText(footerLine, width / 2, height - 76);
 
   ctx.fillStyle = "#AAA69D";
   ctx.font = "600 20px Avenir Next, Avenir, Gill Sans, sans-serif";
@@ -2361,14 +2353,6 @@ aiNameInput.addEventListener("input", () => {
 copyProfilePromptButton.addEventListener("click", copyAiPrompt);
 importProfileButton.addEventListener("click", importProfileFromAiResponse);
 
-readingButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const prompt = button.dataset.readingPrompt as keyof typeof readingPrompts;
-    setReadingPrompt(prompt);
-    updateCopy(selectedLifeAge ?? calculateLifeAge(selectedProfile.birthDate, getReferenceDate(selectedProfile)));
-  });
-});
-
 eventCopyInput.addEventListener("input", () => {
   updateEventCount();
   if (countCharacters(eventCopyInput.value) <= maxEventCharacters) {
@@ -2450,5 +2434,4 @@ populateProfiles();
 updateAiProfilePrompt();
 personalBirthDateInput.value = personalBirthDate;
 profileSelect.value = publicSelectedProfile.id;
-setReadingPrompt("stages");
 activateMode("personal");

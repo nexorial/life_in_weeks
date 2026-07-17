@@ -2,52 +2,52 @@
 
 ## Status
 
-Batch-generated public-figure Life in Weeks profile.
+Curated news profile for 2026-07-10.
 
-## Agency Agents Line
+## Story Line
 
-> Pushed Spanish-language pop from regional dominance to global cultural force.
+> From Vega Baja grocery shifts to Spanish-language firsts on music's biggest stages.
+
+## Why This Is in the News
+
+On 2026-07-08, the Apple Music Super Bowl LX Halftime Show Starring Bad Bunny received nine Emmy nominations,
+the most ever for a Super Bowl halftime show. Bad Bunny also received his first personal Emmy nomination as an
+executive producer of the live special.
+
+The latest event is a nomination milestone, not an award win. The 78th Emmy Awards ceremony is scheduled for
+2026-09-14.
 
 ## Source Families Checked
 
-- [Wikipedia: Bad Bunny](https://en.wikipedia.org/wiki/Bad_Bunny) for the public biography chronology and career/life-event cross-checks.
-- [Wikidata: Q44333953](https://www.wikidata.org/wiki/Q44333953) for structured birth/death date checks when available.
+- [Television Academy: Bad Bunny](https://www.televisionacademy.com/bios/bad-bunny) for his first personal Emmy nomination.
+- [Associated Press: 2026 Emmy nominations](https://apnews.com/article/7d21700a43d7d5da1a662898e3646d46) and [Forbes: halftime-show record](https://www.forbes.com/sites/hannahabraham/2026/07/08/bad-bunny-beats-lady-gagas-super-bowl-record-with-9-emmy-nominations/) for the nine-nomination record.
+- [NFL: Super Bowl LX audience report](https://www.nfl.com/news/super-bowl-lx-second-most-watched-all-time-with-nearly-125m-viewers) for 128.2 million halftime viewers and four billion social views in the first 24 hours.
+- [Associated Press: historic 2026 Grammy win](https://apnews.com/article/4d631de5d968b51276a8f06b76580e20) for the first Spanish-language Album of the Year winner.
+- [Apple Music: Bad Bunny](https://music.apple.com/la/artist/bad-bunny/1126808565), Recording Academy, Billboard, and official release records for birth and album chronology.
 
 ## Verification Notes
 
-- Birth and death dates prefer Wikidata structured values, then the Wikipedia biography when Wikidata is incomplete.
-- Some public events have only year or month precision in the source text; those use midpoint machine dates plus visible labels.
-- The chronology below is intentionally selective: it favors dated, source-visible turning points over exhaustive coverage.
-- Stage labels are editorial groupings for the Life in Weeks visualization; event rows carry the source-grounded facts.
+- The Emmy story is represented on the date nominations were announced, 2026-07-08; the halftime performance itself remains a separate 2026-02-08 event.
+- The 2016 SoundCloud breakthrough is only supported at year precision and therefore uses a visible year label rather than an invented exact-week claim.
+- Stage labels are editorial groupings. Overlaps intentionally show Puerto Rican cultural work and global live-performance work happening at the same time.
 
 ## Verified Chronology
 
 | Date | Event | Validation |
 | --- | --- | --- |
-| 1994-03-10 | Born. | Wikidata birth date; Wikipedia biography |
-| 2018-10-11 | Released "Mia" with Drake, which reached number five on the Billboard Hot 100. | Wikipedia biography |
-| 2018-12-24 | Released his debut album X 100pre on December 24, 2018, on the Rimas Entertainment label. | Wikipedia biography |
-| 2019-06-28 | Released Oasis, an eight-song collaborative album with J Balvin. | Wikipedia biography |
-| 2019-07-22 | Bad Bunny joined artists such as Residente | Wikipedia biography |
-| 2019-11-22 | "Vete" was released as the lead single of the album on November 22, 2019. | Wikipedia biography |
-| 2020-02-27 | Announced the album YHLQMDLG on February 27 | Wikipedia biography |
-| 2020-05-10 | Released his first compilation Las que no iban a salircode: spa promoted to code: es , without previous announcements. | Wikipedia biography |
-| 2020-11-27 | The song is included on his third studio album, El Último Tour Del Mundo, | Wikipedia biography |
-| December 2021 | Was announced that Bad Bunny became Spotify's most-streamed artist of the year globally, for a second year in a row. | Wikipedia biography; approximate machine date |
-| 2021-12-24 | A short film and music video titled Te Deseo Lo Mejor was released in collaboration with the creators of The Simpsons. | Wikipedia biography |
-| 2022-05-06 | Released his fourth studio album, Un Verano Sin Ti, | Wikipedia biography |
-| 2022-08-05 | Began his fourth concert tour World's Hottest Tour on August 5 | Wikipedia biography |
-| 2022-09-16 | Released his music video for "El Apagón" on September 16, 2022. | Wikipedia biography |
-| 2022-10-04 | The tour became the highest-grossing tour by a Latin artist in history, earning US$232.5 million at the time. | Wikipedia biography |
-| April 2023 | Returned to WWE television in April 2023, when he initially joined the Spanish commentary team for WrestleMania 39. | Wikipedia biography; approximate machine date |
-| 2023-05-19 | Released his first solo single of the year titled "Where She Goes", in which he ventured into jersey club music. | Wikipedia biography |
-| 2024-01-12 | The film was originally set to be released on January 12, 2024, prior to being removed from the release schedule. | Wikipedia biography |
-| 2024-12-05 | Released the lead single "El Clúb", followed by the second single "Pitorro de Coco" and the announcement of his new. | Wikipedia biography |
-| 2025-01-05 | Released his seventh album, Debí Tirar Más Fotos, stating that it "recommits me to Puerto Rico"; it contains many. | Wikipedia biography |
-| 2025-04-07 | NPR Music released Bad Bunny's Tiny Desk Concert performance. | Wikipedia biography |
-| 2025-05-05 | Announced Debí Tirar Más Fotos World Tour | Wikipedia biography |
-| 2025-09-28 | Was announced that he would headline the Super Bowl LX halftime show on February 8 | Wikipedia biography |
-| 2026-02-01 | Bad Bunny opened his speech by saying "Before I say thanks to God | Wikipedia biography |
+| 1994-03-10 | Born Benito Antonio Martínez Ocasio in Vega Baja, Puerto Rico. | Apple Music; public biography records |
+| 2016 | “Diles” gains attention on SoundCloud while he is working at a grocery store. | Billboard and public biography records; year precision |
+| 2018-10-11 | Releases “MIA” with Drake. | Official release records; Billboard |
+| 2018-12-24 | Releases debut album *X 100pre*. | Official release records |
+| 2020-02-29 | Releases *YHLQMDLG*. | Official release records; Billboard |
+| 2020-11-27 | Releases *El Último Tour del Mundo*, later the first all-Spanish Billboard 200 No. 1. | Billboard; Recording Academy |
+| 2022-05-06 | Releases *Un Verano Sin Ti*. | Official release records; Recording Academy |
+| 2025-01-05 | Releases *Debí Tirar Más Fotos*, centered on Puerto Rican memory and music. | Official release records |
+| 2025-07-11 | Opens the No Me Quiero Ir de Aquí residency in San Juan. | Official event records; major music press |
+| 2025-09-28 | Announced as the Super Bowl LX halftime headliner. | NFL; Apple Music; Roc Nation |
+| 2026-02-01 | *Debí Tirar Más Fotos* becomes the first Spanish-language Grammy Album of the Year winner. | Associated Press; Recording Academy |
+| 2026-02-08 | Headlines the Super Bowl LX halftime show, averaging 128.2 million U.S. viewers. | NFL; Nielsen reporting |
+| 2026-07-08 | The halftime show receives a record nine Emmy nominations. | Television Academy; Associated Press |
 
 ## Life in Weeks JSON
 
@@ -56,75 +56,74 @@ Batch-generated public-figure Life in Weeks profile.
   "name": "Bad Bunny",
   "birthDate": "1994-03-10",
   "headline": "Bad Bunny, one week at a time.",
-  "subtitle": "Bad Bunny's public life is mapped through stages, overlapping roles, and sourced events from birth to today.",
-  "sourceNote": "Sources checked include English Wikipedia and Wikidata for Bad Bunny; dates with partial precision use visible labels.",
+  "subtitle": "A grocery-store job, SoundCloud, Spanish-language chart firsts, Puerto Rico, the Grammys, and the Super Bowl converge before age 33.",
+  "sourceNote": "Checked against Television Academy, AP, NFL, Recording Academy, Billboard, and artist-release records.",
   "stages": [
     {
-      "id": "early-life",
-      "label": "Early life",
+      "id": "vega-baja",
+      "label": "Vega Baja formation",
       "startDate": "1994-03-10",
-      "endDate": "2018-10-11",
-      "location": "Public record",
-      "behavior": "Early life: Training, releases, performance identity, reinvention, and cultural reception",
+      "endDate": "2016-01-01",
+      "location": "Vega Baja, Puerto Rico",
+      "behavior": "Family, church music, school, local culture, and early songwriting",
       "color": "#ead1cc",
       "filled": "#bd6658"
     },
     {
-      "id": "training",
-      "label": "Training and first work",
-      "startDate": "2018-10-11",
-      "endDate": "2019-07-22",
-      "location": "Public record",
-      "behavior": "Training and first work: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "soundcloud-rise",
+      "label": "SoundCloud and Latin trap rise",
+      "startDate": "2016-01-01",
+      "endDate": "2018-12-24",
+      "location": "Puerto Rico",
+      "behavior": "Independent uploads, grocery shifts, collaborations, and rapid audience discovery",
       "color": "#b8ddd9",
       "filled": "#247f85"
     },
     {
-      "id": "breakthrough",
-      "label": "Breakthrough",
-      "startDate": "2019-07-22",
+      "id": "album-breakthrough",
+      "label": "Album breakthrough",
+      "startDate": "2018-12-24",
       "endDate": "2020-11-27",
-      "location": "Public record",
-      "behavior": "Breakthrough: Training, releases, performance identity, reinvention, and cultural reception",
+      "location": "Puerto Rico and global touring",
+      "behavior": "Album craft, genre expansion, visual identity, and crossover collaborations",
       "color": "#edce8c",
       "filled": "#b7791f"
     },
     {
-      "id": "dominance",
-      "label": "Cultural dominance",
+      "id": "spanish-global-number-one",
+      "label": "Spanish-language global No. 1",
       "startDate": "2020-11-27",
-      "endDate": "2022-08-05",
-      "location": "Public record",
-      "behavior": "Cultural dominance: Training, releases, performance identity, reinvention, and cultural reception",
+      "endDate": "2022-05-06",
+      "location": "Puerto Rico and global charts",
+      "behavior": "Spanish-first releases, streaming scale, chart records, and cultural visibility",
       "color": "#c9c0df",
       "filled": "#725ca0"
     },
     {
-      "id": "reinvention",
-      "label": "Reinvention",
-      "startDate": "2022-08-05",
-      "endDate": "2023-05-19",
-      "location": "Public record",
-      "behavior": "Reinvention: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "stadium-scale",
+      "label": "Stadium-scale dominance",
+      "startDate": "2022-05-06",
+      "endDate": "2025-01-05",
+      "location": "Global",
+      "behavior": "Stadium touring, sustained streaming, fashion, acting, and headline performance",
       "color": "#c4d8ad",
       "filled": "#5f8b3d"
     },
     {
-      "id": "legacy",
-      "label": "Legacy",
-      "startDate": "2023-05-19",
-      "endDate": "2025-04-07",
-      "location": "Public record",
-      "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "puerto-rico-return",
+      "label": "Puerto Rico return",
+      "startDate": "2025-01-05",
+      "location": "Puerto Rico",
+      "behavior": "Cultural memory, local genres, residency economics, and island-centered storytelling",
       "color": "#b7cbe8",
       "filled": "#3f6fa9"
     },
     {
-      "id": "legacy-2",
-      "label": "Legacy",
-      "startDate": "2025-04-07",
-      "location": "Public record",
-      "behavior": "Legacy: Training, releases, performance identity, reinvention, and cultural reception",
+      "id": "global-live-stage",
+      "label": "Global live-stage record",
+      "startDate": "2025-09-28",
+      "location": "United States and global broadcast",
+      "behavior": "Mass-audience performance, production leadership, awards recognition, and scrutiny",
       "color": "#e5bbb2",
       "filled": "#a44f43"
     }
@@ -133,148 +132,82 @@ Batch-generated public-figure Life in Weeks profile.
     {
       "id": "born",
       "date": "1994-03-10",
-      "stageId": "early-life",
-      "message": "Born."
+      "stageId": "vega-baja",
+      "message": "Born Benito Antonio Martínez Ocasio in Vega Baja, Puerto Rico."
     },
     {
-      "id": "released-mia-with-drake-which-reached-number",
+      "id": "diles-soundcloud",
+      "date": "2016-01-01",
+      "dateLabel": "2016",
+      "datePrecision": "year",
+      "stageId": "soundcloud-rise",
+      "message": "“Diles” gains attention on SoundCloud while he is working at a grocery store."
+    },
+    {
+      "id": "mia",
       "date": "2018-10-11",
-      "stageId": "training",
-      "message": "Released \"Mia\" with Drake, which reached number five on the Billboard Hot 100."
+      "stageId": "soundcloud-rise",
+      "message": "Releases “MIA” with Drake, widening his audience across Spanish- and English-language pop."
     },
     {
-      "id": "released-his-debut-album-x-100pre-on-decembe",
+      "id": "x-100pre",
       "date": "2018-12-24",
-      "stageId": "training",
-      "message": "Released his debut album X 100pre on December 24, 2018, on the Rimas Entertainment label."
+      "stageId": "album-breakthrough",
+      "message": "Releases debut album X 100pre."
     },
     {
-      "id": "released-oasis-an-eight-song-collaborative-a",
-      "date": "2019-06-28",
-      "stageId": "training",
-      "message": "Released Oasis, an eight-song collaborative album with J Balvin."
+      "id": "yhlqmdlg",
+      "date": "2020-02-29",
+      "stageId": "album-breakthrough",
+      "message": "Releases YHLQMDLG, expanding Latin trap through reggaeton and older Puerto Rican sounds."
     },
     {
-      "id": "bad-bunny-joined-artists-such-as-residente",
-      "date": "2019-07-22",
-      "stageId": "breakthrough",
-      "message": "Bad Bunny joined artists such as Residente"
-    },
-    {
-      "id": "vete-was-released-as-the-lead-single-of-the-",
-      "date": "2019-11-22",
-      "stageId": "breakthrough",
-      "message": "\"Vete\" was released as the lead single of the album on November 22, 2019."
-    },
-    {
-      "id": "announced-the-album-yhlqmdlg-on-february-27",
-      "date": "2020-02-27",
-      "stageId": "breakthrough",
-      "message": "Announced the album YHLQMDLG on February 27"
-    },
-    {
-      "id": "released-his-first-compilation-las-que-no-ib",
-      "date": "2020-05-10",
-      "stageId": "breakthrough",
-      "message": "Released his first compilation Las que no iban a salircode: spa promoted to code: es , without previous announcements."
-    },
-    {
-      "id": "the-song-is-included-on-his-third-studio-alb",
+      "id": "eutdm",
       "date": "2020-11-27",
-      "stageId": "dominance",
-      "message": "The song is included on his third studio album, El Último Tour Del Mundo,"
+      "stageId": "spanish-global-number-one",
+      "message": "Releases El Último Tour del Mundo, the first all-Spanish album to top the Billboard 200."
     },
     {
-      "id": "was-announced-that-bad-bunny-became-spotify-",
-      "date": "2021-12-15",
-      "dateLabel": "December 2021",
-      "stageId": "dominance",
-      "message": "Was announced that Bad Bunny became Spotify's most-streamed artist of the year globally, for a second year in a row."
-    },
-    {
-      "id": "a-short-film-and-music-video-titled-te-deseo",
-      "date": "2021-12-24",
-      "stageId": "dominance",
-      "message": "A short film and music video titled Te Deseo Lo Mejor was released in collaboration with the creators of The Simpsons."
-    },
-    {
-      "id": "released-his-fourth-studio-album-un-verano-s",
+      "id": "un-verano-sin-ti",
       "date": "2022-05-06",
-      "stageId": "dominance",
-      "message": "Released his fourth studio album, Un Verano Sin Ti,"
+      "stageId": "stadium-scale",
+      "message": "Releases Un Verano Sin Ti, a global streaming and stadium-era breakthrough."
     },
     {
-      "id": "began-his-fourth-concert-tour-world-s-hottes",
-      "date": "2022-08-05",
-      "stageId": "reinvention",
-      "message": "Began his fourth concert tour World's Hottest Tour on August 5"
-    },
-    {
-      "id": "released-his-music-video-for-el-apagon-on-se",
-      "date": "2022-09-16",
-      "stageId": "reinvention",
-      "message": "Released his music video for \"El Apagón\" on September 16, 2022."
-    },
-    {
-      "id": "the-tour-became-the-highest-grossing-tour-by",
-      "date": "2022-10-04",
-      "stageId": "reinvention",
-      "message": "The tour became the highest-grossing tour by a Latin artist in history, earning US$232.5 million at the time."
-    },
-    {
-      "id": "returned-to-wwe-television-in-april-2023-whe",
-      "date": "2023-04-15",
-      "dateLabel": "April 2023",
-      "stageId": "reinvention",
-      "message": "Returned to WWE television in April 2023, when he initially joined the Spanish commentary team for WrestleMania 39."
-    },
-    {
-      "id": "released-his-first-solo-single-of-the-year-t",
-      "date": "2023-05-19",
-      "stageId": "legacy",
-      "message": "Released his first solo single of the year titled \"Where She Goes\", in which he ventured into jersey club music."
-    },
-    {
-      "id": "the-film-was-originally-set-to-be-released-o",
-      "date": "2024-01-12",
-      "stageId": "legacy",
-      "message": "The film was originally set to be released on January 12, 2024, prior to being removed from the release schedule."
-    },
-    {
-      "id": "released-the-lead-single-el-club-followed-by",
-      "date": "2024-12-05",
-      "stageId": "legacy",
-      "message": "Released the lead single \"El Clúb\", followed by the second single \"Pitorro de Coco\" and the announcement of his new."
-    },
-    {
-      "id": "released-his-seventh-album-debi-tirar-mas-fo",
+      "id": "dtmf",
       "date": "2025-01-05",
-      "stageId": "legacy",
-      "message": "Released his seventh album, Debí Tirar Más Fotos, stating that it \"recommits me to Puerto Rico\"; it contains many."
+      "stageId": "puerto-rico-return",
+      "message": "Releases Debí Tirar Más Fotos, centering Puerto Rican memory, place, and musical lineage."
     },
     {
-      "id": "npr-music-released-bad-bunny-s-tiny-desk-con",
-      "date": "2025-04-07",
-      "stageId": "legacy-2",
-      "message": "NPR Music released Bad Bunny's Tiny Desk Concert performance."
+      "id": "san-juan-residency",
+      "date": "2025-07-11",
+      "stageId": "puerto-rico-return",
+      "message": "Opens the No Me Quiero Ir de Aquí residency in San Juan."
     },
     {
-      "id": "announced-debi-tirar-mas-fotos-world-tour",
-      "date": "2025-05-05",
-      "stageId": "legacy-2",
-      "message": "Announced Debí Tirar Más Fotos World Tour"
-    },
-    {
-      "id": "was-announced-that-he-would-headline-the-sup",
+      "id": "halftime-announcement",
       "date": "2025-09-28",
-      "stageId": "legacy-2",
-      "message": "Was announced that he would headline the Super Bowl LX halftime show on February 8"
+      "stageId": "global-live-stage",
+      "message": "Announced as the headliner of the Super Bowl LX halftime show."
     },
     {
-      "id": "bad-bunny-opened-his-speech-by-saying-before",
+      "id": "grammy-album-of-year",
       "date": "2026-02-01",
-      "stageId": "legacy-2",
-      "message": "Bad Bunny opened his speech by saying \"Before I say thanks to God"
+      "stageId": "puerto-rico-return",
+      "message": "Debí Tirar Más Fotos becomes the first Spanish-language Grammy Album of the Year winner."
+    },
+    {
+      "id": "super-bowl-lx",
+      "date": "2026-02-08",
+      "stageId": "global-live-stage",
+      "message": "Headlines the Super Bowl LX halftime show before an average U.S. audience of 128.2 million."
+    },
+    {
+      "id": "emmy-record",
+      "date": "2026-07-08",
+      "stageId": "global-live-stage",
+      "message": "His halftime show receives nine Emmy nominations—the most ever for a Super Bowl halftime show."
     }
   ]
 }
